@@ -2,6 +2,64 @@
 
 @section('title', 'Kerala State Lotteries | Home')
 
+@section('styles')
+<style>
+  .partners-carousel-container {
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2rem 0;
+    border-radius: 15px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .partners-carousel-container::before,
+  .partners-carousel-container::after {
+    content: "";
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 100px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .partners-carousel-container::before {
+    left: 0;
+    background: linear-gradient(to right, var(--bg-color), transparent);
+  }
+  .partners-carousel-container::after {
+    right: 0;
+    background: linear-gradient(to left, var(--bg-color), transparent);
+  }
+  .partners-carousel-track {
+    display: flex;
+    gap: 4rem;
+    width: max-content;
+    animation: scrollLogos 35s linear infinite;
+  }
+  .partners-carousel-track img {
+    height: 50px;
+    object-fit: contain;
+    opacity: 0.8;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    flex-shrink: 0;
+  }
+  .partners-carousel-track img:hover {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  @keyframes scrollLogos {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+</style>
+@endsection
+
 @section('content')
   <!-- Hero Section -->
   <section class="hero container">
@@ -72,14 +130,26 @@
   <!-- Partners Section -->
   <section class="section">
     <div class="container">
-      <div style="display: flex; gap: 2rem; justify-content: center; align-items: center; flex-wrap: wrap; background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 15px;">
-        <img src="https://jackpot.keralastateslotterys.com/images/link-icons/kerala-gov-1.png" alt="Kerala Gov" style="height: 50px; opacity: 0.8; transition: var(--transition);" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
-        <img src="https://jackpot.keralastateslotterys.com/images/link-icons/india-gov-1.png" alt="India Gov" style="height: 50px; opacity: 0.8; transition: var(--transition);" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
-        <img src="https://jackpot.keralastateslotterys.com/images/link-icons/kerala-taxes-1.png" alt="Kerala Taxes" style="height: 50px; opacity: 0.8; transition: var(--transition);" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
-        <img src="https://jackpot.keralastateslotterys.com/images/link-icons/keltron.png" alt="Keltron" style="height: 50px; opacity: 0.8; transition: var(--transition);" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
-        <img src="https://jackpot.keralastateslotterys.com/images/link-icons/keralastate-itmission-1.png" alt="IT Mission" style="height: 50px; opacity: 0.8; transition: var(--transition);" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
-        <img src="https://jackpot.keralastateslotterys.com/images/link-icons/cdit-1.png" alt="CDIT" style="height: 50px; opacity: 0.8; transition: var(--transition);" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
-        <img src="https://jackpot.keralastateslotterys.com/images/link-icons/nic-1.png" alt="NIC" style="height: 50px; opacity: 0.8; transition: var(--transition);" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
+      <div class="partners-carousel-container">
+        <div class="partners-carousel-track">
+          <!-- Set 1 -->
+          <img src="https://jackpot.keralastateslotterys.com/images/link-icons/kerala-gov-1.png" alt="Kerala Gov">
+          <img src="https://jackpot.keralastateslotterys.com/images/link-icons/india-gov-1.png" alt="India Gov">
+          <img src="https://jackpot.keralastateslotterys.com/images/link-icons/kerala-taxes-1.png" alt="Kerala Taxes">
+          <img src="https://jackpot.keralastateslotterys.com/images/link-icons/keltron.png" alt="Keltron">
+          <img src="https://jackpot.keralastateslotterys.com/images/link-icons/keralastate-itmission-1.png" alt="IT Mission">
+          <img src="https://jackpot.keralastateslotterys.com/images/link-icons/cdit-1.png" alt="CDIT">
+          <img src="https://jackpot.keralastateslotterys.com/images/link-icons/nic-1.png" alt="NIC">
+          
+          <!-- Set 2 (Duplicate for loop) -->
+          <img src="https://jackpot.keralastateslotterys.com/images/link-icons/kerala-gov-1.png" alt="Kerala Gov">
+          <img src="https://jackpot.keralastateslotterys.com/images/link-icons/india-gov-1.png" alt="India Gov">
+          <img src="https://jackpot.keralastateslotterys.com/images/link-icons/kerala-taxes-1.png" alt="Kerala Taxes">
+          <img src="https://jackpot.keralastateslotterys.com/images/link-icons/keltron.png" alt="Keltron">
+          <img src="https://jackpot.keralastateslotterys.com/images/link-icons/keralastate-itmission-1.png" alt="IT Mission">
+          <img src="https://jackpot.keralastateslotterys.com/images/link-icons/cdit-1.png" alt="CDIT">
+          <img src="https://jackpot.keralastateslotterys.com/images/link-icons/nic-1.png" alt="NIC">
+        </div>
       </div>
     </div>
   </section>
