@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Block direct access to sensitive config, packages, and code management files
+    RewriteRule ^(\.git|\.env|composer\.json|composer\.lock|package\.json|package-lock\.json|phpunit\.xml|vite\.config\.js|artisan|README\.md|CHANGELOG\.md) - [F,L]
+    
+    # Block direct access to core Laravel directories
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|storage|tests|vendor)(/.*)?$ - [F,L]
+
+    # Rewrite all traffic to the public folder
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
