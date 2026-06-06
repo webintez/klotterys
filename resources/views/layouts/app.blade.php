@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
   
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="{{ asset('css/style.css') }}?v=1.0.4">
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}?v=1.0.5">
   
   <!-- Custom View styles -->
   @yield('styles')

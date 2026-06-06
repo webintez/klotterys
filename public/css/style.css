@@ -121,6 +121,12 @@ header {
   box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
 }
 
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
 /* Hero Section */
 .hero {
   padding: 7rem 0 5rem 0;
@@ -332,6 +338,20 @@ footer {
 
   .hero-content {
     width: 100%;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-buttons {
+    gap: 0.5rem;
+  }
+  .hero-buttons .btn {
+    padding: 0.7rem 1.1rem;
+    font-size: 0.8rem;
   }
 }
 

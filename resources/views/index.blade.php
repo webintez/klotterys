@@ -184,15 +184,17 @@
     <div class="hero-content">
       <h1>Win the Ultimate <br><span style="color: var(--primary-color);">Jackpot</span></h1>
       <p>Experience the excitement of Kerala State Lotteries. Play today, change your life tomorrow. Fast, secure, and 100% genuine.</p>
-      <a href="{{ route('buy-tickets') }}" class="btn">Play Now</a>
-      <a href="{{ route('results') }}" class="btn btn-secondary" style="margin-left: 1rem;">Check Results</a>
+      <div class="hero-buttons">
+        <a href="{{ route('buy-tickets') }}" class="btn">Play Now</a>
+        <a href="{{ route('results') }}" class="btn btn-secondary">Check Results</a>
+      </div>
     </div>
   </section>
 
   <!-- Weekly Lotteries Section -->
   <section class="section bg-alt">
     <div style="padding: 0 1rem;">
-      <h2 class="section-title" style="text-align: center; margin-bottom: 2rem; font-size: 3rem; font-weight: 800; text-transform: uppercase;">Our Weekly Lotteries</h2>
+      <h2 class="section-title" style="text-align: center; margin-bottom: 2rem; font-size: clamp(1.8rem, 6vw, 3rem); font-weight: 800; text-transform: uppercase;">Our Weekly Lotteries</h2>
       <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; justify-items: center;">
         <img src="https://jackpot.keralastateslotterys.com/images/weekely-lotteries/new-lotteries/bhagyadhara.jpg" alt="Bhagyadhara" style="width: 100%; border-radius: 10px; border: 2px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
         <img src="https://jackpot.keralastateslotterys.com/images/weekely-lotteries/new-lotteries/sthreesakthi.jpg" alt="Sthree Sakthi" style="width: 100%; border-radius: 10px; border: 2px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
