@@ -5,13 +5,19 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class AdminBookingController extends Controller
 {
     // List bookings
     public function index(Request $request)
     {
+        list($startDate, $endDate, $filter) = $this->getDateRange($request);
+        
         $query = Booking::query();
+
+        // Apply date range filter
+        $query->whereBetween('created_at', [$startDate, $endDate]);
 
         // Search filter
         if ($request->filled('search')) {
@@ -31,7 +37,70 @@ class AdminBookingController extends Controller
 
         $bookings = $query->orderBy('created_at', 'desc')->paginate(15)->withQueryString();
 
-        return view('admin.bookings.index', compact('bookings'));
+        return view('admin.bookings.index', compact('bookings', 'filter'));
+    }
+
+    /**
+     * Compute start and end carbon dates based on filter code.
+     */
+    private function getDateRange(Request $request)
+    {
+        $filter = $request->input('date_filter', 'today');
+        $startDate = null;
+        $endDate = null;
+
+        switch ($filter) {
+            case 'yesterday':
+                $startDate = Carbon::yesterday()->startOfDay();
+                $endDate = Carbon::yesterday()->endOfDay();
+                break;
+            case 'last_7_days':
+                $startDate = Carbon::now()->subDays(6)->startOfDay();
+                $endDate = Carbon::now()->endOfDay();
+                break;
+            case 'last_week':
+                $startDate = Carbon::now()->subWeek()->startOfDay();
+                $endDate = Carbon::now()->endOfDay();
+                break;
+            case 'last_30_days':
+                $startDate = Carbon::now()->subDays(29)->startOfDay();
+                $endDate = Carbon::now()->endOfDay();
+                break;
+            case 'last_month':
+                $startDate = Carbon::now()->subMonth()->startOfMonth();
+                $endDate = Carbon::now()->subMonth()->endOfMonth();
+                break;
+            case 'this_month':
+                $startDate = Carbon::now()->startOfMonth();
+                $endDate = Carbon::now()->endOfDay();
+                break;
+            case 'this_year':
+                $startDate = Carbon::now()->startOfYear();
+                $endDate = Carbon::now()->endOfDay();
+                break;
+            case 'last_year':
+                $startDate = Carbon::now()->subYear()->startOfYear();
+                $endDate = Carbon::now()->subYear()->endOfYear();
+                break;
+            case 'custom':
+                if ($request->filled('start_date') && $request->filled('end_date')) {
+                    $startDate = Carbon::parse($request->input('start_date'))->startOfDay();
+                    $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
+                } else {
+                    $startDate = Carbon::today()->startOfDay();
+                    $endDate = Carbon::today()->endOfDay();
+                    $filter = 'today';
+                }
+                break;
+            case 'today':
+            default:
+                $startDate = Carbon::today()->startOfDay();
+                $endDate = Carbon::today()->endOfDay();
+                $filter = 'today';
+                break;
+        }
+
+        return [$startDate, $endDate, $filter];
     }
 
     // Edit booking form

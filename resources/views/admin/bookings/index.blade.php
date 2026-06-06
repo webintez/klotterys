@@ -12,13 +12,13 @@
 
 <!-- Search & Filter Panel -->
 <div class="search-filter-panel">
-  <form action="{{ route('admin.bookings.index') }}" method="GET">
-    <div class="filter-group" style="flex: 2;">
+  <form action="{{ route('admin.bookings.index') }}" method="GET" id="date-filter-form">
+    <div class="filter-group" style="flex: 2; min-width: 250px;">
       <label class="form-label" style="font-size: 0.75rem; margin-bottom: 0.25rem;">Search Query</label>
       <input type="text" name="search" class="form-control" placeholder="Search by name, mobile, tickets, tracking..." value="{{ request('search') }}">
     </div>
 
-    <div class="filter-group">
+    <div class="filter-group" style="min-width: 150px;">
       <label class="form-label" style="font-size: 0.75rem; margin-bottom: 0.25rem;">Booking Status</label>
       <select name="status" class="form-control">
         <option value="">-- All Statuses --</option>
@@ -29,9 +29,34 @@
       </select>
     </div>
 
-    <div class="filter-group action">
+    <div class="filter-group" style="min-width: 180px;">
+      <label class="form-label" style="font-size: 0.75rem; margin-bottom: 0.25rem;">Date Filter</label>
+      <select name="date_filter" id="date_filter" class="form-control" onchange="toggleCustomDates()">
+        <option value="today" {{ request('date_filter', 'today') == 'today' ? 'selected' : '' }}>Today</option>
+        <option value="yesterday" {{ request('date_filter') == 'yesterday' ? 'selected' : '' }}>Previous Day (Yesterday)</option>
+        <option value="last_7_days" {{ request('date_filter') == 'last_7_days' ? 'selected' : '' }}>Last 7 Days</option>
+        <option value="last_week" {{ request('date_filter') == 'last_week' ? 'selected' : '' }}>Last Week</option>
+        <option value="last_30_days" {{ request('date_filter') == 'last_30_days' ? 'selected' : '' }}>Last 30 Days</option>
+        <option value="last_month" {{ request('date_filter') == 'last_month' ? 'selected' : '' }}>Last Month</option>
+        <option value="this_month" {{ request('date_filter') == 'this_month' ? 'selected' : '' }}>This Month</option>
+        <option value="this_year" {{ request('date_filter') == 'this_year' ? 'selected' : '' }}>This Year</option>
+        <option value="last_year" {{ request('date_filter') == 'last_year' ? 'selected' : '' }}>Last Year</option>
+        <option value="custom" {{ request('date_filter') == 'custom' ? 'selected' : '' }}>Custom Date Range</option>
+      </select>
+    </div>
+
+    <div id="custom-date-inputs" style="display: {{ request('date_filter') == 'custom' ? 'flex' : 'none' }}; gap: 0.4rem; align-items: center; margin-top: 1rem; flex-basis: 100%;">
+      <div style="display: flex; gap: 0.5rem; align-items: center;">
+        <label class="form-label" style="margin-bottom: 0; white-space: nowrap;">Start Date:</label>
+        <input type="date" name="start_date" id="start_date" class="form-control" style="width: auto; padding: 0.5rem;" value="{{ request('start_date') }}">
+        <label class="form-label" style="margin-bottom: 0; white-space: nowrap; margin-left: 0.5rem;">End Date:</label>
+        <input type="date" name="end_date" id="end_date" class="form-control" style="width: auto; padding: 0.5rem;" value="{{ request('end_date') }}">
+      </div>
+    </div>
+
+    <div class="filter-group action" style="align-self: flex-end;">
       <button type="submit" class="btn-admin" style="padding: 0.7rem 1.5rem;">Filter</button>
-      @if (request()->hasAny(['search', 'status']))
+      @if (request()->hasAny(['search', 'status', 'date_filter']))
         <a href="{{ route('admin.bookings.index') }}" class="btn-admin-secondary" style="padding: 0.7rem 1.5rem; text-decoration: none; margin-left: 0.5rem; display: inline-block; white-space: nowrap;">Reset</a>
       @endif
     </div>
@@ -118,4 +143,23 @@
   </div>
 @endif
 
+@endsection
+
+@section('scripts')
+<script>
+  function toggleCustomDates() {
+    const filter = document.getElementById('date_filter').value;
+    const customInputs = document.getElementById('custom-date-inputs');
+    if (filter === 'custom') {
+        customInputs.style.display = 'flex';
+        document.getElementById('start_date').required = true;
+        document.getElementById('end_date').required = true;
+    } else {
+        customInputs.style.display = 'none';
+        document.getElementById('start_date').required = false;
+        document.getElementById('end_date').required = false;
+        document.getElementById('date-filter-form').submit();
+    }
+  }
+</script>
 @endsection

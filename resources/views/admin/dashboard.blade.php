@@ -3,10 +3,38 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<div class="content-header">
+<div class="content-header" style="flex-wrap: wrap; gap: 1rem;">
   <div class="content-title">
     <h1>Dashboard</h1>
-    <p>Overview of booking statistics, revenue, and recent activities.</p>
+    <p>Overview of booking statistics, revenue, and recent activities (Filtered by: {{ ucwords(str_replace('_', ' ', $filter)) }}).</p>
+  </div>
+  
+  <!-- Date Filter Form -->
+  <div class="date-filter-container">
+    <form action="{{ route('admin.dashboard') }}" method="GET" id="date-filter-form" style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+      <div class="form-group" style="margin-bottom: 0; min-width: 180px;">
+        <select name="date_filter" id="date_filter" class="form-control" onchange="toggleCustomDates()" style="padding: 0.45rem 0.75rem; font-size: 0.9rem;">
+          <option value="today" {{ request('date_filter', 'today') == 'today' ? 'selected' : '' }}>Today</option>
+          <option value="yesterday" {{ request('date_filter') == 'yesterday' ? 'selected' : '' }}>Previous Day (Yesterday)</option>
+          <option value="last_7_days" {{ request('date_filter') == 'last_7_days' ? 'selected' : '' }}>Last 7 Days</option>
+          <option value="last_week" {{ request('date_filter') == 'last_week' ? 'selected' : '' }}>Last Week</option>
+          <option value="last_30_days" {{ request('date_filter') == 'last_30_days' ? 'selected' : '' }}>Last 30 Days</option>
+          <option value="last_month" {{ request('date_filter') == 'last_month' ? 'selected' : '' }}>Last Month</option>
+          <option value="this_month" {{ request('date_filter') == 'this_month' ? 'selected' : '' }}>This Month</option>
+          <option value="this_year" {{ request('date_filter') == 'this_year' ? 'selected' : '' }}>This Year</option>
+          <option value="last_year" {{ request('date_filter') == 'last_year' ? 'selected' : '' }}>Last Year</option>
+          <option value="custom" {{ request('date_filter') == 'custom' ? 'selected' : '' }}>Custom Date Range</option>
+        </select>
+      </div>
+
+      <div id="custom-date-inputs" style="display: {{ request('date_filter') == 'custom' ? 'flex' : 'none' }}; gap: 0.4rem; align-items: center;">
+        <input type="date" name="start_date" id="start_date" class="form-control" style="width: auto; padding: 0.4rem 0.6rem; font-size: 0.85rem;" value="{{ request('start_date') }}">
+        <span style="color: var(--text-muted); font-size: 0.85rem;">to</span>
+        <input type="date" name="end_date" id="end_date" class="form-control" style="width: auto; padding: 0.4rem 0.6rem; font-size: 0.85rem;" value="{{ request('end_date') }}">
+      </div>
+
+      <button type="submit" class="btn-admin" style="padding: 0.45rem 1rem; width: auto; font-size: 0.85rem; margin-bottom: 0;">Apply</button>
+    </form>
   </div>
 </div>
 
@@ -124,4 +152,23 @@
     </div>
   </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+  function toggleCustomDates() {
+    const filter = document.getElementById('date_filter').value;
+    const customInputs = document.getElementById('custom-date-inputs');
+    if (filter === 'custom') {
+        customInputs.style.display = 'flex';
+        document.getElementById('start_date').required = true;
+        document.getElementById('end_date').required = true;
+    } else {
+        customInputs.style.display = 'none';
+        document.getElementById('start_date').required = false;
+        document.getElementById('end_date').required = false;
+        document.getElementById('date-filter-form').submit();
+    }
+  }
+</script>
 @endsection
