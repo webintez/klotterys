@@ -38,6 +38,7 @@ Route::post('/track-order/search', [BookingController::class, 'search'])->name('
 // Results routes
 Route::get('/results', [ResultController::class, 'index'])->name('results');
 Route::post('/results/check', [ResultController::class, 'check'])->name('results.check');
+Route::post('/results/claim', [ResultController::class, 'claim'])->name('results.claim');
 
 // Admin routes
 Route::prefix('admin')->group(function () {

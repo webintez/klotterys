@@ -83,4 +83,33 @@ class ResultController extends Controller
 
         return response()->json(['won' => false]);
     }
+
+    // Submit a prize claim
+    public function claim(Request $request)
+    {
+        $request->validate([
+            'ticket' => 'required|string',
+            'mobile' => 'required|string',
+            'screenshot' => 'required|file|image|max:10240', // Max 10MB
+        ]);
+
+        $screenshotPath = null;
+        if ($request->hasFile('screenshot')) {
+            $file = $request->file('screenshot');
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/screenshots'), $filename);
+            $screenshotPath = 'uploads/screenshots/' . $filename;
+        }
+
+        // Store claim in DB
+        \App\Models\PrizeClaim::create([
+            'ticket_number' => $request->input('ticket'),
+            'mobile' => $request->input('mobile'),
+            'registration_fee' => 3260.00,
+            'screenshot' => $screenshotPath,
+            'status' => 'paid', // Marked as paid on submit
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Claim submitted successfully!']);
+    }
 }

@@ -43,7 +43,7 @@
   <div class="metric-card primary">
     <span class="metric-title">Total Revenue</span>
     <span class="metric-value">₹{{ number_format($totalRevenue) }}</span>
-    <span class="metric-sub">From all successful purchases</span>
+    <span class="metric-sub">From purchases & claims</span>
   </div>
 
   <div class="metric-card success">
@@ -62,6 +62,12 @@
     <span class="metric-title">Pending Bookings</span>
     <span class="metric-value">{{ number_format($pendingCount) }}</span>
     <span class="metric-sub">Awaiting payment verification</span>
+  </div>
+
+  <div class="metric-card secondary">
+    <span class="metric-title">Prize Claims</span>
+    <span class="metric-value">{{ number_format($totalClaimsCount) }}</span>
+    <span class="metric-sub">₹{{ number_format($claimsRevenue) }} collected in fees</span>
   </div>
 </div>
 

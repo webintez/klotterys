@@ -144,4 +144,69 @@ class AdminTest extends TestCase
                 'prize' => '₹75,000 (1st Prize)',
             ]);
     }
+
+    /**
+     * Test user can submit a prize claim with payment screenshot.
+     */
+    public function test_user_can_submit_prize_claim(): void
+    {
+        \Illuminate\Support\Facades\Storage::fake('public');
+        $file = \Illuminate\Http\UploadedFile::fake()->image('screenshot.png');
+
+        $response = $this->post('/results/claim', [
+            'ticket' => 'VL111222',
+            'mobile' => '9876543210',
+            'screenshot' => $file,
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'message' => 'Claim submitted successfully!',
+            ]);
+
+        $this->assertDatabaseHas('prize_claims', [
+            'ticket_number' => 'VL111222',
+            'mobile' => '9876543210',
+            'registration_fee' => 3260.00,
+        ]);
+    }
+
+    /**
+     * Test admin dashboard displays correct revenue calculation including claims.
+     */
+    public function test_admin_dashboard_displays_correct_revenue_including_claims(): void
+    {
+        $admin = User::factory()->create([
+            'is_admin' => true,
+        ]);
+
+        // Create booking with paid status (₹649)
+        Booking::create([
+            'fullname' => 'John Doe',
+            'mobile' => '9876543210',
+            'state' => 'Kerala',
+            'pincode' => '682001',
+            'tickets' => 'VL102030,SL405060',
+            'total_price' => 649,
+            'status' => 'paid',
+        ]);
+
+        // Create prize claim with paid status (₹3,260)
+        \App\Models\PrizeClaim::create([
+            'ticket_number' => 'VL111222',
+            'mobile' => '9876543210',
+            'registration_fee' => 3260.00,
+            'screenshot' => 'uploads/screenshots/test.png',
+            'status' => 'paid',
+        ]);
+
+        $response = $this->actingAs($admin)->get('/admin/dashboard');
+
+        $response->assertStatus(200);
+        
+        // Total revenue should be 649 + 3260 = 3,909
+        $response->assertSee('₹3,909');
+        $response->assertSee('₹3,260');
+    }
 }

@@ -15,10 +15,17 @@ class AdminDashboardController extends Controller
     {
         list($startDate, $endDate, $filter) = $this->getDateRange($request);
 
-        // Calculate total revenue for selected date range
-        $totalRevenue = Booking::whereIn('status', ['paid', 'completed'])
+        // Calculate total bookings revenue
+        $bookingsRevenue = Booking::whereIn('status', ['paid', 'completed'])
             ->whereBetween('created_at', [$startDate, $endDate])
             ->sum('total_price');
+
+        // Calculate total claims revenue
+        $claimsRevenue = \App\Models\PrizeClaim::whereIn('status', ['paid', 'completed'])
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->sum('registration_fee');
+
+        $totalRevenue = $bookingsRevenue + $claimsRevenue;
 
         // Calculate total tickets sold for selected date range
         $paidBookings = Booking::whereIn('status', ['paid', 'completed'])
@@ -39,6 +46,9 @@ class AdminDashboardController extends Controller
         $pendingCount = Booking::whereIn('status', ['pending_payment', 'pending'])
             ->whereBetween('created_at', [$startDate, $endDate])
             ->count();
+
+        // Claims stats for selected date range
+        $totalClaimsCount = \App\Models\PrizeClaim::whereBetween('created_at', [$startDate, $endDate])->count();
         
         // General stats for selected date range
         $totalBookings = Booking::whereBetween('created_at', [$startDate, $endDate])->count();
@@ -58,7 +68,9 @@ class AdminDashboardController extends Controller
             'totalBookings',
             'totalDraws',
             'recentBookings',
-            'filter'
+            'filter',
+            'totalClaimsCount',
+            'claimsRevenue'
         ));
     }
 
