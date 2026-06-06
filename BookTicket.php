@@ -1,0 +1,298 @@
+<?php
+// Retrieve the selected tickets from URL parameter
+$ticket_param = isset($_GET['ticket']) ? $_GET['ticket'] : '';
+// Clean the input to prevent XSS
+$ticket_param = htmlspecialchars(strip_tags(trim($ticket_param)));
+
+// Split ticket numbers
+$tickets = [];
+if (!empty($ticket_param)) {
+    // Replace any trailing/leading commas and split
+    $tickets = array_filter(explode(',', $ticket_param));
+}
+$total_tickets = count($tickets);
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kerala State Lotteries | Ticket Booking Details</title>
+  
+  <!-- Google Fonts (Outfit) -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 4 CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  
+  <!-- Custom Premium Styles -->
+  <style>
+    :root {
+      --primary-color: #ff5722;
+      --secondary-color: #ffd700;
+      --font-main: 'Outfit', sans-serif;
+    }
+    
+    body {
+      font-family: var(--font-main);
+      background: linear-gradient(135deg, #00ecbc 0%, #007adf 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 15px;
+    }
+    
+    .booking-card {
+      background: rgba(255, 255, 255, 0.95);
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      max-width: 650px;
+      width: 100%;
+      padding: 2.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .booking-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    }
+    
+    .title-header {
+      font-weight: 800;
+      color: #007adf;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid rgba(0, 122, 223, 0.1);
+      padding-bottom: 1rem;
+    }
+    
+    .ticket-box {
+      display: inline-block;
+      background: linear-gradient(45deg, #007adf, #00ecbc);
+      color: #fff;
+      padding: 6px 16px;
+      margin: 4px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 10px rgba(0, 122, 223, 0.25);
+      letter-spacing: 0.5px;
+    }
+    
+    .tickets-container {
+      background: rgba(0, 122, 223, 0.05);
+      border-radius: 12px;
+      padding: 15px;
+      border: 1px solid rgba(0, 122, 223, 0.15);
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 0.4rem;
+      font-size: 0.95rem;
+    }
+    
+    .form-control {
+      border-radius: 10px;
+      border: 1px solid #ced4da;
+      padding: 0.75rem 1rem;
+      height: auto;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+      border-color: #007adf;
+      box-shadow: 0 0 0 0.2rem rgba(0, 122, 223, 0.15);
+    }
+    
+    .btn-book {
+      background: linear-gradient(45deg, #28a745, #218838);
+      color: #fff;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 1.1rem;
+      padding: 12px;
+      border: none;
+      border-radius: 50px;
+      box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-book:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+      background: linear-gradient(45deg, #218838, #1e7e34);
+      color: #fff;
+    }
+    
+    .agree-text {
+      font-size: 0.9rem;
+      color: #555;
+    }
+    
+    .agree-text a {
+      color: #007adf;
+      font-weight: 600;
+    }
+    
+    .footer-links {
+      margin-top: 2rem;
+      font-size: 0.95rem;
+    }
+    
+    .footer-links a {
+      color: #6c757d;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+    
+    .footer-links a:hover {
+      color: #007adf;
+      text-decoration: none;
+    }
+    
+    .footer-links span {
+      color: #ced4da;
+      margin: 0 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="booking-card">
+    <h3 class="text-center title-header">Ticket Booking Details</h3>
+    
+    <!-- ✅ SHOW SELECTED TICKETS -->
+    <h5 class="font-weight-bold mb-2 text-dark" style="font-size: 1rem;">🎟 Selected Tickets:</h5>
+    
+    <div class="tickets-container">
+      <?php if ($total_tickets > 0): ?>
+        <?php foreach ($tickets as $t): ?>
+          <span class="ticket-box"><?php echo htmlspecialchars($t); ?></span>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <span class="text-muted" style="font-size: 0.95rem;">No tickets selected. Please go back and select a ticket.</span>
+      <?php endif; ?>
+    </div>
+    
+    <p class="mt-2 text-dark mb-4" style="font-size: 1rem;">
+        Total Tickets: <b class="text-primary" style="font-size: 1.1rem;"><?php echo $total_tickets; ?></b>
+    </p>
+    
+    <form action="upipay.php" method="post" onsubmit="return validateForm()">
+      <!-- ✅ HIDDEN INPUT -->
+      <input type="hidden" name="ticketno" value="<?php echo htmlspecialchars($ticket_param); ?>">
+      
+      <!-- FULL NAME -->
+      <div class="form-group mb-3">
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" name="fullname" class="form-control" placeholder="Enter your full name" required>
+      </div>
+      
+      <!-- MOBILE -->
+      <div class="form-group mb-3">
+        <label for="mobile">Mobile Number</label>
+        <input type="tel" id="mobile" name="mobile" maxlength="10" class="form-control" placeholder="Enter 10-digit mobile number" required pattern="[0-9]{10}" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+      </div>
+      
+      <!-- STATE -->
+      <div class="form-group mb-3">
+        <label for="state">Choose State</label>
+        <select id="state" name="state" class="form-control" required>
+          <option value="">Choose State</option>
+          <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+          <option value="Andhra Pradesh">Andhra Pradesh</option>
+          <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+          <option value="Assam">Assam</option>
+          <option value="Bihar">Bihar</option>
+          <option value="Chandigarh">Chandigarh</option>
+          <option value="Chhattisgarh">Chhattisgarh</option>
+          <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+          <option value="Delhi">Delhi</option>
+          <option value="Goa">Goa</option>
+          <option value="Gujarat">Gujarat</option>
+          <option value="Haryana">Haryana</option>
+          <option value="Himachal Pradesh">Himachal Pradesh</option>
+          <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+          <option value="Jharkhand">Jharkhand</option>
+          <option value="Karnataka">Karnataka</option>
+          <option value="Kerala">Kerala</option>
+          <option value="Ladakh">Ladakh</option>
+          <option value="Lakshadweep">Lakshadweep</option>
+          <option value="Madhya Pradesh">Madhya Pradesh</option>
+          <option value="Maharashtra">Maharashtra</option>
+          <option value="Manipur">Manipur</option>
+          <option value="Meghalaya">Meghalaya</option>
+          <option value="Mizoram">Mizoram</option>
+          <option value="Nagaland">Nagaland</option>
+          <option value="Odisha">Odisha</option>
+          <option value="Puducherry">Puducherry</option>
+          <option value="Punjab">Punjab</option>
+          <option value="Rajasthan">Rajasthan</option>
+          <option value="Sikkim">Sikkim</option>
+          <option value="Tamil Nadu">Tamil Nadu</option>
+          <option value="Telangana">Telangana</option>
+          <option value="Tripura">Tripura</option>
+          <option value="Uttar Pradesh">Uttar Pradesh</option>
+          <option value="Uttarakhand">Uttarakhand</option>
+          <option value="West Bengal">West Bengal</option>
+        </select>
+      </div>
+      
+      <!-- PINCODE -->
+      <div class="form-group mb-4">
+        <label for="pincode">Pin Code</label>
+        <input type="text" id="pincode" name="pincode" maxlength="6" class="form-control" placeholder="Enter 6-digit pin code" required pattern="[0-9]{6}" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+      </div>
+      
+      <!-- TERMS -->
+      <div class="form-group form-check mb-4">
+        <input type="checkbox" class="form-check-input" id="terms" checked required style="cursor: pointer; width: 18px; height: 18px; margin-top: 2px;">
+        <label class="form-check-label agree-text ml-2" for="terms" style="cursor: pointer; user-select: none;">
+          I agree to <a href="about.html" target="_blank">Terms & Conditions</a> & <a href="about.html" target="_blank">Privacy Policy</a>
+        </label>
+      </div>
+      
+      <!-- SUBMIT -->
+      <button type="submit" class="btn btn-book btn-block mt-4">Book Now</button>
+    </form>
+    
+    <div class="text-center footer-links">
+      <a href="lottery-ticket.html">Change Ticket</a>
+      <span>|</span>
+      <a href="index.html">Home</a>
+    </div>
+  </div>
+
+  <!-- jQuery & validation scripts -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script>
+    function validateForm() {
+        let name = $('#fullname').val().trim();
+        let mobile = $('#mobile').val().trim();
+        let pincode = $('#pincode').val().trim();
+        
+        if (name.length < 2) {
+            alert("Please enter a valid Full Name.");
+            return false;
+        }
+        if (mobile.length !== 10) {
+            alert("Mobile Number must be exactly 10 digits.");
+            return false;
+        }
+        if (pincode.length !== 6) {
+            alert("Pin Code must be exactly 6 digits.");
+            return false;
+        }
+        return true;
+    }
+  </script>
+</body>
+</html>
