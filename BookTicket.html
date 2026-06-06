@@ -1,17 +1,3 @@
-<?php
-// Retrieve the selected tickets from URL parameter
-$ticket_param = isset($_GET['ticket']) ? $_GET['ticket'] : '';
-// Clean the input to prevent XSS
-$ticket_param = htmlspecialchars(strip_tags(trim($ticket_param)));
-
-// Split ticket numbers
-$tickets = [];
-if (!empty($ticket_param)) {
-    // Replace any trailing/leading commas and split
-    $tickets = array_filter(explode(',', $ticket_param));
-}
-$total_tickets = count($tickets);
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -172,23 +158,17 @@ $total_tickets = count($tickets);
     <!-- ✅ SHOW SELECTED TICKETS -->
     <h5 class="font-weight-bold mb-2 text-dark" style="font-size: 1rem;">🎟 Selected Tickets:</h5>
     
-    <div class="tickets-container">
-      <?php if ($total_tickets > 0): ?>
-        <?php foreach ($tickets as $t): ?>
-          <span class="ticket-box"><?php echo htmlspecialchars($t); ?></span>
-        <?php endforeach; ?>
-      <?php else: ?>
-        <span class="text-muted" style="font-size: 0.95rem;">No tickets selected. Please go back and select a ticket.</span>
-      <?php endif; ?>
+    <div class="tickets-container" id="ticketsContainer">
+      <!-- Loaded dynamically by JavaScript -->
     </div>
     
     <p class="mt-2 text-dark mb-4" style="font-size: 1rem;">
-        Total Tickets: <b class="text-primary" style="font-size: 1.1rem;"><?php echo $total_tickets; ?></b>
+        Total Tickets: <b class="text-primary" style="font-size: 1.1rem;" id="totalTickets">0</b>
     </p>
     
     <form action="upipay.php" method="post" onsubmit="return validateForm()">
       <!-- ✅ HIDDEN INPUT -->
-      <input type="hidden" name="ticketno" value="<?php echo htmlspecialchars($ticket_param); ?>">
+      <input type="hidden" name="ticketno" id="ticketNoInput" value="">
       
       <!-- FULL NAME -->
       <div class="form-group mb-3">
@@ -271,9 +251,42 @@ $total_tickets = count($tickets);
     </div>
   </div>
 
-  <!-- jQuery & validation scripts -->
+  <!-- jQuery & Client-side URL Parameter Parsing Script -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script>
+    function escapeHtml(text) {
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    $(document).ready(function() {
+        // Parse ticket parameter from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const ticketParam = urlParams.get('ticket') || '';
+        
+        // Split and filter tickets
+        const tickets = ticketParam.split(',').map(t => t.trim()).filter(t => t.length > 0);
+        
+        // Render tickets in container
+        const container = $('#ticketsContainer');
+        if (tickets.length > 0) {
+            let html = tickets.map(t => `<span class="ticket-box">${escapeHtml(t)}</span>`).join('');
+            container.html(html);
+        } else {
+            container.html('<span class="text-muted" style="font-size: 0.95rem;">No tickets selected. Please go back and select a ticket.</span>');
+        }
+        
+        // Update total tickets count
+        $('#totalTickets').text(tickets.length);
+        
+        // Set hidden input value
+        $('#ticketNoInput').val(ticketParam);
+    });
+
     function validateForm() {
         let name = $('#fullname').val().trim();
         let mobile = $('#mobile').val().trim();
