@@ -109,6 +109,7 @@ class AdminTest extends TestCase
             'lottery_name' => 'FIFTY-FIFTY',
             'draw_number' => 'FF-99',
             'winning_number' => 'VL999999',
+            'prize_category' => '1st Prize',
         ]);
 
         $response->assertRedirect('/admin/results');

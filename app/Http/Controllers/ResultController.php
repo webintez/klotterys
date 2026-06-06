@@ -41,9 +41,17 @@ class ResultController extends Controller
         $draw = DrawResult::where('winning_number', $ticket)->first();
 
         if ($draw) {
+            $prizeAmount = '₹5,000';
+            if ($draw->prize_category === '1st Prize') {
+                $prizeAmount = '₹5,000 (1st Prize)';
+            } elseif ($draw->prize_category === '2nd Prize') {
+                $prizeAmount = '₹2,500 (2nd Prize)';
+            } elseif ($draw->prize_category === '3rd Prize') {
+                $prizeAmount = '₹1,000 (3rd Prize)';
+            }
             return response()->json([
                 'won' => true,
-                'prize' => '₹5,000',
+                'prize' => $prizeAmount,
             ]);
         }
 
