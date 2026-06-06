@@ -10,6 +10,11 @@
   --transition: all 0.3s ease;
 }
 
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -294,9 +299,11 @@ footer {
     flex-direction: column;
     background: var(--bg-color-light);
     width: 100%;
+    height: calc(100vh - 70px);
     text-align: center;
     padding: 2rem 0;
     transition: var(--transition);
+    z-index: 999;
   }
 
   .nav-links.active {
