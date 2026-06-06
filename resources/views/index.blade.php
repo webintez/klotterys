@@ -57,6 +57,76 @@
       transform: translateX(-50%);
     }
   }
+
+  /* Hero Slider Styles */
+  .hero-slider {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 1.42;
+    margin: 0 0 0 auto;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    background-color: rgba(255,255,255,0.02);
+  }
+  .slider-track {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    z-index: 1;
+  }
+  .slide.active {
+    opacity: 1;
+    z-index: 2;
+  }
+  .slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+  }
+  .slider-dots {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 6px 12px;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .dot.active {
+    background: var(--primary-color);
+    transform: scale(1.2);
+  }
+  @media (max-width: 768px) {
+    .hero-slider {
+      margin: 0 auto;
+      aspect-ratio: 1.42;
+    }
+  }
 </style>
 @endsection
 
@@ -64,7 +134,48 @@
   <!-- Hero Section -->
   <section class="hero container">
     <div class="hero-image">
-      <img src="{{ asset('images/photo_6147822454307926542_y.jpg') }}" alt="Jackpot Banner">
+      <div class="hero-slider">
+        <div class="slider-track">
+          <div class="slide active">
+            <img src="{{ asset('images/photo_6147822454307926542_y.jpg') }}" alt="Jackpot Banner">
+          </div>
+          <div class="slide">
+            <img src="{{ asset('images/WhatsApp Image 2026-06-06 at 18.02.04.jpeg') }}" alt="Jackpot Banner 1">
+          </div>
+          <div class="slide">
+            <img src="{{ asset('images/WhatsApp Image 2026-06-06 at 18.02.05 (1).jpeg') }}" alt="Jackpot Banner 2">
+          </div>
+          <div class="slide">
+            <img src="{{ asset('images/WhatsApp Image 2026-06-06 at 18.02.05.jpeg') }}" alt="Jackpot Banner 3">
+          </div>
+          <div class="slide">
+            <img src="{{ asset('images/WhatsApp Image 2026-06-06 at 18.02.06 (1).jpeg') }}" alt="Jackpot Banner 4">
+          </div>
+          <div class="slide">
+            <img src="{{ asset('images/WhatsApp Image 2026-06-06 at 18.02.06.jpeg') }}" alt="Jackpot Banner 5">
+          </div>
+          <div class="slide">
+            <img src="{{ asset('images/WhatsApp Image 2026-06-06 at 18.02.07 (1).jpeg') }}" alt="Jackpot Banner 6">
+          </div>
+          <div class="slide">
+            <img src="{{ asset('images/WhatsApp Image 2026-06-06 at 18.02.07 (2).jpeg') }}" alt="Jackpot Banner 7">
+          </div>
+          <div class="slide">
+            <img src="{{ asset('images/WhatsApp Image 2026-06-06 at 18.02.07.jpeg') }}" alt="Jackpot Banner 8">
+          </div>
+        </div>
+        <div class="slider-dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
     </div>
     <div class="hero-content">
       <h1>Win the Ultimate <br><span style="color: var(--primary-color);">Jackpot</span></h1>
@@ -153,4 +264,45 @@
       </div>
     </div>
   </section>
+@endsection
+
+@section('scripts')
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const slides = document.querySelectorAll('.hero-slider .slide');
+    const dots = document.querySelectorAll('.hero-slider .dot');
+    let currentSlide = 0;
+    const slideInterval = 4000; // 4 seconds
+
+    function showSlide(index) {
+      if (slides.length === 0) return;
+      slides.forEach((slide, i) => {
+        if (i === index) {
+          slide.classList.add('active');
+          if (dots[i]) dots[i].classList.add('active');
+        } else {
+          slide.classList.remove('active');
+          if (dots[i]) dots[i].classList.remove('active');
+        }
+      });
+      currentSlide = index;
+    }
+
+    function nextSlide() {
+      let next = (currentSlide + 1) % slides.length;
+      showSlide(next);
+    }
+
+    let autoSlide = setInterval(nextSlide, slideInterval);
+
+    // Click handler for dots
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        clearInterval(autoSlide);
+        showSlide(index);
+        autoSlide = setInterval(nextSlide, slideInterval);
+      });
+    });
+  });
+</script>
 @endsection
