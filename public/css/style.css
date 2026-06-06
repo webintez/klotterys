@@ -416,3 +416,14 @@ table tr:hover {
     box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4) !important;
 }
 
+@media (max-width: 576px) {
+  .pay-card {
+    padding: 1.5rem 1rem !important;
+    margin: 20px auto !important;
+  }
+  .booking-card {
+    padding: 1.5rem 1.25rem !important;
+    margin: 20px auto !important;
+  }
+}
+
