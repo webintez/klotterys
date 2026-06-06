@@ -63,7 +63,8 @@
     position: relative;
     width: 100%;
     max-width: 500px;
-    aspect-ratio: 1.42;
+    height: 0;
+    padding-bottom: 70.4%; /* Aspect ratio fallback */
     margin: 0 0 0 auto;
     border-radius: 20px;
     overflow: hidden;
@@ -71,7 +72,9 @@
     background-color: rgba(255,255,255,0.02);
   }
   .slider-track {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
   }
@@ -124,7 +127,8 @@
   @media (max-width: 768px) {
     .hero-slider {
       margin: 0 auto;
-      aspect-ratio: 1.42;
+      height: 0;
+      padding-bottom: 70.4%;
     }
   }
 </style>
