@@ -49,7 +49,57 @@ class AdminResultController extends Controller
             return count($unassigned) > 0;
         });
 
-        return view('admin.results.index', compact('results', 'todayBookings', 'todayWinningTickets'));
+        $bookings500 = [];
+        $bookings149 = [];
+        $bookings40 = [];
+
+        foreach ($todayBookings as $booking) {
+            $tickets = array_filter(explode(',', $booking->tickets));
+            $unassigned = array_filter($tickets, function($t) use ($todayWinningTickets) {
+                return !in_array(trim($t), $todayWinningTickets);
+            });
+
+            $t500 = [];
+            $t149 = [];
+            $t40 = [];
+
+            foreach ($unassigned as $ticket) {
+                $trimmedTicket = trim($ticket);
+                $prefix = strtolower(substr($trimmedTicket, 0, 2));
+                if ($prefix === 'vl') {
+                    $t500[] = $trimmedTicket;
+                } elseif ($prefix === 'sl') {
+                    $t149[] = $trimmedTicket;
+                } else {
+                    $t40[] = $trimmedTicket;
+                }
+            }
+
+            if (count($t500) > 0) {
+                $b = clone $booking;
+                $b->filtered_tickets = $t500;
+                $bookings500[] = $b;
+            }
+            if (count($t149) > 0) {
+                $b = clone $booking;
+                $b->filtered_tickets = $t149;
+                $bookings149[] = $b;
+            }
+            if (count($t40) > 0) {
+                $b = clone $booking;
+                $b->filtered_tickets = $t40;
+                $bookings40[] = $b;
+            }
+        }
+
+        return view('admin.results.index', compact(
+            'results', 
+            'todayBookings', 
+            'todayWinningTickets', 
+            'bookings500', 
+            'bookings149', 
+            'bookings40'
+        ));
     }
 
     // Store new result
@@ -61,6 +111,7 @@ class AdminResultController extends Controller
             'draw_number' => 'required|string|max:50',
             'winning_number' => 'required|string|max:50',
             'prize_category' => 'required|string|in:1st Prize,2nd Prize,3rd Prize',
+            'winning_amount' => 'required|string|max:50',
         ]);
 
         DrawResult::create($request->all());
@@ -79,6 +130,7 @@ class AdminResultController extends Controller
             'draw_number' => 'required|string|max:50',
             'winning_number' => 'required|string|max:50',
             'prize_category' => 'required|string|in:1st Prize,2nd Prize,3rd Prize',
+            'winning_amount' => 'required|string|max:50',
         ]);
 
         $result->update($request->all());

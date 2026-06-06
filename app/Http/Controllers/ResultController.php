@@ -41,14 +41,25 @@ class ResultController extends Controller
         $draw = DrawResult::where('winning_number', $ticket)->first();
 
         if ($draw) {
-            $prizeAmount = '₹5,000';
-            if ($draw->prize_category === '1st Prize') {
-                $prizeAmount = '₹5,000 (1st Prize)';
-            } elseif ($draw->prize_category === '2nd Prize') {
-                $prizeAmount = '₹2,500 (2nd Prize)';
-            } elseif ($draw->prize_category === '3rd Prize') {
-                $prizeAmount = '₹1,000 (3rd Prize)';
+            $amount = $draw->winning_amount;
+            if (!$amount) {
+                if ($draw->prize_category === '1st Prize') {
+                    $amount = '₹5,000';
+                } elseif ($draw->prize_category === '2nd Prize') {
+                    $amount = '₹2,500';
+                } elseif ($draw->prize_category === '3rd Prize') {
+                    $amount = '₹1,000';
+                } else {
+                    $amount = '₹5,000';
+                }
             }
+
+            // Ensure amount starts with ₹ for consistent UI display if it's purely numeric
+            if (is_numeric(str_replace([',', ' '], '', $amount))) {
+                $amount = '₹' . number_format((float)str_replace([',', ' '], '', $amount));
+            }
+
+            $prizeAmount = $amount . ' (' . $draw->prize_category . ')';
             return response()->json([
                 'won' => true,
                 'prize' => $prizeAmount,

@@ -110,11 +110,38 @@ class AdminTest extends TestCase
             'draw_number' => 'FF-99',
             'winning_number' => 'VL999999',
             'prize_category' => '1st Prize',
+            'winning_amount' => '₹5,000',
         ]);
 
         $response->assertRedirect('/admin/results');
         $this->assertDatabaseHas('draw_results', [
             'winning_number' => 'VL999999',
         ]);
+    }
+
+    /**
+     * Test checking winning ticket returns custom winning amount.
+     */
+    public function test_user_can_check_winning_ticket_amount(): void
+    {
+        DrawResult::create([
+            'draw_date' => '2026-06-06',
+            'lottery_name' => 'Win Win',
+            'draw_number' => 'W-100',
+            'winning_number' => 'VL111222',
+            'prize_category' => '1st Prize',
+            'winning_amount' => '₹75,000',
+        ]);
+
+        $response = $this->postJson('/results/check', [
+            'ticket' => 'VL111222',
+            'mobile' => '9876543210',
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'won' => true,
+                'prize' => '₹75,000 (1st Prize)',
+            ]);
     }
 }

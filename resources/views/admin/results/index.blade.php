@@ -2,6 +2,51 @@
 
 @section('title', 'Manage Draw Results')
 
+@section('styles')
+<style>
+  .price-tabs {
+    display: flex;
+    background: #e9ecef;
+    padding: 0.35rem;
+    border-radius: 8px;
+    margin: 1rem 1.5rem 1.5rem 1.5rem;
+    border: 1px solid #dee2e6;
+  }
+  .price-tab-btn {
+    flex: 1;
+    padding: 0.6rem 1rem;
+    border: none;
+    background: transparent;
+    color: #495057;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    font-family: 'Outfit', sans-serif;
+  }
+  .price-tab-btn.active {
+    background: var(--primary);
+    color: #ffffff;
+    box-shadow: 0 4px 6px rgba(255, 87, 34, 0.15);
+  }
+  .price-tab-btn:hover:not(.active) {
+    background: rgba(0, 0, 0, 0.04);
+    color: #212529;
+  }
+  .tab-content {
+    display: none;
+    animation: fadeInTab 0.3s ease;
+  }
+  .tab-content.active {
+    display: block;
+  }
+  @keyframes fadeInTab {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+@endsection
+
 @section('content')
 <div class="content-header">
   <div class="content-title">
@@ -12,82 +57,233 @@
 
 <!-- Today's Bookings Section -->
 <div class="admin-card" style="margin-bottom: 2rem;">
-  <div class="admin-card-header">
+  <div class="admin-card-header" style="border-bottom: none; padding-bottom: 0.5rem;">
     <h2>Today's Bookings & Ticket Purchases ({{ date('Y-m-d') }})</h2>
     <span class="badge badge-paid">{{ count($todayBookings) }} Bookings Today</span>
   </div>
+
+  <!-- Tabs based on Ticket Price -->
+  <div class="price-tabs">
+    <button type="button" class="price-tab-btn active" onclick="switchTab('price-500')" id="tab-price-500">
+      ₹500 Tickets (Win Win) ({{ count($bookings500) }})
+    </button>
+    <button type="button" class="price-tab-btn" onclick="switchTab('price-149')" id="tab-price-149">
+      ₹149 Tickets (Sthree Sakthi) ({{ count($bookings149) }})
+    </button>
+    <button type="button" class="price-tab-btn" onclick="switchTab('price-40')" id="tab-price-40">
+      ₹40 Tickets (Others) ({{ count($bookings40) }})
+    </button>
+  </div>
+
   <div class="admin-card-body" style="padding: 0;">
-    <div class="table-responsive">
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>Customer</th>
-            <th>Mobile</th>
-            <th>Booking Status</th>
-            <th>Bought Tickets & Prize Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          @forelse ($todayBookings as $booking)
+    <!-- Tab 500 -->
+    <div id="content-price-500" class="tab-content active">
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
             <tr>
-              <td style="font-weight: 600;">{{ $booking->fullname }}</td>
-              <td>{{ $booking->mobile }}</td>
-              <td>
-                <span class="badge badge-{{ $booking->status }}">
-                  {{ str_replace('_', ' ', $booking->status) }}
-                </span>
-              </td>
-              <td>
-                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                  @php
-                    $tickets = array_filter(explode(',', $booking->tickets));
-                    $unassignedTickets = array_filter($tickets, function($t) use ($todayWinningTickets) {
-                        return !in_array(trim($t), $todayWinningTickets);
-                    });
-                  @endphp
-                  @foreach ($unassignedTickets as $ticket)
-                    @php
-                      $prefix = strtolower(substr($ticket, 0, 2));
-                    @endphp
-                    <div style="display: flex; align-items: center; justify-content: space-between; background: #f8f9fa; padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid #e9ecef; flex-wrap: wrap; gap: 0.5rem;">
-                      <span class="ticket-tag {{ $prefix === 'vl' ? 'vl' : ($prefix === 'sl' ? 'sl' : '') }}" style="font-size: 0.95rem; padding: 0.35rem 0.75rem; margin: 0;">
-                        {{ $ticket }}
-                      </span>
-                      <div class="action-buttons">
-                        <button type="button" class="btn-action select-prize-btn" 
-                                data-ticket="{{ $ticket }}" 
-                                data-prize="1st Prize" 
-                                data-prefix="{{ $prefix }}"
-                                style="background: var(--success); color: #fff; border-color: var(--success);">
-                          🏆 Select 1st Prize
-                        </button>
-                        <button type="button" class="btn-action select-prize-btn" 
-                                data-ticket="{{ $ticket }}" 
-                                data-prize="2nd Prize" 
-                                data-prefix="{{ $prefix }}"
-                                style="background: var(--info); color: #fff; border-color: var(--info);">
-                          🥈 Select 2nd Prize
-                        </button>
-                        <button type="button" class="btn-action select-prize-btn" 
-                                data-ticket="{{ $ticket }}" 
-                                data-prize="3rd Prize" 
-                                data-prefix="{{ $prefix }}"
-                                style="background: var(--warning); color: #fff; border-color: var(--warning);">
-                          🥉 Select 3rd Prize
-                        </button>
+              <th>Customer</th>
+              <th>Mobile</th>
+              <th>Booking Status</th>
+              <th>Bought Tickets & Prize Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @forelse ($bookings500 as $booking)
+              <tr>
+                <td style="font-weight: 600;">{{ $booking->fullname }}</td>
+                <td>{{ $booking->mobile }}</td>
+                <td>
+                  <span class="badge badge-{{ $booking->status }}">
+                    {{ str_replace('_', ' ', $booking->status) }}
+                  </span>
+                </td>
+                <td>
+                  <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    @foreach ($booking->filtered_tickets as $ticket)
+                      @php
+                        $prefix = strtolower(substr($ticket, 0, 2));
+                      @endphp
+                      <div style="display: flex; align-items: center; justify-content: space-between; background: #f8f9fa; padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid #e9ecef; flex-wrap: wrap; gap: 0.5rem;">
+                        <span class="ticket-tag {{ $prefix === 'vl' ? 'vl' : ($prefix === 'sl' ? 'sl' : '') }}" style="font-size: 0.95rem; padding: 0.35rem 0.75rem; margin: 0;">
+                          {{ $ticket }}
+                        </span>
+                        <div class="action-buttons">
+                          <button type="button" class="btn-action select-prize-btn" 
+                                  data-ticket="{{ $ticket }}" 
+                                  data-prize="1st Prize" 
+                                  data-prefix="{{ $prefix }}"
+                                  style="background: var(--success); color: #fff; border-color: var(--success);">
+                            🏆 Select 1st Prize
+                          </button>
+                          <button type="button" class="btn-action select-prize-btn" 
+                                  data-ticket="{{ $ticket }}" 
+                                  data-prize="2nd Prize" 
+                                  data-prefix="{{ $prefix }}"
+                                  style="background: var(--info); color: #fff; border-color: var(--info);">
+                            🥈 Select 2nd Prize
+                          </button>
+                          <button type="button" class="btn-action select-prize-btn" 
+                                  data-ticket="{{ $ticket }}" 
+                                  data-prize="3rd Prize" 
+                                  data-prefix="{{ $prefix }}"
+                                  style="background: var(--warning); color: #fff; border-color: var(--warning);">
+                            🥉 Select 3rd Prize
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  @endforeach
-                </div>
-              </td>
-            </tr>
-          @empty
+                    @endforeach
+                  </div>
+                </td>
+              </tr>
+            @empty
+              <tr>
+                <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 2.5rem;">No ₹500 ticket bookings registered today.</td>
+              </tr>
+            @endforelse
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 149 -->
+    <div id="content-price-149" class="tab-content">
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
             <tr>
-              <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 2.5rem;">No bookings registered today. Check again later or select manually on the form.</td>
+              <th>Customer</th>
+              <th>Mobile</th>
+              <th>Booking Status</th>
+              <th>Bought Tickets & Prize Actions</th>
             </tr>
-          @endforelse
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            @forelse ($bookings149 as $booking)
+              <tr>
+                <td style="font-weight: 600;">{{ $booking->fullname }}</td>
+                <td>{{ $booking->mobile }}</td>
+                <td>
+                  <span class="badge badge-{{ $booking->status }}">
+                    {{ str_replace('_', ' ', $booking->status) }}
+                  </span>
+                </td>
+                <td>
+                  <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    @foreach ($booking->filtered_tickets as $ticket)
+                      @php
+                        $prefix = strtolower(substr($ticket, 0, 2));
+                      @endphp
+                      <div style="display: flex; align-items: center; justify-content: space-between; background: #f8f9fa; padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid #e9ecef; flex-wrap: wrap; gap: 0.5rem;">
+                        <span class="ticket-tag {{ $prefix === 'vl' ? 'vl' : ($prefix === 'sl' ? 'sl' : '') }}" style="font-size: 0.95rem; padding: 0.35rem 0.75rem; margin: 0;">
+                          {{ $ticket }}
+                        </span>
+                        <div class="action-buttons">
+                          <button type="button" class="btn-action select-prize-btn" 
+                                  data-ticket="{{ $ticket }}" 
+                                  data-prize="1st Prize" 
+                                  data-prefix="{{ $prefix }}"
+                                  style="background: var(--success); color: #fff; border-color: var(--success);">
+                            🏆 Select 1st Prize
+                          </button>
+                          <button type="button" class="btn-action select-prize-btn" 
+                                  data-ticket="{{ $ticket }}" 
+                                  data-prize="2nd Prize" 
+                                  data-prefix="{{ $prefix }}"
+                                  style="background: var(--info); color: #fff; border-color: var(--info);">
+                            🥈 Select 2nd Prize
+                          </button>
+                          <button type="button" class="btn-action select-prize-btn" 
+                                  data-ticket="{{ $ticket }}" 
+                                  data-prize="3rd Prize" 
+                                  data-prefix="{{ $prefix }}"
+                                  style="background: var(--warning); color: #fff; border-color: var(--warning);">
+                            🥉 Select 3rd Prize
+                          </button>
+                        </div>
+                      </div>
+                    @endforeach
+                  </div>
+                </td>
+              </tr>
+            @empty
+              <tr>
+                <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 2.5rem;">No ₹149 ticket bookings registered today.</td>
+              </tr>
+            @endforelse
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 40 -->
+    <div id="content-price-40" class="tab-content">
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Mobile</th>
+              <th>Booking Status</th>
+              <th>Bought Tickets & Prize Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @forelse ($bookings40 as $booking)
+              <tr>
+                <td style="font-weight: 600;">{{ $booking->fullname }}</td>
+                <td>{{ $booking->mobile }}</td>
+                <td>
+                  <span class="badge badge-{{ $booking->status }}">
+                    {{ str_replace('_', ' ', $booking->status) }}
+                  </span>
+                </td>
+                <td>
+                  <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    @foreach ($booking->filtered_tickets as $ticket)
+                      @php
+                        $prefix = strtolower(substr($ticket, 0, 2));
+                      @endphp
+                      <div style="display: flex; align-items: center; justify-content: space-between; background: #f8f9fa; padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid #e9ecef; flex-wrap: wrap; gap: 0.5rem;">
+                        <span class="ticket-tag {{ $prefix === 'vl' ? 'vl' : ($prefix === 'sl' ? 'sl' : '') }}" style="font-size: 0.95rem; padding: 0.35rem 0.75rem; margin: 0;">
+                          {{ $ticket }}
+                        </span>
+                        <div class="action-buttons">
+                          <button type="button" class="btn-action select-prize-btn" 
+                                  data-ticket="{{ $ticket }}" 
+                                  data-prize="1st Prize" 
+                                  data-prefix="{{ $prefix }}"
+                                  style="background: var(--success); color: #fff; border-color: var(--success);">
+                            🏆 Select 1st Prize
+                          </button>
+                          <button type="button" class="btn-action select-prize-btn" 
+                                  data-ticket="{{ $ticket }}" 
+                                  data-prize="2nd Prize" 
+                                  data-prefix="{{ $prefix }}"
+                                  style="background: var(--info); color: #fff; border-color: var(--info);">
+                            🥈 Select 2nd Prize
+                          </button>
+                          <button type="button" class="btn-action select-prize-btn" 
+                                  data-ticket="{{ $ticket }}" 
+                                  data-prize="3rd Prize" 
+                                  data-prefix="{{ $prefix }}"
+                                  style="background: var(--warning); color: #fff; border-color: var(--warning);">
+                            🥉 Select 3rd Prize
+                          </button>
+                        </div>
+                      </div>
+                    @endforeach
+                  </div>
+                </td>
+              </tr>
+            @empty
+              <tr>
+                <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 2.5rem;">No ₹40 ticket bookings registered today.</td>
+              </tr>
+            @endforelse
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
@@ -114,6 +310,7 @@
               <th>Draw #</th>
               <th>Prize</th>
               <th>Winning Number</th>
+              <th>Winning Amount</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -133,6 +330,9 @@
                     {{ $result->winning_number }}
                   </span>
                 </td>
+                <td style="font-weight: 600; color: var(--primary);">
+                  {{ $result->winning_amount }}
+                </td>
                 <td>
                   <div class="action-buttons">
                     <button type="button" class="btn-action edit-btn" 
@@ -141,6 +341,7 @@
                             data-name="{{ $result->lottery_name }}" 
                             data-number="{{ $result->draw_number }}" 
                             data-winning="{{ $result->winning_number }}"
+                            data-winning-amount="{{ $result->winning_amount }}"
                             data-prize="{{ $result->prize_category }}">Edit</button>
                     
                     <form action="{{ route('admin.results.destroy', $result->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this draw result?');">
@@ -153,7 +354,7 @@
               </tr>
             @empty
               <tr>
-                <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 3rem;">No draw results found.</td>
+                <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 3rem;">No draw results found.</td>
               </tr>
             @endforelse
           </tbody>
@@ -201,6 +402,11 @@
           <input type="text" name="winning_number" id="winning_number" class="form-control" placeholder="e.g. VL324506" required value="{{ old('winning_number') }}">
         </div>
 
+        <div class="form-group">
+          <label class="form-label" for="winning_amount">Winning Amount</label>
+          <input type="text" name="winning_amount" id="winning_amount" class="form-control" placeholder="e.g. ₹5,000" required value="{{ old('winning_amount') }}">
+        </div>
+
         <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 0.75rem;">
           <button type="submit" id="submit-btn" class="btn-admin">Save Draw Result</button>
           <button type="button" id="cancel-btn" class="btn-admin-secondary" style="display: none;">Cancel Edit</button>
@@ -236,8 +442,22 @@
     const drawNumberInput = document.getElementById('draw_number');
     const winningNumberInput = document.getElementById('winning_number');
     const prizeCategorySelect = document.getElementById('prize_category');
+    const winningAmountInput = document.getElementById('winning_amount');
 
     const defaultAction = "{{ route('admin.results.store') }}";
+
+    // Switch tabs function
+    window.switchTab = function(tabId) {
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      document.getElementById('content-' + tabId).classList.add('active');
+
+      document.querySelectorAll('.price-tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.getElementById('tab-' + tabId).classList.add('active');
+    };
 
     // Select Prize from bookings click event
     selectPrizeButtons.forEach(button => {
@@ -253,6 +473,15 @@
         drawDateInput.value = "{{ date('Y-m-d') }}";
         winningNumberInput.value = ticket;
         prizeCategorySelect.value = prize;
+
+        // Auto-fill Winning Amount based on prize selected
+        if (prize === '1st Prize') {
+          winningAmountInput.value = '₹5,000';
+        } else if (prize === '2nd Prize') {
+          winningAmountInput.value = '₹2,500';
+        } else if (prize === '3rd Prize') {
+          winningAmountInput.value = '₹1,000';
+        }
 
         // Auto-fill Lottery Name based on prefix
         if (prefix === 'vl') {
@@ -280,6 +509,7 @@
         const name = this.getAttribute('data-name');
         const number = this.getAttribute('data-number');
         const winning = this.getAttribute('data-winning');
+        const winningAmount = this.getAttribute('data-winning-amount');
         const prize = this.getAttribute('data-prize');
 
         // Populate fields
@@ -288,6 +518,7 @@
         drawNumberInput.value = number;
         winningNumberInput.value = winning;
         prizeCategorySelect.value = prize;
+        winningAmountInput.value = winningAmount;
 
         // Change form setup for editing
         formTitle.textContent = "Edit Draw Result";
