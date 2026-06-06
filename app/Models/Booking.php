@@ -15,5 +15,6 @@ class Booking extends Model
         'total_price',
         'status',
         'tracking_number',
+        'screenshot',
     ];
 }

@@ -56,19 +56,30 @@ class BookingController extends Controller
         return view('pay', ['booking' => $booking]);
     }
 
-    // Process simulated payment success
+    // Process payment screenshot upload
     public function paySuccess(Request $request)
     {
         $request->validate([
             'booking_id' => 'required|integer',
+            'screenshot' => 'required|file|image|max:10240', // Max 10MB (10240 KB)
         ]);
 
         $booking = Booking::findOrFail($request->input('booking_id'));
+        
+        $screenshotPath = null;
+        if ($request->hasFile('screenshot')) {
+            $file = $request->file('screenshot');
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/screenshots'), $filename);
+            $screenshotPath = 'uploads/screenshots/' . $filename;
+        }
+
         $booking->update([
             'status' => 'paid',
+            'screenshot' => $screenshotPath,
         ]);
 
-        return redirect()->route('track-order')->with('success', 'Payment successful! Your tickets are registered and being processed.');
+        return redirect()->route('track-order')->with('success', 'Payment screenshot uploaded successfully! Your tickets are registered and payment is being processed.');
     }
 
     // Show track order view

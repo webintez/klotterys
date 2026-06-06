@@ -63,6 +63,25 @@
           <span class="detail-label">Order Date</span>
           <div class="detail-value">{{ $booking->created_at->format('F d, Y h:i A') }}</div>
         </div>
+
+        @if ($booking->screenshot)
+          <div class="detail-item" style="grid-column: 1 / -1; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+            <span class="detail-label">📷 Payment Screenshot (Proof of Payment)</span>
+            <div style="margin-top: 0.75rem;">
+              <a href="{{ asset($booking->screenshot) }}" target="_blank">
+                <img src="{{ asset($booking->screenshot) }}" alt="Payment Proof" style="max-width: 100%; max-height: 400px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: var(--shadow);">
+              </a>
+              <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 0.5rem;">Click on the image to view full size.</span>
+            </div>
+          </div>
+        @else
+          <div class="detail-item" style="grid-column: 1 / -1; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+            <span class="detail-label">📷 Payment Screenshot</span>
+            <div style="margin-top: 0.5rem; color: var(--danger); font-weight: 600;">
+              No payment screenshot uploaded yet.
+            </div>
+          </div>
+        @endif
       </div>
     </div>
   </div>
