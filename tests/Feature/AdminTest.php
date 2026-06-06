@@ -209,4 +209,63 @@ class AdminTest extends TestCase
         $response->assertSee('₹3,909');
         $response->assertSee('₹3,260');
     }
+
+    /**
+     * Test db:reset-data artisan command resets database tables but preserves admin.
+     */
+    public function test_reset_data_command_clears_tables_and_preserves_admin(): void
+    {
+        // Create an admin
+        $admin = User::create([
+            'name' => 'Custom Admin',
+            'email' => 'customadmin@keralajackpot.com',
+            'password' => bcrypt('custom123'),
+            'is_admin' => true,
+        ]);
+
+        // Create booking
+        Booking::create([
+            'fullname' => 'John Doe',
+            'mobile' => '9876543210',
+            'state' => 'Kerala',
+            'pincode' => '682001',
+            'tickets' => 'VL102030',
+            'total_price' => 500,
+            'status' => 'paid',
+        ]);
+
+        // Create draw result
+        DrawResult::create([
+            'draw_date' => '2026-06-06',
+            'lottery_name' => 'Win Win',
+            'draw_number' => 'W-100',
+            'winning_number' => 'VL111222',
+            'prize_category' => '1st Prize',
+            'winning_amount' => '₹75,000',
+        ]);
+
+        // Create claim
+        \App\Models\PrizeClaim::create([
+            'ticket_number' => 'VL111222',
+            'mobile' => '9876543210',
+            'registration_fee' => 3260.00,
+            'screenshot' => 'uploads/screenshots/test.png',
+            'status' => 'paid',
+        ]);
+
+        // Call command
+        $this->artisan('db:reset-data --force')
+            ->assertExitCode(0);
+
+        // Verify tables are cleared
+        $this->assertDatabaseCount('bookings', 0);
+        $this->assertDatabaseCount('draw_results', 0);
+        $this->assertDatabaseCount('prize_claims', 0);
+
+        // Verify admin is preserved
+        $this->assertDatabaseHas('users', [
+            'email' => 'customadmin@keralajackpot.com',
+            'name' => 'Custom Admin',
+        ]);
+    }
 }
