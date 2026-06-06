@@ -160,118 +160,101 @@
 
                       $.confirm({
                           title: '🎉 CONGRATULATIONS!',
+                          theme: 'dark',
                           content: `
-                              <div style="text-align: center; margin-top: 10px;">
-                                  <h2 style="color: #28a745; margin-bottom: 15px;">🏆 YOU ARE A WINNER!</h2>
-                                  <p style="font-size: 1.1rem;">Ticket <span style="color: var(--secondary-color); font-weight: bold;">${ticket}</span> has won a prize of:</p>
-                                  <div style="background: rgba(40,167,69,0.1); border: 2px dashed #28a745; padding: 15px; border-radius: 10px; margin: 15px auto; max-width: 250px;">
-                                      <span style="font-size: 2.2rem; color: #28a745; font-weight: 800;">${response.prize}</span>
+                              <div style="text-align: center; margin-top: 5px;">
+                                  <h2 style="color: #28a745; margin-bottom: 10px;">🏆 YOU ARE A WINNER!</h2>
+                                  <p style="font-size: 1.05rem;">Ticket <span style="color: #ffd700; font-weight: bold;">${ticket}</span> has won a prize of:</p>
+                                  <div style="background: rgba(40,167,69,0.1); border: 2px dashed #28a745; padding: 10px 15px; border-radius: 8px; margin: 10px auto; max-width: 280px;">
+                                      <span style="font-size: 2rem; color: #28a745; font-weight: 800;">${response.prize}</span>
                                   </div>
-                                  <p style="font-size: 0.9rem; color: var(--text-muted);">
-                                      Our support team will contact you on <span style="color: var(--secondary-color); font-weight: bold;">${mobile}</span> to verify your ticket and transfer the prize.
+                                  
+                                  <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 15px 0;">
+
+                                  <h3 style="color: #ffd700; margin-bottom: 5px; font-size: 1.1rem;">Prize Claim Registration</h3>
+                                  <p style="font-size: 0.9rem; color: #f8f9fa; margin-bottom: 15px;">
+                                      To claim your prize, please pay the <strong>₹3,260 registration fee</strong> using the QR code or UPI ID below, then upload your payment screenshot.
                                   </p>
+                                  
+                                  <div style="background: rgba(255, 255, 255, 0.05); padding: 0.75rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); text-align: center; margin-bottom: 15px;">
+                                      <div style="margin-bottom: 8px;">
+                                          <img src="/images/qr_code.jpeg" alt="UPI QR Code" style="max-width: 140px; border-radius: 8px; border: 2px solid #fff;">
+                                      </div>
+                                      <p style="font-size: 1rem; font-weight: bold; color: #ffd700; margin-bottom: 3px;">UPI ID: 9369873638-t50f@ybl</p>
+                                      <p style="font-size: 0.8rem; color: #6c757d;">Scan the QR code or pay to the UPI ID above</p>
+                                  </div>
+
+                                  <form id="claimPrizeForm" enctype="multipart/form-data" style="text-align: left;">
+                                      <div class="form-group" style="margin-bottom: 0;">
+                                          <label for="claim_screenshot" style="color: #f8f9fa; display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.85rem;">Upload Payment Screenshot (Max 10MB):</label>
+                                          <input type="file" id="claim_screenshot" name="screenshot" accept="image/*" required class="form-control" style="background: #2b2b2b; color: #fff; border: 1px solid #555; padding: 0.4rem 0.8rem; font-size: 0.9rem;">
+                                      </div>
+                                  </form>
                               </div>
                           `,
-                          theme: 'dark',
                           buttons: {
-                              claim: {
-                                  text: 'Claim Prize Now',
+                              submit: {
+                                  text: 'Submit Claim',
                                   btnClass: 'btn-success',
                                   action: function() {
-                                      $.confirm({
-                                          title: 'Claim Registration',
-                                          theme: 'dark',
-                                          content: `
-                                              <form id="claimPrizeForm" enctype="multipart/form-data">
-                                                  <div style="text-align: center; margin-bottom: 1.5rem;">
-                                                      <h3 style="color: #28a745; margin-bottom: 0.5rem;">Prize Registration</h3>
-                                                      <p style="font-size: 0.95rem; color: #f8f9fa;">To claim your prize, please pay the <strong>₹3,260 registration fee</strong> using the QR code or UPI ID below.</p>
-                                                  </div>
-                                                  
-                                                  <div style="background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); text-align: center; margin-bottom: 1.5rem;">
-                                                      <div style="margin-bottom: 1rem;">
-                                                          <img src="/images/qr_code.jpeg" alt="UPI QR Code" style="max-width: 150px; border-radius: 8px; border: 2px solid #fff;">
-                                                      </div>
-                                                      <p style="font-size: 1.05rem; font-weight: bold; color: #ffd700; margin-bottom: 0.5rem;">UPI ID: 9369873638-t50f@ybl</p>
-                                                      <p style="font-size: 0.85rem; color: #6c757d;">Scan the QR code or pay to the UPI ID above</p>
-                                                  </div>
+                                      let screenshotFile = $('#claim_screenshot')[0].files[0];
+                                      if (!screenshotFile) {
+                                          $.alert({
+                                              title: 'Error',
+                                              content: '❌ Please select a screenshot of the payment.',
+                                              theme: 'dark'
+                                          });
+                                          return false;
+                                      }
 
-                                                  <div class="form-group" style="margin-bottom: 1.5rem;">
-                                                      <label for="claim_screenshot" style="color: #f8f9fa; display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem;">Upload Payment Screenshot (Max 10MB):</label>
-                                                      <input type="file" id="claim_screenshot" name="screenshot" accept="image/*" required class="form-control" style="background: #2b2b2b; color: #fff; border: 1px solid #555;">
-                                                  </div>
-                                              </form>
-                                          `,
-                                          buttons: {
-                                              submit: {
-                                                  text: 'Submit Claim',
-                                                  btnClass: 'btn-success',
-                                                  action: function() {
-                                                      let screenshotFile = $('#claim_screenshot')[0].files[0];
-                                                      if (!screenshotFile) {
-                                                          $.alert({
-                                                              title: 'Error',
-                                                              content: '❌ Please select a screenshot of the payment.',
-                                                              theme: 'dark'
-                                                          });
-                                                          return false;
-                                                      }
+                                      // Show loading indicator
+                                      let self = this;
+                                      self.setContent('<div style="text-align: center;"><p>Uploading payment proof...</p></div>');
+                                      self.buttons.submit.disable();
+                                      self.buttons.close.disable();
 
-                                                      // Show loading indicator
-                                                      let self = this;
-                                                      self.setContent('<div style="text-align: center;"><p>Uploading payment proof...</p></div>');
-                                                      self.buttons.submit.disable();
-                                                      self.buttons.close.disable();
+                                      let formData = new FormData();
+                                      formData.append('_token', "{{ csrf_token() }}");
+                                      formData.append('ticket', ticket);
+                                      formData.append('mobile', mobile);
+                                      formData.append('screenshot', screenshotFile);
 
-                                                      let formData = new FormData();
-                                                      formData.append('_token', "{{ csrf_token() }}");
-                                                      formData.append('ticket', ticket);
-                                                      formData.append('mobile', mobile);
-                                                      formData.append('screenshot', screenshotFile);
-
-                                                      $.ajax({
-                                                          url: "{{ route('results.claim') }}",
-                                                          method: "POST",
-                                                          data: formData,
-                                                          contentType: false,
-                                                          processData: false,
-                                                          success: function(response) {
-                                                              self.close();
-                                                              if (response.success) {
-                                                                  $.alert({
-                                                                      title: 'Success',
-                                                                      content: '✅ Claim request submitted successfully. Our team will verify the payment and contact you.',
-                                                                      theme: 'dark'
-                                                                  });
-                                                              } else {
-                                                                  $.alert({
-                                                                      title: 'Error',
-                                                                      content: '❌ Failed to submit claim. Please try again.',
-                                                                      theme: 'dark'
-                                                                  });
-                                                              }
-                                                          },
-                                                          error: function(xhr) {
-                                                              self.close();
-                                                              let errorMsg = '❌ Something went wrong. Please try again.';
-                                                              if (xhr.responseJSON && xhr.responseJSON.message) {
-                                                                  errorMsg = '❌ ' + xhr.responseJSON.message;
-                                                              }
-                                                              $.alert({
-                                                                  title: 'Error',
-                                                                  content: errorMsg,
-                                                                  theme: 'dark'
-                                                              });
-                                                          }
-                                                      });
-                                                      return false; // prevent closing immediately
-                                                  }
-                                              },
-                                              close: {
-                                                  text: 'Cancel'
+                                      $.ajax({
+                                          url: "{{ route('results.claim') }}",
+                                          method: "POST",
+                                          data: formData,
+                                          contentType: false,
+                                          processData: false,
+                                          success: function(response) {
+                                              self.close();
+                                              if (response.success) {
+                                                  $.alert({
+                                                      title: 'Success',
+                                                      content: '✅ Claim request submitted successfully. Our team will verify the payment and contact you.',
+                                                      theme: 'dark'
+                                                  });
+                                              } else {
+                                                  $.alert({
+                                                      title: 'Error',
+                                                      content: '❌ Failed to submit claim. Please try again.',
+                                                      theme: 'dark'
+                                                  });
                                               }
+                                          },
+                                          error: function(xhr) {
+                                              self.close();
+                                              let errorMsg = '❌ Something went wrong. Please try again.';
+                                              if (xhr.responseJSON && xhr.responseJSON.message) {
+                                                  errorMsg = '❌ ' + xhr.responseJSON.message;
+                                              }
+                                              $.alert({
+                                                  title: 'Error',
+                                                  content: errorMsg,
+                                                  theme: 'dark'
+                                              });
                                           }
                                       });
+                                      return false; // prevent closing immediately
                                   }
                               },
                               close: {
