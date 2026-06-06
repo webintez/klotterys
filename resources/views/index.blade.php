@@ -63,14 +63,14 @@
 @section('content')
   <!-- Hero Section -->
   <section class="hero container">
+    <div class="hero-image">
+      <img src="{{ asset('images/photo_6147822454307926542_y.jpg') }}" alt="Jackpot Banner">
+    </div>
     <div class="hero-content">
       <h1>Win the Ultimate <br><span style="color: var(--primary-color);">Jackpot</span></h1>
       <p>Experience the excitement of Kerala State Lotteries. Play today, change your life tomorrow. Fast, secure, and 100% genuine.</p>
       <a href="{{ route('buy-tickets') }}" class="btn">Play Now</a>
       <a href="{{ route('results') }}" class="btn btn-secondary" style="margin-left: 1rem;">Check Results</a>
-    </div>
-    <div class="hero-image">
-      <img src="{{ asset('images/photo_6147822454307926542_y.jpg') }}" alt="Jackpot Banner">
     </div>
   </section>
 
