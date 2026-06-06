@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kerala State Lotteries | Buy Tickets</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+        padding-bottom: 90px;
+    }
+    .checkbox-budget {
+        display: none;
+    }
+    .checkbox-budget + label {
+        display: inline-block;
+        padding: 6px 11px;
+        margin: 4px;
+        border-radius: 6px;
+        cursor: pointer;
+        background: #353746;
+        color: #fff;
+        font-weight: 600;
+    }
+    .checkbox-budget:checked + label {
+        background: linear-gradient(138deg, #da2c4d, #f8ab37);
+        color: #fff;
+    }
+    .fixed-bottom-btn {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #1f2029;
+        padding: 10px;
+        z-index: 999;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+        text-align: center;
+    }
+    .fixed-bottom-btn button {
+        width: 100%;
+        max-width: 600px;
+        border-radius: 50px;
+        font-size: 18px;
+        font-weight: bold;
+        background: #28a745;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+    }
+    .card-img-container {
+        background: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075);
+        margin-bottom: 10px;
+    }
+    .card-img-container img {
+        width: 100%;
+        display: block;
+    }
+    .ticket-header {
+        color: #ffc107;
+        font-size: 1.25rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+    }
+    .badge-price {
+        background: #17a2b8;
+        color: #fff;
+        padding: 0.25em 0.4em;
+        border-radius: 0.25rem;
+        font-size: 75%;
+        font-weight: 700;
+        vertical-align: baseline;
+    }
+
+    /* Custom jQuery Confirm UI Improvements */
+    .jconfirm.jconfirm-dark .jconfirm-bg {
+        background-color: rgba(13, 27, 42, 0.8) !important;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+    }
+    .jconfirm.jconfirm-dark .jconfirm-box {
+        background: rgba(27, 38, 59, 0.85) !important;
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 87, 34, 0.25) !important;
+        padding: 25px !important;
+    }
+    .jconfirm.jconfirm-dark .jconfirm-title-c {
+        padding-bottom: 12px !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        margin-bottom: 15px !important;
+    }
+    .jconfirm.jconfirm-dark .jconfirm-title {
+        font-family: 'Outfit', sans-serif !important;
+        font-weight: 800 !important;
+        color: #ffd700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+        font-size: 1.5rem !important;
+    }
+    .jconfirm.jconfirm-dark .jconfirm-content {
+        font-family: 'Outfit', sans-serif !important;
+        color: #ffffff !important;
+        font-size: 1.1rem !important;
+        line-height: 1.6 !important;
+    }
+    .jconfirm.jconfirm-dark .jconfirm-buttons {
+        margin-top: 20px !important;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+    .jconfirm.jconfirm-dark .jconfirm-buttons button {
+        border-radius: 50px !important;
+        padding: 0.6rem 1.5rem !important;
+        font-family: 'Outfit', sans-serif !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        font-size: 0.9rem !important;
+        transition: all 0.3s ease !important;
+        border: none !important;
+    }
+    .jconfirm.jconfirm-dark .jconfirm-buttons button.btn-success {
+        background: linear-gradient(45deg, #ff5722, #ff9800) !important;
+        box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4) !important;
+        color: #fff !important;
+    }
+    .jconfirm.jconfirm-dark .jconfirm-buttons button.btn-success:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(255, 87, 34, 0.6) !important;
+    }
+    .jconfirm.jconfirm-dark .jconfirm-buttons button.btn-default,
+    .jconfirm.jconfirm-dark .jconfirm-buttons button:not(.btn-success) {
+        background: transparent !important;
+        border: 2px solid #ffd700 !important;
+        color: #ffd700 !important;
+    }
+    .jconfirm.jconfirm-dark .jconfirm-buttons button.btn-default:hover,
+    .jconfirm.jconfirm-dark .jconfirm-buttons button:not(.btn-success):hover {
+        background: #ffd700 !important;
+        color: #0d1b2a !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4) !important;
+    }
+  </style>
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <!-- jQuery Confirm -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav-wrapper">
+      <div class="logo">Kerala<span>Jackpot</span></div>
+      <div class="menu-btn">☰</div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="lottery-ticket.html" class="active">Buy Tickets</a>
+        <a href="results.html">Results</a>
+        <a href="track-order.html">Track Order</a>
+        <a href="contact.html">Contact Us</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Header -->
+  <section class="section" style="padding-bottom: 2rem;">
+    <div class="container">
+      <h1 class="section-title">Buy Lottery Tickets</h1>
+      <p style="text-align: center; color: var(--text-muted); max-width: 600px; margin: 0 auto;">
+        Purchase genuine Kerala State Lottery tickets online. Choose from weekly draws to massive Bumper jackpots.
+      </p>
+    </div>
+  </section>
+
+  <!-- Tickets Selection -->
+  <section class="section" style="padding-top: 3rem; background-color: #0d1b2a;">
+    <div class="container" style="max-width: 800px;">
+      
+      <!-- PREMIUM -->
+      <div style="margin-bottom: 2rem;">
+          <div class="card-img-container">
+              <img src="https://jackpot.keralastateslotterys.com/Home/premiumticket.jpg" alt="Premium Ticket">
+          </div>
+          <div class="ticket-header">
+              🎟 Premium Lottery Ticket Price <span class="badge-price">₹500</span>
+          </div>
+          <div id="a-series"></div>    
+      </div>
+      
+      <!-- STANDARD -->
+      <div style="margin-bottom: 2rem;">
+          <div class="card-img-container">
+              <img src="https://jackpot.keralastateslotterys.com/Home/standardticket.jpg" alt="Standard Ticket">
+          </div>
+          <div class="ticket-header">
+              🎟 Standard Lottery Ticket Price <span class="badge-price">₹149</span>
+          </div>
+          <div id="b-series"></div>
+      </div>
+      
+      <!-- BASIC -->
+      <div style="margin-bottom: 2rem;">
+          <div class="card-img-container">
+              <img src="https://jackpot.keralastateslotterys.com/Home/basicticket.jpg" alt="Basic Ticket">
+          </div>
+          <div class="ticket-header">
+              🎟 Basic Lottery Ticket Price <span class="badge-price">₹40</span>
+          </div>
+          <div id="c-series"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FIXED BOTTOM BUTTON -->
+  <div class="fixed-bottom-btn">
+      <button id="confirmTickets">
+          Confirm Selected Tickets
+      </button>
+  </div>
+
+  <script>
+  /* GENERATE UNIQUE TICKETS */
+  function generateSeries(prefix, count){
+      let set = new Set();
+      while(set.size < count){
+          let num = Math.floor(Math.random() * 900000) + 100000;
+          set.add(prefix + num);
+      }
+      return Array.from(set);
+  }
+
+  const aSeries = generateSeries("VL", 50); // Premium
+  const bSeries = generateSeries("SL", 50); // Standard
+  const cSeries = generateSeries("KL", 50); // Basic
+
+  /* RENDER CHECKBOXES */
+  function renderSeries(series, container){
+      let html = "";
+      series.forEach((num, i)=>{
+          let id = container + "_" + i;
+          html += `
+              <input type="checkbox" class="checkbox-budget" id="${id}" value="${num}">
+              <label for="${id}">${num}</label>
+          `;
+      });
+      document.getElementById(container).innerHTML = html;
+  }
+
+  renderSeries(aSeries,"a-series");
+  renderSeries(bSeries,"b-series");
+  renderSeries(cSeries,"c-series");
+
+  /* CONFIRM MULTIPLE TICKETS */
+  $("#confirmTickets").click(function(){
+      let selected = [];
+      $(".checkbox-budget:checked").each(function(){
+          selected.push($(this).val());
+      });
+
+      if(selected.length === 0){
+          $.alert({
+              title: 'Error',
+              content: '❌ Please select at least one ticket',
+              theme: 'dark'
+          });
+          return;
+      }
+
+      $.confirm({
+          title: 'Confirm Tickets',
+          content: 'Your Selected Tickets:<br><br><b style="color: var(--primary-color); word-break: break-all;">' + selected.join(", ") + '</b>',
+          theme: 'dark',
+          buttons:{
+              confirm:{
+                  text:'Confirm',
+                  btnClass:'btn-success',
+                  action:function(){
+                      window.location.href = "BookTicket.php?ticket=" + selected.join(",");
+                  }
+              },
+              cancel:{
+                  text:'Cancel'
+              }
+          }
+      });
+  });
+  </script>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="logo">Kerala<span>Jackpot</span></div>
+      <div class="footer-links">
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+      <p class="copyright">&copy; 2026 Kerala State Lotteries Recreation. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Custom JS -->
+  <script src="js/main.js"></script>
+</body>
+</html>

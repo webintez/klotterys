@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Book Your Kerala Lottery Ticket</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- jQuery Confirm -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+<style>
+body{
+    background:#1f2029;
+    color:#fff;
+    font-family:'Poppins',sans-serif;
+    padding-bottom:90px; /* space for fixed button */
+}
+
+.checkbox-budget{
+    display:none;
+}
+
+.checkbox-budget + label{
+    display:inline-block;
+    padding:6px 11px;
+    margin:4px;
+    border-radius:6px;
+    cursor:pointer;
+    background:#353746;
+    color:#fff;
+    font-weight:600;
+}
+
+.checkbox-budget:checked + label{
+    background:linear-gradient(138deg,#da2c4d,#f8ab37);
+}
+
+/* FIXED BUTTON */
+.fixed-bottom-btn{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background:#1f2029;
+    padding:10px;
+    z-index:999;
+    box-shadow:0 -2px 10px rgba(0,0,0,0.5);
+}
+
+.fixed-bottom-btn button{
+    width:100%;
+    border-radius:50px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.jconfirm .jconfirm-title,
+.jconfirm .jconfirm-content{
+    color:#000 !important;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container py-4">
+    
+<!-- PREMIUM -->
+<div class="card bg-white text-dark shadow-sm mb-2">
+    <img src="premiumticket.jpg" style="width:100%;">
+</div>
+<h5 class="text-warning">🎟 Premium Lottery Ticket Price <span class="badge badge-info">₹500</span></h5>
+<div id="a-series" class="mb-4"></div>    
+
+
+<!-- STANDARD -->
+<div class="card bg-white text-dark shadow-sm mb-2">
+    <img src="standardticket.jpg" style="width:100%;">
+</div>
+<h5 class="text-warning">🎟 Standard Lottery Ticket Price <span class="badge badge-info">₹149</span></h5>
+<div id="b-series" class="mb-4"></div>
+
+<!-- BASIC -->
+<div class="card bg-white text-dark shadow-sm mb-2">
+    <img src="basicticket.jpg" style="width:100%;">
+</div>
+<h5 class="text-warning">🎟 Basic Lottery Ticket Price <span class="badge badge-info">₹40</span></h5>
+<div id="c-series" class="mb-4"></div>
+
+</div>
+
+<!-- FIXED BOTTOM BUTTON -->
+<div class="fixed-bottom-btn">
+    <button class="btn btn-success btn-lg" id="confirmTickets">
+        Confirm Selected Tickets
+    </button>
+</div>
+
+<script>
+/* ==========================
+   GENERATE UNIQUE TICKETS
+========================== */
+function generateSeries(prefix, count){
+    let set = new Set();
+    while(set.size < count){
+        let num = Math.floor(Math.random() * 900000) + 100000;
+        set.add(prefix + num);
+    }
+    return Array.from(set);
+}
+
+/* ==========================
+   SERIES
+========================== */
+const aSeries = generateSeries("VL", 50); // Premium
+const bSeries = generateSeries("SL", 50); // Standard
+const cSeries = generateSeries("KL", 50); // Basic
+
+/* ==========================
+   RENDER CHECKBOXES
+========================== */
+function renderSeries(series, container){
+    let html = "";
+    series.forEach((num, i)=>{
+        let id = container + "_" + i;
+        html += `
+            <input type="checkbox" class="checkbox-budget" id="${id}" value="${num}">
+            <label for="${id}">${num}</label>
+        `;
+    });
+    document.getElementById(container).innerHTML = html;
+}
+
+renderSeries(aSeries,"a-series");
+renderSeries(bSeries,"b-series");
+renderSeries(cSeries,"c-series");
+
+/* ==========================
+   CONFIRM MULTIPLE TICKETS
+========================== */
+$("#confirmTickets").click(function(){
+
+    let selected = [];
+
+    $(".checkbox-budget:checked").each(function(){
+        selected.push($(this).val());
+    });
+
+    if(selected.length === 0){
+        $.alert("❌ Please select at least one ticket");
+        return;
+    }
+
+    $.confirm({
+        title: 'Confirm Tickets',
+        content: 'Your Selected Tickets:<br><b>' + selected.join(", ") + '</b>',
+        buttons:{
+            confirm:{
+                text:'Confirm',
+                btnClass:'btn-success',
+                action:function(){
+                    window.location.href = "BookTicket.php?ticket=" + selected.join(",");
+                }
+            },
+            cancel:{
+                text:'Cancel'
+            }
+        }
+    });
+
+});
+</script>
+
+</body>
+</html>

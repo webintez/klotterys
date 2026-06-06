@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kerala State Lotteries | Track Order</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <!-- jQuery Confirm -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav-wrapper">
+      <div class="logo">Kerala<span>Jackpot</span></div>
+      <div class="menu-btn">☰</div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="lottery-ticket.html">Buy Tickets</a>
+        <a href="results.html">Results</a>
+        <a href="track-order.html" class="active">Track Order</a>
+        <a href="contact.html">Contact Us</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Header -->
+  <section class="section" style="padding-bottom: 2rem;">
+    <div class="container">
+      <h1 class="section-title">Track Your Order</h1>
+    </div>
+  </section>
+
+  <!-- Track Order Form -->
+  <section class="section bg-alt" style="padding-top: 3rem;">
+    <div class="container" style="max-width: 600px;">
+      
+      <div class="card" style="text-align: left;">
+        <h3 style="color: var(--secondary-color); text-align: center; margin-bottom: 2rem;">Where is my ticket?</h3>
+        
+        <form id="trackForm">
+          <div class="form-group">
+            <label for="ticket_number" style="color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Ticket Number:</label>
+            <input type="text" id="ticket_number" class="form-control" placeholder="e.g. VL-123456" required style="font-size: 1.1rem; text-align: center;">
+          </div>
+          <div class="form-group" style="margin-top: 1.5rem;">
+            <label for="mobile_number" style="color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Mobile Number:</label>
+            <input type="tel" id="mobile_number" class="form-control" placeholder="e.g. 9876543210" required style="font-size: 1.1rem; text-align: center;">
+          </div>
+          <div style="text-align: center; margin-top: 2rem;">
+            <button type="submit" class="btn" style="width: 100%;">Track Status</button>
+          </div>
+        </form>
+
+        <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color); text-align: center;">
+          <p style="color: var(--text-muted); font-size: 0.9rem;">
+            Having trouble tracking your order? Please have your order details ready and <a href="contact.html" style="color: var(--primary-color);">contact support</a>.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="logo">Kerala<span>Jackpot</span></div>
+      <div class="footer-links">
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+      <p class="copyright">&copy; 2026 Kerala State Lotteries Recreation. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Custom JS & Simulated Tracking Logic -->
+  <script src="js/main.js"></script>
+  <script>
+  $(document).ready(function() {
+      $("#trackForm").submit(function(e) {
+          e.preventDefault();
+          let ticket = $("#ticket_number").val().trim();
+          let mobile = $("#mobile_number").val().trim();
+
+          if (!ticket || !mobile) {
+              $.alert({
+                  title: 'Error',
+                  content: '❌ Please enter both Ticket Number and Mobile Number.',
+                  theme: 'dark'
+              });
+              return;
+          }
+
+          // Show tracking status modal
+          $.confirm({
+              title: '🔍 Tracking Order...',
+              content: `
+                  <div style="text-align: left; margin-top: 10px;">
+                      <p><strong>Ticket Number:</strong> <span style="color: var(--secondary-color);">${ticket}</span></p>
+                      <p><strong>Mobile Number:</strong> <span style="color: var(--secondary-color);">${mobile}</span></p>
+                      <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
+                      <p style="font-size: 1.2rem; color: #28a745; font-weight: bold; text-align: center; margin-bottom: 10px;">
+                          🚚 STATUS: DISPATCHED
+                      </p>
+                      <p style="font-size: 0.95rem; color: var(--text-muted); text-align: center;">
+                          Your physical lottery ticket has been printed and dispatched via India Speed Post.<br>
+                          Expected delivery within 2-3 business days.
+                      </p>
+                  </div>
+              `,
+              theme: 'dark',
+              buttons: {
+                  ok: {
+                      text: 'Close',
+                      btnClass: 'btn-success'
+                  }
+              }
+          });
+      });
+  });
+  </script>
+</body>
+</html>
