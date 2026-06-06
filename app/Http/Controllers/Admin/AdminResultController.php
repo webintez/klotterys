@@ -29,13 +29,27 @@ class AdminResultController extends Controller
 
         $results = $query->orderBy('draw_date', 'desc')->paginate(10)->withQueryString();
 
+        // Fetch winning numbers declared today
+        $todayWinningTickets = DrawResult::whereDate('draw_date', Carbon::today())
+            ->pluck('winning_number')
+            ->toArray();
+
         // Fetch bookings of the current date (today)
         $todayBookings = Booking::whereBetween('created_at', [
             Carbon::today()->startOfDay(),
             Carbon::today()->endOfDay()
         ])->get();
 
-        return view('admin.results.index', compact('results', 'todayBookings'));
+        // Filter bookings to only show those that have at least one unassigned ticket
+        $todayBookings = $todayBookings->filter(function($booking) use ($todayWinningTickets) {
+            $tickets = array_filter(explode(',', $booking->tickets));
+            $unassigned = array_filter($tickets, function($t) use ($todayWinningTickets) {
+                return !in_array(trim($t), $todayWinningTickets);
+            });
+            return count($unassigned) > 0;
+        });
+
+        return view('admin.results.index', compact('results', 'todayBookings', 'todayWinningTickets'));
     }
 
     // Store new result

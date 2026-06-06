@@ -41,8 +41,11 @@
                 <div style="display: flex; flex-direction: column; gap: 0.75rem;">
                   @php
                     $tickets = array_filter(explode(',', $booking->tickets));
+                    $unassignedTickets = array_filter($tickets, function($t) use ($todayWinningTickets) {
+                        return !in_array(trim($t), $todayWinningTickets);
+                    });
                   @endphp
-                  @foreach ($tickets as $ticket)
+                  @foreach ($unassignedTickets as $ticket)
                     @php
                       $prefix = strtolower(substr($ticket, 0, 2));
                     @endphp
