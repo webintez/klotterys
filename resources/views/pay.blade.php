@@ -243,7 +243,7 @@
         <div class="payment-box">
           <h4>Scan & Pay</h4>
           <div class="qr-container">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=keralastatelotteries@upi&pn=Kerala%20State%20Lotteries&am={{ $booking->total_price }}&cu=INR" alt="UPI QR Code">
+            <img src="{{ asset('images/qr_code.jpeg') }}" alt="UPI QR Code">
           </div>
           <p style="font-size: 0.85rem; color: #6c757d; font-weight: 600;">Scan using any UPI App</p>
         </div>
@@ -252,7 +252,7 @@
         <div class="payment-box">
           <h4>Pay via UPI Apps</h4>
           @php
-            $upiUrl = "upi://pay?pa=keralastatelotteries@upi&pn=Kerala%20State%20Lotteries&am=" . $booking->total_price . "&cu=INR";
+            $upiUrl = "upi://pay?pa=9369873638-t50f@ybl&pn=Kerala%20State%20Lotteries&am=" . $booking->total_price . "&cu=INR";
           @endphp
           <div class="upi-btn-stack">
             <a href="{{ $upiUrl }}" class="upi-btn upi-gpay">Google Pay</a>
