@@ -62,11 +62,11 @@
   .hero-slider {
     position: relative;
     width: 100%;
-    max-width: 500px;
+    max-width: none;
     height: 0;
     padding-bottom: 70.4%; /* Aspect ratio fallback */
     margin: 0 0 0 auto;
-    border-radius: 20px;
+    border-radius: 0px;
     overflow: hidden;
     box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     background-color: rgba(255,255,255,0.02);
@@ -96,7 +96,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 20px;
+    border-radius: 0px;
   }
   .slider-dots {
     position: absolute;
