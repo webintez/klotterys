@@ -746,6 +746,20 @@ footer {
   }
 }
 
+@media (max-width: 768px) {
+  .social-links {
+    justify-content: center;
+  }
+  
+  .counter-col {
+    align-items: center;
+  }
+  
+  .visitors-counter-container {
+    text-align: center;
+  }
+}
+
 @media (max-width: 576px) {
   .footer-grid {
     grid-template-columns: 1fr;

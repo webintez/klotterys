@@ -42,46 +42,42 @@
 @endsection
 
 @section('content')
-  <!-- Page Header -->
-  <section class="section" style="padding-bottom: 2rem;">
-    <div class="container">
-      <h1 class="section-title">Draw Results</h1>
-      <p style="text-align: center; color: var(--text-muted); max-width: 600px; margin: 0 auto;">
-        Check the latest winning numbers and see if you are our next big winner!
-      </p>
-    </div>
-  </section>
-
-  <!-- Results Section -->
-  <section class="section bg-alt" style="padding-top: 3rem;">
-    <div class="container" style="max-width: 600px; margin: 0 auto;">
+  <!-- Results Check Form (Full Screen Gradient Background) -->
+  <section class="section" style="background: linear-gradient(135deg, #02022b 0%, #00bfff 100%); min-height: calc(100vh - 75px); display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; margin: 0; width: 100%;">
+    <div class="container" style="max-width: 600px; width: 100%;">
 
       <!-- Check Your Ticket Card -->
-      <div class="card" style="text-align: left; padding: 2rem; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 15px; width: 100%;">
-        <h3 style="color: var(--secondary-color); text-align: center; margin-bottom: 1.5rem; font-size: 1.8rem; font-weight: 800; text-transform: uppercase;">Check Your Ticket</h3>
-        <p style="color: var(--text-muted); font-size: 0.95rem; text-align: center; margin-bottom: 2rem;">
-          Enter your Ticket Number and Mobile Number to instantly check if you have won any prizes in the recent draws.
-        </p>
+      <div class="card" style="text-align: left; background: #ffffff; color: #333333; border: 1px solid #dee2e6; border-radius: 12px; padding: 5px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);">
+        <h2 style="color: #007bff; text-align: center; font-weight: 800; font-size: 1.5rem; line-height: 1.3; margin-top: 0.5rem; margin-bottom: 1rem; text-transform: uppercase; font-family: 'Outfit', sans-serif;">
+            Ticket-Booking<br>Status Check
+        </h2>
+        <div style="height: 5px; background: #007bff; width: 100%; margin-bottom: 2rem; border-radius: 2px;"></div>
         
         <form id="checkTicketForm">
           @csrf
-          <div class="form-group">
-            <label for="ticket_number" style="color: var(--text-muted); display: block; margin-bottom: 0.5rem; font-weight: 600;">Ticket Number:</label>
-            <input type="text" id="ticket_number" class="form-control" placeholder="e.g. VL-123456" required style="font-size: 1.1rem; text-align: center;">
+          <div style="display: flex; border: 1.5px solid #333; margin-bottom: 1.25rem; border-radius: 4px; overflow: hidden; background: #fff;">
+            <div style="background-color: #343a40; color: #fff; width: 110px; padding: 0.75rem; font-weight: 700; text-align: center; font-size: 0.9rem; border-right: 1.5px solid #333; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: sans-serif;">
+              Ticket no.
+            </div>
+            <input type="text" id="ticket_number" placeholder="Ex. KL854215" required style="flex: 1; border: none; outline: none; padding: 0.75rem 1rem; font-size: 1rem; background: #fff; color: #333; font-family: sans-serif;">
           </div>
-          <div class="form-group" style="margin-top: 1.5rem;">
-            <label for="mobile_number" style="color: var(--text-muted); display: block; margin-bottom: 0.5rem; font-weight: 600;">Mobile Number:</label>
-            <input type="tel" id="mobile_number" class="form-control" placeholder="e.g. 9876543210" required style="font-size: 1.1rem; text-align: center;">
+
+          <div style="display: flex; border: 1.5px solid #333; margin-bottom: 1.5rem; border-radius: 4px; overflow: hidden; background: #fff;">
+            <div style="background-color: #343a40; color: #fff; width: 110px; padding: 0.75rem; font-weight: 700; text-align: center; font-size: 0.9rem; border-right: 1.5px solid #333; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: sans-serif;">
+              Mobile
+            </div>
+            <input type="tel" id="mobile_number" placeholder="Ex.9874563210" required style="flex: 1; border: none; outline: none; padding: 0.75rem 1rem; font-size: 1rem; background: #fff; color: #333; font-family: sans-serif;">
           </div>
-          <div style="text-align: center; margin-top: 2rem;">
-            <button type="submit" class="btn" style="width: 100%;">Check Winning Status</button>
+
+          <div style="text-align: center; margin-top: 1.5rem;">
+            <button type="submit" class="btn" style="width: 100%; padding: 1rem; font-size: 1.25rem; font-weight: 700; background: linear-gradient(to right, #050549, #00bfff); color: #ffffff; border: none; border-radius: 8px; cursor: pointer; text-transform: none; box-shadow: 0 4px 15px rgba(0, 191, 255, 0.25);">Check Now</button>
           </div>
         </form>
       </div>
 
       <!-- Result Status Card -->
       @if (session('error_status'))
-      <div id="resultStatusCard" class="card" style="margin-top: 1.5rem; text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 15px; width: 100%;">
+      <div id="resultStatusCard" class="card" style="margin-top: 1.5rem; text-align: center; padding: 2rem; background: #ffffff; color: #333333; border: 1px solid #dee2e6; border-radius: 12px; width: 100%; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);">
           <div id="resultStatusIcon" style="font-size: 3rem; margin-bottom: 1rem;">
               @if (session('error_status') === 'mismatch')
                   ❌
@@ -89,35 +85,35 @@
                   🍀
               @endif
           </div>
-          <h3 id="resultStatusTitle" style="color: var(--secondary-color); margin-bottom: 1rem; font-size: 1.6rem; font-weight: 800; text-transform: uppercase;">
+          <h3 id="resultStatusTitle" style="color: #007bff; margin-bottom: 1rem; font-size: 1.6rem; font-weight: 800; text-transform: uppercase;">
               @if (session('error_status') === 'mismatch')
                   Check Details
               @else
                   Better Luck Next Time!
               @endif
           </h3>
-          <p id="resultStatusText" style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.6;">
+          <p id="resultStatusText" style="color: #6c757d; font-size: 1.05rem; line-height: 1.6;">
               @if (session('error_status') === 'mismatch')
                   please check the ticket number and the mobile number
               @else
                   Ticket <span style="color: var(--primary-color); font-weight: bold;">{{ session('error_ticket') }}</span> did not win any prize in the latest draw.<br>
-                  <span style="font-size: 0.9rem; color: var(--text-muted); display: block; margin-top: 10px;">Don't lose hope. Every ticket brings a new chance. Play again today!</span>
+                  <span style="font-size: 0.9rem; color: #6c757d; display: block; margin-top: 10px;">Don't lose hope. Every ticket brings a new chance. Play again today!</span>
               @endif
           </p>
           <div id="resultStatusButtons" style="margin-top: 1.5rem;">
               @if (session('error_status') === 'mismatch')
-                  <button class="btn" onclick="$('#resultStatusCard').hide();" style="width: 100%;">Try Again</button>
+                  <button class="btn" onclick="$('#resultStatusCard').hide();" style="width: 100%; padding: 0.75rem; font-weight: 700; background: #343a40; color: #fff; border: none; border-radius: 8px;">Try Again</button>
               @else
-                  <a href="{{ route('buy-tickets') }}" class="btn" style="display: block; width: 100%; margin-bottom: 8px; text-decoration: none; text-align: center; line-height: 2.2; background: linear-gradient(45deg, #28a745, #218838); border: none;">Buy More Tickets</a>
-                  <button class="btn" onclick="$('#resultStatusCard').hide();" style="width: 100%; margin-top: 8px; background: rgba(255, 255, 255, 0.1); border: 1px solid var(--border-color); color: #fff;">Close</button>
+                  <a href="{{ route('buy-tickets') }}" class="btn" style="display: block; width: 100%; margin-bottom: 8px; text-decoration: none; text-align: center; line-height: 2.2; background: linear-gradient(45deg, #28a745, #218838); border: none; color: #fff; font-weight: 700; border-radius: 8px;">Buy More Tickets</a>
+                  <button class="btn" onclick="$('#resultStatusCard').hide();" style="width: 100%; margin-top: 8px; background: #6c757d; color: #fff; border: none; border-radius: 8px; padding: 0.75rem; font-weight: 700;">Close</button>
               @endif
           </div>
       </div>
       @else
-      <div id="resultStatusCard" class="card" style="display: none; margin-top: 1.5rem; text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 15px; width: 100%;">
+      <div id="resultStatusCard" class="card" style="display: none; margin-top: 1.5rem; text-align: center; padding: 2rem; background: #ffffff; color: #333333; border: 1px solid #dee2e6; border-radius: 12px; width: 100%; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);">
           <div id="resultStatusIcon" style="font-size: 3rem; margin-bottom: 1rem;"></div>
-          <h3 id="resultStatusTitle" style="color: var(--secondary-color); margin-bottom: 1rem; font-size: 1.6rem; font-weight: 800; text-transform: uppercase;"></h3>
-          <p id="resultStatusText" style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.6;"></p>
+          <h3 id="resultStatusTitle" style="color: #007bff; margin-bottom: 1rem; font-size: 1.6rem; font-weight: 800; text-transform: uppercase;"></h3>
+          <p id="resultStatusText" style="color: #6c757d; font-size: 1.05rem; line-height: 1.6;"></p>
           <div id="resultStatusButtons" style="margin-top: 1.5rem;"></div>
       </div>
       @endif
@@ -142,7 +138,7 @@
               $("#resultStatusIcon").html("❌");
               $("#resultStatusTitle").html("Check Details");
               $("#resultStatusText").html("please check the ticket number and the mobile number");
-              $("#resultStatusButtons").html(`<button class="btn" onclick="$('#resultStatusCard').hide();" style="width: 100%;">Try Again</button>`);
+              $("#resultStatusButtons").html(`<button class="btn" onclick="$('#resultStatusCard').hide();" style="width: 100%; padding: 0.75rem; font-weight: 700; background: #343a40; color: #fff; border: none; border-radius: 8px;">Try Again</button>`);
               $("#resultStatusCard").slideDown();
               return;
           }
@@ -181,13 +177,13 @@
                           icon = "❌";
                           title = "Check Details";
                           message = "please check the ticket number and the mobile number";
-                          buttons = `<button class="btn" onclick="$('#resultStatusCard').hide();" style="width: 100%;">Try Again</button>`;
+                          buttons = `<button class="btn" onclick="$('#resultStatusCard').hide();" style="width: 100%; padding: 0.75rem; font-weight: 700; background: #343a40; color: #fff; border: none; border-radius: 8px;">Try Again</button>`;
                       } else {
                           icon = "🍀";
                           title = "Better Luck Next Time!";
-                          message = `Ticket <span style="color: var(--primary-color); font-weight: bold;">${ticket}</span> did not win any prize in the latest draw.<br><span style="font-size: 0.9rem; color: var(--text-muted); display: block; margin-top: 10px;">Don't lose hope. Every ticket brings a new chance. Play again today!</span>`;
-                          buttons = `<a href="{{ route('buy-tickets') }}" class="btn" style="display: block; width: 100%; margin-bottom: 8px; text-decoration: none; text-align: center; line-height: 2.2; background: linear-gradient(45deg, #28a745, #218838); border: none;">Buy More Tickets</a>
-                                     <button class="btn" onclick="$('#resultStatusCard').hide();" style="width: 100%; margin-top: 8px; background: rgba(255, 255, 255, 0.1); border: 1px solid var(--border-color); color: #fff;">Close</button>`;
+                          message = `Ticket <span style="color: var(--primary-color); font-weight: bold;">${ticket}</span> did not win any prize in the latest draw.<br><span style="font-size: 0.9rem; color: #6c757d; display: block; margin-top: 10px;">Don't lose hope. Every ticket brings a new chance. Play again today!</span>`;
+                          buttons = `<a href="{{ route('buy-tickets') }}" class="btn" style="display: block; width: 100%; margin-bottom: 8px; text-decoration: none; text-align: center; line-height: 2.2; background: linear-gradient(45deg, #28a745, #218838); border: none; color: #fff; font-weight: 700; border-radius: 8px;">Buy More Tickets</a>
+                                     <button class="btn" onclick="$('#resultStatusCard').hide();" style="width: 100%; margin-top: 8px; background: #6c757d; color: #fff; border: none; border-radius: 8px; padding: 0.75rem; font-weight: 700;">Close</button>`;
                       }
 
                       $("#resultStatusIcon").html(icon);
@@ -205,7 +201,7 @@
                   $("#resultStatusIcon").html("❌");
                   $("#resultStatusTitle").html("Check Details");
                   $("#resultStatusText").html("please check the ticket number and the mobile number");
-                  $("#resultStatusButtons").html(`<button class="btn" onclick="$('#resultStatusCard').hide();" style="width: 100%;">Try Again</button>`);
+                  $("#resultStatusButtons").html(`<button class="btn" onclick="$('#resultStatusCard').hide();" style="width: 100%; padding: 0.75rem; font-weight: 700; background: #343a40; color: #fff; border: none; border-radius: 8px;">Try Again</button>`);
                   $("#resultStatusCard").slideDown();
               }
           });

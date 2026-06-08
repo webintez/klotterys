@@ -8,38 +8,40 @@
 @endsection
 
 @section('content')
-  <!-- Page Header -->
-  <section class="section" style="padding-bottom: 2rem;">
-    <div class="container">
-      <h1 class="section-title">Track Your Order</h1>
-    </div>
-  </section>
-
-  <!-- Track Order Form -->
-  <section class="section bg-alt" style="padding-top: 3rem;">
-    <div class="container" style="max-width: 600px;">
+  <!-- Track Order Form (Full Screen Gradient Background) -->
+  <section class="section" style="background: linear-gradient(135deg, #02022b 0%, #00bfff 100%); min-height: calc(100vh - 75px); display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; margin: 0; width: 100%;">
+    <div class="container" style="max-width: 600px; width: 100%;">
       
-      <div class="card" style="text-align: left;">
-        <h3 style="color: var(--secondary-color); text-align: center; margin-bottom: 2rem;">Where is my ticket?</h3>
+      <div class="card" style="text-align: left; background: #ffffff; color: #333333; border: 1px solid #dee2e6; border-radius: 12px; padding: 5px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);">
+        <h2 style="color: #007bff; text-align: center; font-weight: 800; font-size: 1.5rem; line-height: 1.3; margin-top: 0.5rem; margin-bottom: 1rem; text-transform: uppercase; font-family: 'Outfit', sans-serif;">
+            Ticket-Booking<br>Status Check
+        </h2>
+        <div style="height: 5px; background: #007bff; width: 100%; margin-bottom: 2rem; border-radius: 2px;"></div>
         
         <form id="trackForm">
           @csrf
-          <div class="form-group">
-            <label for="ticket_number" style="color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Ticket Number:</label>
-            <input type="text" id="ticket_number" class="form-control" placeholder="e.g. VL-123456" required style="font-size: 1.1rem; text-align: center;">
+          <div style="display: flex; border: 1.5px solid #333; margin-bottom: 1.25rem; border-radius: 4px; overflow: hidden; background: #fff;">
+            <div style="background-color: #343a40; color: #fff; width: 110px; padding: 0.75rem; font-weight: 700; text-align: center; font-size: 0.9rem; border-right: 1.5px solid #333; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: sans-serif;">
+              Ticket no.
+            </div>
+            <input type="text" id="ticket_number" placeholder="Ex. KL854215" required style="flex: 1; border: none; outline: none; padding: 0.75rem 1rem; font-size: 1rem; background: #fff; color: #333; font-family: sans-serif;">
           </div>
-          <div class="form-group" style="margin-top: 1.5rem;">
-            <label for="mobile_number" style="color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Mobile Number:</label>
-            <input type="tel" id="mobile_number" class="form-control" placeholder="e.g. 9876543210" required style="font-size: 1.1rem; text-align: center;">
+
+          <div style="display: flex; border: 1.5px solid #333; margin-bottom: 1.5rem; border-radius: 4px; overflow: hidden; background: #fff;">
+            <div style="background-color: #343a40; color: #fff; width: 110px; padding: 0.75rem; font-weight: 700; text-align: center; font-size: 0.9rem; border-right: 1.5px solid #333; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: sans-serif;">
+              Mobile
+            </div>
+            <input type="tel" id="mobile_number" placeholder="Ex.9874563210" required style="flex: 1; border: none; outline: none; padding: 0.75rem 1rem; font-size: 1rem; background: #fff; color: #333; font-family: sans-serif;">
           </div>
-          <div style="text-align: center; margin-top: 2rem;">
-            <button type="submit" class="btn" style="width: 100%;">Track Status</button>
+
+          <div style="text-align: center; margin-top: 1.5rem;">
+            <button type="submit" class="btn" style="width: 100%; padding: 1rem; font-size: 1.25rem; font-weight: 700; background: linear-gradient(to right, #050549, #00bfff); color: #ffffff; border: none; border-radius: 8px; cursor: pointer; text-transform: none; box-shadow: 0 4px 15px rgba(0, 191, 255, 0.25);">Check Now</button>
           </div>
         </form>
 
-        <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color); text-align: center;">
-          <p style="color: var(--text-muted); font-size: 0.9rem;">
-            Having trouble tracking your order? Please have your order details ready and <a href="{{ route('contact') }}" style="color: var(--primary-color);">contact support</a>.
+        <div style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #dee2e6; text-align: center;">
+          <p style="color: #6c757d; font-size: 0.9rem; margin: 0;">
+            Having trouble tracking your order? Please have your order details ready and <a href="{{ route('contact') }}" style="color: #007bff; font-weight: 600; text-decoration: none;">contact support</a>.
           </p>
         </div>
       </div>

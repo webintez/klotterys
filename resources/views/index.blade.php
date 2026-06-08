@@ -125,11 +125,80 @@
     transform: scale(1.2);
   }
   @media (max-width: 768px) {
+    .hero.container {
+      width: 100% !important;
+      max-width: none !important;
+      padding: 0 0 3rem 0 !important;
+      margin: 0 !important;
+    }
+    .hero-image {
+      width: 100% !important;
+      margin-top: 0 !important;
+      margin-bottom: 2rem !important;
+    }
+    .hero-content {
+      width: 90% !important;
+      max-width: 1200px !important;
+      margin: 0 auto !important;
+    }
     .hero-slider {
       margin: 0 auto;
       height: 0;
       padding-bottom: 70.4%;
     }
+  }
+
+  /* Ticker Ribbon Styles */
+  .ticker-wrapper {
+    display: flex;
+    height: 40px;
+    background: #000066;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
+  .ticker-title {
+    background: #000000;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    z-index: 5;
+    flex-shrink: 0;
+  }
+  .ticker-title span {
+    color: #ff0000;
+    margin-left: 6px;
+    font-weight: 800;
+    animation: blink 1.5s infinite;
+  }
+  .ticker-body {
+    flex-grow: 1;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .ticker-marquee {
+    position: absolute;
+    white-space: nowrap;
+    will-change: transform;
+    animation: marquee-scroll 25s linear infinite;
+    color: #ffffff;
+    font-size: 0.9rem;
+    padding-left: 100%;
+  }
+  @keyframes marquee-scroll {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-100%, 0, 0); }
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
   }
 </style>
 @endsection
@@ -178,6 +247,17 @@
           <span class="dot"></span>
           <span class="dot"></span>
           <span class="dot"></span>
+        </div>
+      </div>
+      <!-- Moving Ticker Ribbon -->
+      <div class="ticker-wrapper">
+        <div class="ticker-title">
+          Latest Updates <span>&gt;&gt;</span>
+        </div>
+        <div class="ticker-body">
+          <div class="ticker-marquee">
+            One can identify the details of the agent who purchased the ticket from the State Lotteries Department using the 'Ticket Check' function.
+          </div>
         </div>
       </div>
     </div>
