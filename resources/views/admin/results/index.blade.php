@@ -108,27 +108,24 @@
                         <span class="ticket-tag {{ $prefix === 'vl' ? 'vl' : ($prefix === 'sl' ? 'sl' : '') }}" style="font-size: 0.95rem; padding: 0.35rem 0.75rem; margin: 0;">
                           {{ $ticket }}
                         </span>
-                        <div class="action-buttons">
+                        <div class="action-buttons" style="display: flex; gap: 0.5rem; align-items: center;">
+                          <select class="form-control prize-select" style="padding: 0.3rem 0.5rem; font-size: 0.85rem; width: 140px; height: auto; display: inline-block;">
+                            <option value="1st Prize">1st Prize</option>
+                            <option value="2nd Prize">2nd Prize</option>
+                            <option value="3rd Prize">3rd Prize</option>
+                            <option value="4th Prize">4th Prize</option>
+                            <option value="5th Prize">5th Prize</option>
+                            <option value="6th Prize">6th Prize</option>
+                            <option value="7th Prize">7th Prize</option>
+                            <option value="8th Prize">8th Prize</option>
+                            <option value="9th Prize">9th Prize</option>
+                            <option value="10th Prize">10th Prize</option>
+                          </select>
                           <button type="button" class="btn-action select-prize-btn" 
                                   data-ticket="{{ $ticket }}" 
-                                  data-prize="1st Prize" 
                                   data-prefix="{{ $prefix }}"
-                                  style="background: var(--success); color: #fff; border-color: var(--success);">
-                            🏆 Select 1st Prize
-                          </button>
-                          <button type="button" class="btn-action select-prize-btn" 
-                                  data-ticket="{{ $ticket }}" 
-                                  data-prize="2nd Prize" 
-                                  data-prefix="{{ $prefix }}"
-                                  style="background: var(--info); color: #fff; border-color: var(--info);">
-                            🥈 Select 2nd Prize
-                          </button>
-                          <button type="button" class="btn-action select-prize-btn" 
-                                  data-ticket="{{ $ticket }}" 
-                                  data-prize="3rd Prize" 
-                                  data-prefix="{{ $prefix }}"
-                                  style="background: var(--warning); color: #fff; border-color: var(--warning);">
-                            🥉 Select 3rd Prize
+                                  style="background: var(--success); color: #fff; border-color: var(--success); font-weight: bold; padding: 0.35rem 0.75rem; font-size: 0.85rem; line-height: 1.2;">
+                            Declare
                           </button>
                         </div>
                       </div>
@@ -178,27 +175,24 @@
                         <span class="ticket-tag {{ $prefix === 'vl' ? 'vl' : ($prefix === 'sl' ? 'sl' : '') }}" style="font-size: 0.95rem; padding: 0.35rem 0.75rem; margin: 0;">
                           {{ $ticket }}
                         </span>
-                        <div class="action-buttons">
+                        <div class="action-buttons" style="display: flex; gap: 0.5rem; align-items: center;">
+                          <select class="form-control prize-select" style="padding: 0.3rem 0.5rem; font-size: 0.85rem; width: 140px; height: auto; display: inline-block;">
+                            <option value="1st Prize">1st Prize</option>
+                            <option value="2nd Prize">2nd Prize</option>
+                            <option value="3rd Prize">3rd Prize</option>
+                            <option value="4th Prize">4th Prize</option>
+                            <option value="5th Prize">5th Prize</option>
+                            <option value="6th Prize">6th Prize</option>
+                            <option value="7th Prize">7th Prize</option>
+                            <option value="8th Prize">8th Prize</option>
+                            <option value="9th Prize">9th Prize</option>
+                            <option value="10th Prize">10th Prize</option>
+                          </select>
                           <button type="button" class="btn-action select-prize-btn" 
                                   data-ticket="{{ $ticket }}" 
-                                  data-prize="1st Prize" 
                                   data-prefix="{{ $prefix }}"
-                                  style="background: var(--success); color: #fff; border-color: var(--success);">
-                            🏆 Select 1st Prize
-                          </button>
-                          <button type="button" class="btn-action select-prize-btn" 
-                                  data-ticket="{{ $ticket }}" 
-                                  data-prize="2nd Prize" 
-                                  data-prefix="{{ $prefix }}"
-                                  style="background: var(--info); color: #fff; border-color: var(--info);">
-                            🥈 Select 2nd Prize
-                          </button>
-                          <button type="button" class="btn-action select-prize-btn" 
-                                  data-ticket="{{ $ticket }}" 
-                                  data-prize="3rd Prize" 
-                                  data-prefix="{{ $prefix }}"
-                                  style="background: var(--warning); color: #fff; border-color: var(--warning);">
-                            🥉 Select 3rd Prize
+                                  style="background: var(--success); color: #fff; border-color: var(--success); font-weight: bold; padding: 0.35rem 0.75rem; font-size: 0.85rem; line-height: 1.2;">
+                            Declare
                           </button>
                         </div>
                       </div>
@@ -248,27 +242,24 @@
                         <span class="ticket-tag {{ $prefix === 'vl' ? 'vl' : ($prefix === 'sl' ? 'sl' : '') }}" style="font-size: 0.95rem; padding: 0.35rem 0.75rem; margin: 0;">
                           {{ $ticket }}
                         </span>
-                        <div class="action-buttons">
+                        <div class="action-buttons" style="display: flex; gap: 0.5rem; align-items: center;">
+                          <select class="form-control prize-select" style="padding: 0.3rem 0.5rem; font-size: 0.85rem; width: 140px; height: auto; display: inline-block;">
+                            <option value="1st Prize">1st Prize</option>
+                            <option value="2nd Prize">2nd Prize</option>
+                            <option value="3rd Prize">3rd Prize</option>
+                            <option value="4th Prize">4th Prize</option>
+                            <option value="5th Prize">5th Prize</option>
+                            <option value="6th Prize">6th Prize</option>
+                            <option value="7th Prize">7th Prize</option>
+                            <option value="8th Prize">8th Prize</option>
+                            <option value="9th Prize">9th Prize</option>
+                            <option value="10th Prize">10th Prize</option>
+                          </select>
                           <button type="button" class="btn-action select-prize-btn" 
                                   data-ticket="{{ $ticket }}" 
-                                  data-prize="1st Prize" 
                                   data-prefix="{{ $prefix }}"
-                                  style="background: var(--success); color: #fff; border-color: var(--success);">
-                            🏆 Select 1st Prize
-                          </button>
-                          <button type="button" class="btn-action select-prize-btn" 
-                                  data-ticket="{{ $ticket }}" 
-                                  data-prize="2nd Prize" 
-                                  data-prefix="{{ $prefix }}"
-                                  style="background: var(--info); color: #fff; border-color: var(--info);">
-                            🥈 Select 2nd Prize
-                          </button>
-                          <button type="button" class="btn-action select-prize-btn" 
-                                  data-ticket="{{ $ticket }}" 
-                                  data-prize="3rd Prize" 
-                                  data-prefix="{{ $prefix }}"
-                                  style="background: var(--warning); color: #fff; border-color: var(--warning);">
-                            🥉 Select 3rd Prize
+                                  style="background: var(--success); color: #fff; border-color: var(--success); font-weight: bold; padding: 0.35rem 0.75rem; font-size: 0.85rem; line-height: 1.2;">
+                            Declare
                           </button>
                         </div>
                       </div>
@@ -311,6 +302,7 @@
               <th>Prize</th>
               <th>Winning Number</th>
               <th>Winning Amount</th>
+              <th>Tax Amount</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -333,6 +325,9 @@
                 <td style="font-weight: 600; color: var(--primary);">
                   {{ $result->winning_amount }}
                 </td>
+                <td style="font-weight: 600; color: var(--danger);">
+                  {{ $result->tax_amount ?? '-' }}
+                </td>
                 <td>
                   <div class="action-buttons">
                     <button type="button" class="btn-action edit-btn" 
@@ -342,6 +337,7 @@
                             data-number="{{ $result->draw_number }}" 
                             data-winning="{{ $result->winning_number }}"
                             data-winning-amount="{{ $result->winning_amount }}"
+                            data-tax-amount="{{ $result->tax_amount }}"
                             data-prize="{{ $result->prize_category }}">Edit</button>
                     
                     <form action="{{ route('admin.results.destroy', $result->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this draw result?');">
@@ -394,6 +390,13 @@
             <option value="1st Prize" {{ old('prize_category') == '1st Prize' ? 'selected' : '' }}>1st Prize</option>
             <option value="2nd Prize" {{ old('prize_category') == '2nd Prize' ? 'selected' : '' }}>2nd Prize</option>
             <option value="3rd Prize" {{ old('prize_category') == '3rd Prize' ? 'selected' : '' }}>3rd Prize</option>
+            <option value="4th Prize" {{ old('prize_category') == '4th Prize' ? 'selected' : '' }}>4th Prize</option>
+            <option value="5th Prize" {{ old('prize_category') == '5th Prize' ? 'selected' : '' }}>5th Prize</option>
+            <option value="6th Prize" {{ old('prize_category') == '6th Prize' ? 'selected' : '' }}>6th Prize</option>
+            <option value="7th Prize" {{ old('prize_category') == '7th Prize' ? 'selected' : '' }}>7th Prize</option>
+            <option value="8th Prize" {{ old('prize_category') == '8th Prize' ? 'selected' : '' }}>8th Prize</option>
+            <option value="9th Prize" {{ old('prize_category') == '9th Prize' ? 'selected' : '' }}>9th Prize</option>
+            <option value="10th Prize" {{ old('prize_category') == '10th Prize' ? 'selected' : '' }}>10th Prize</option>
           </select>
         </div>
 
@@ -405,6 +408,11 @@
         <div class="form-group">
           <label class="form-label" for="winning_amount">Winning Amount</label>
           <input type="text" name="winning_amount" id="winning_amount" class="form-control" placeholder="e.g. ₹5,000" required value="{{ old('winning_amount') }}">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="tax_amount">Tax Amount (Optional)</label>
+          <input type="text" name="tax_amount" id="tax_amount" class="form-control" placeholder="e.g. 10% or ₹500" value="{{ old('tax_amount') }}">
         </div>
 
         <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 0.75rem;">
@@ -443,6 +451,7 @@
     const winningNumberInput = document.getElementById('winning_number');
     const prizeCategorySelect = document.getElementById('prize_category');
     const winningAmountInput = document.getElementById('winning_amount');
+    const taxAmountInput = document.getElementById('tax_amount');
 
     const defaultAction = "{{ route('admin.results.store') }}";
 
@@ -463,8 +472,10 @@
     selectPrizeButtons.forEach(button => {
       button.addEventListener('click', function() {
         const ticket = this.getAttribute('data-ticket');
-        const prize = this.getAttribute('data-prize');
         const prefix = this.getAttribute('data-prefix');
+        // Find adjacent select element
+        const selectEl = this.parentElement.querySelector('.prize-select');
+        const prize = selectEl.value;
 
         // Setup form for creating
         cancelBtn.click(); // Reset in case of editing
@@ -477,10 +488,16 @@
         // Auto-fill Winning Amount based on prize selected
         if (prize === '1st Prize') {
           winningAmountInput.value = '₹5,000';
+          taxAmountInput.value = '₹500';
         } else if (prize === '2nd Prize') {
           winningAmountInput.value = '₹2,500';
+          taxAmountInput.value = '₹250';
         } else if (prize === '3rd Prize') {
           winningAmountInput.value = '₹1,000';
+          taxAmountInput.value = '₹100';
+        } else {
+          winningAmountInput.value = '₹500';
+          taxAmountInput.value = '₹50';
         }
 
         // Auto-fill Lottery Name based on prefix
@@ -510,6 +527,7 @@
         const number = this.getAttribute('data-number');
         const winning = this.getAttribute('data-winning');
         const winningAmount = this.getAttribute('data-winning-amount');
+        const taxAmount = this.getAttribute('data-tax-amount');
         const prize = this.getAttribute('data-prize');
 
         // Populate fields
@@ -519,6 +537,7 @@
         winningNumberInput.value = winning;
         prizeCategorySelect.value = prize;
         winningAmountInput.value = winningAmount;
+        taxAmountInput.value = taxAmount;
 
         // Change form setup for editing
         formTitle.textContent = "Edit Draw Result";

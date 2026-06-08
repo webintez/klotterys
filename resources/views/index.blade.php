@@ -207,8 +207,58 @@
     </div>
   </section>
 
+  <!-- About Directorate Section -->
+  <section class="section directorate-section">
+    <div class="container directorate-wrapper">
+      <div class="directorate-content">
+        <h2 class="section-title">Welcome To <br><span>Kerala State Lotteries</span></h2>
+        <div class="directorate-text-block">
+          <p>
+            Kerala, the Gods own country, added another first to its cap in 1967, when a Department was setup in the Government sector for the first time in India for the conduct of paper Lotteries. It was late Shri. P. K. Kunju Sahib, who envisaged this idea for the generation of revenue through the sale of lotteries and for providing a stable source of income to the poor and needy belonging to the marginalized section of society.
+          </p>
+        </div>
+        <a href="{{ route('about') }}" class="btn btn-secondary">Read More</a>
+      </div>
+      
+      <div class="officials-grid">
+        <!-- Card 1 -->
+        <div class="official-card">
+          <div class="official-img">
+            <img src="{{ asset('images/people/pinarayi_vijayan.jpg') }}" alt="Shri. Pinarayi Vijayan">
+          </div>
+          <h3>Shri. Pinarayi Vijayan</h3>
+          <p>Hon'ble Chief Minister</p>
+        </div>
+        <!-- Card 2 -->
+        <div class="official-card">
+          <div class="official-img">
+            <img src="{{ asset('images/people/kn_balagopal.jpg') }}" alt="Shri. K N Balagopal">
+          </div>
+          <h3>Shri. K N Balagopal</h3>
+          <p>Hon'ble Minister for Finance</p>
+        </div>
+        <!-- Card 3 -->
+        <div class="official-card">
+          <div class="official-img">
+            <img src="{{ asset('images/people/kr_jyothilal.jpg') }}" alt="Shri. K R Jyothilal IAS">
+          </div>
+          <h3>Shri. K R Jyothilal IAS</h3>
+          <p>Addl. Chief Secretary, Taxes Department</p>
+        </div>
+        <!-- Card 4 -->
+        <div class="official-card">
+          <div class="official-img">
+            <img src="{{ asset('images/people/mithun_premraj.jpg') }}" alt="Dr. Mithun Premraj IAS">
+          </div>
+          <h3>Dr. Mithun Premraj IAS</h3>
+          <p>Director, Lotteries Department</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Quick Links Section -->
-  <section class="section">
+  <section class="section bg-alt">
     <div class="container">
       <h2 class="section-title">Why Play With Us?</h2>
       <div class="grid-3">
@@ -224,22 +274,6 @@
           <h3>Easy Tracking</h3>
           <p>Track your physical ticket dispatch easily with our robust online tracking system.</p>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- About Directorate Section -->
-  <section class="section bg-alt">
-    <div class="container">
-      <div style="margin-bottom: 3rem; text-align: center; max-width: 800px; margin-left: auto; margin-right: auto;">
-        <h2 class="section-title">Directorate of Kerala State Lotteries</h2>
-        <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 1.1rem;">
-          Welcome to Kerala State Lotteries. Kerala, God's own country, added another first to its cap in 1967 when a Department was setup in the Government sector for the first time in India for the conduct of paper Lotteries.
-        </p>
-        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
-          It was late Shri. P. K. Kunju Sahib, who envisaged this idea for the generation of revenue through the sale of lotteries and for providing a stable source of income to the poor and needy belonging to the marginalized section of society.
-        </p>
-        <a href="{{ route('about') }}" class="btn btn-secondary">Read More About Us</a>
       </div>
     </div>
   </section>

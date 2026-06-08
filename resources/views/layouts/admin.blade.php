@@ -37,6 +37,11 @@
             <span style="margin-right: 10px;">🏆</span> Manage Results
           </a>
         </li>
+        <li class="sidebar-menu-item {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+          <a href="{{ route('admin.settings.edit') }}">
+            <span style="margin-right: 10px;">⚙️</span> Website Settings
+          </a>
+        </li>
         <li class="sidebar-menu-item">
           <a href="{{ route('home') }}" target="_blank">
             <span style="margin-right: 10px;">🌐</span> View Site

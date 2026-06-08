@@ -40,7 +40,16 @@ class ResetDataCommand extends Command
         DB::table('bookings')->truncate();
         DB::table('draw_results')->truncate();
         DB::table('prize_claims')->truncate();
+        DB::table('website_settings')->truncate();
         Schema::enableForeignKeyConstraints();
+
+        // Seed default website settings
+        DB::table('website_settings')->insert([
+            'qr_code' => 'images/qr_code.jpeg',
+            'upi_id' => '9369873638-t50f@ybl',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         // Ensure default admin exists if no admin accounts exist
         $adminExists = User::where('is_admin', true)->exists();

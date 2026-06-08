@@ -268,4 +268,56 @@ class AdminTest extends TestCase
             'name' => 'Custom Admin',
         ]);
     }
+
+    /**
+     * Test admin can view and update website settings.
+     */
+    public function test_admin_can_view_and_update_website_settings(): void
+    {
+        $admin = User::factory()->create([
+            'is_admin' => true,
+        ]);
+
+        // Access edit page
+        $response = $this->actingAs($admin)->get('/admin/settings');
+        $response->assertStatus(200);
+        $response->assertSee('Website Settings');
+
+        // Update settings
+        $response = $this->actingAs($admin)->post('/admin/settings', [
+            'upi_id' => 'test-upi-id@okaxis',
+        ]);
+
+        $response->assertRedirect('/admin/settings');
+        $this->assertDatabaseHas('website_settings', [
+            'upi_id' => 'test-upi-id@okaxis',
+        ]);
+    }
+
+    /**
+     * Test admin can create a draw result with 10th Prize and custom tax amount.
+     */
+    public function test_admin_can_create_draw_result_with_10th_prize_and_tax(): void
+    {
+        $admin = User::factory()->create([
+            'is_admin' => true,
+        ]);
+
+        $response = $this->actingAs($admin)->post('/admin/results', [
+            'draw_date' => '2026-06-08',
+            'lottery_name' => 'KERALA-10',
+            'draw_number' => 'K-10',
+            'winning_number' => 'VL000000',
+            'prize_category' => '10th Prize',
+            'winning_amount' => '₹500',
+            'tax_amount' => '₹50',
+        ]);
+
+        $response->assertRedirect('/admin/results');
+        $this->assertDatabaseHas('draw_results', [
+            'winning_number' => 'VL000000',
+            'prize_category' => '10th Prize',
+            'tax_amount' => '₹50',
+        ]);
+    }
 }

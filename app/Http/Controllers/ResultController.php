@@ -63,6 +63,7 @@ class ResultController extends Controller
             return response()->json([
                 'won' => true,
                 'prize' => $prizeAmount,
+                'tax_amount' => $draw->tax_amount,
             ]);
         }
 

@@ -110,8 +110,9 @@ class AdminResultController extends Controller
             'lottery_name' => 'required|string|max:100',
             'draw_number' => 'required|string|max:50',
             'winning_number' => 'required|string|max:50',
-            'prize_category' => 'required|string|in:1st Prize,2nd Prize,3rd Prize',
+            'prize_category' => 'required|string|in:1st Prize,2nd Prize,3rd Prize,4th Prize,5th Prize,6th Prize,7th Prize,8th Prize,9th Prize,10th Prize',
             'winning_amount' => 'required|string|max:50',
+            'tax_amount' => 'nullable|string|max:50',
         ]);
 
         DrawResult::create($request->all());
@@ -129,8 +130,9 @@ class AdminResultController extends Controller
             'lottery_name' => 'required|string|max:100',
             'draw_number' => 'required|string|max:50',
             'winning_number' => 'required|string|max:50',
-            'prize_category' => 'required|string|in:1st Prize,2nd Prize,3rd Prize',
+            'prize_category' => 'required|string|in:1st Prize,2nd Prize,3rd Prize,4th Prize,5th Prize,6th Prize,7th Prize,8th Prize,9th Prize,10th Prize',
             'winning_amount' => 'required|string|max:50',
+            'tax_amount' => 'nullable|string|max:50',
         ]);
 
         $result->update($request->all());

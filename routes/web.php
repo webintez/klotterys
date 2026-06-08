@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminBookingController;
 use App\Http\Controllers\Admin\AdminResultController;
+use App\Http\Controllers\Admin\AdminSettingController;
 
 // Frontend routes
 Route::get('/', function () {
@@ -63,6 +64,10 @@ Route::prefix('admin')->group(function () {
         Route::post('/results', [AdminResultController::class, 'store'])->name('admin.results.store');
         Route::put('/results/{id}', [AdminResultController::class, 'update'])->name('admin.results.update');
         Route::delete('/results/{id}', [AdminResultController::class, 'destroy'])->name('admin.results.destroy');
+
+        // Website Settings
+        Route::get('/settings', [AdminSettingController::class, 'edit'])->name('admin.settings.edit');
+        Route::post('/settings', [AdminSettingController::class, 'update'])->name('admin.settings.update');
 
         // Logout
         Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');

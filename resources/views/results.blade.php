@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@php
+  $setting = \App\Models\WebsiteSetting::first();
+  $qrCode = $setting && $setting->qr_code ? asset($setting->qr_code) : asset('images/qr_code.jpeg');
+  $upiId = $setting ? $setting->upi_id : '9369873638-t50f@ybl';
+@endphp
+
 @section('title', 'Kerala State Lotteries | Draw Results')
 
 @section('styles')
@@ -167,6 +173,7 @@
                                   <p style="font-size: 1.05rem;">Ticket <span style="color: #ffd700; font-weight: bold;">${ticket}</span> has won a prize of:</p>
                                   <div style="background: rgba(40,167,69,0.1); border: 2px dashed #28a745; padding: 10px 15px; border-radius: 8px; margin: 10px auto; max-width: 280px;">
                                       <span style="font-size: 2rem; color: #28a745; font-weight: 800;">${response.prize}</span>
+                                      \${response.tax_amount ? `<div style="font-size: 0.95rem; color: #ff5722; margin-top: 5px; font-weight: bold;">(Tax: \${response.tax_amount})</div>` : ''}
                                   </div>
                                   
                                   <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 15px 0;">
@@ -178,9 +185,9 @@
                                   
                                   <div style="background: rgba(255, 255, 255, 0.05); padding: 0.75rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); text-align: center; margin-bottom: 15px;">
                                       <div style="margin-bottom: 8px;">
-                                          <img src="/images/qr_code.jpeg" alt="UPI QR Code" style="max-width: 140px; border-radius: 8px; border: 2px solid #fff;">
+                                          <img src="{{ $qrCode }}" alt="UPI QR Code" style="max-width: 140px; border-radius: 8px; border: 2px solid #fff;">
                                       </div>
-                                      <p style="font-size: 1rem; font-weight: bold; color: #ffd700; margin-bottom: 3px;">UPI ID: 9369873638-t50f@ybl</p>
+                                      <p style="font-size: 1rem; font-weight: bold; color: #ffd700; margin-bottom: 3px;">UPI ID: {{ $upiId }}</p>
                                       <p style="font-size: 0.8rem; color: #6c757d;">Scan the QR code or pay to the UPI ID above</p>
                                   </div>
 

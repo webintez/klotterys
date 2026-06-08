@@ -13,5 +13,6 @@ class DrawResult extends Model
         'winning_number',
         'prize_category',
         'winning_amount',
+        'tax_amount',
     ];
 }

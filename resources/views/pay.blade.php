@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@php
+  $setting = \App\Models\WebsiteSetting::first();
+  $qrCode = $setting && $setting->qr_code ? asset($setting->qr_code) : asset('images/qr_code.jpeg');
+  $upiId = $setting ? $setting->upi_id : '9369873638-t50f@ybl';
+@endphp
+
 @section('title', 'Kerala State Lotteries | UPI Payment')
 
 @section('styles')
@@ -243,7 +249,7 @@
         <div class="payment-box">
           <h4>Scan & Pay</h4>
           <div class="qr-container">
-            <img src="{{ asset('images/qr_code.jpeg') }}" alt="UPI QR Code">
+            <img src="{{ $qrCode }}" alt="UPI QR Code">
           </div>
           <p style="font-size: 0.85rem; color: #6c757d; font-weight: 600;">Scan using any UPI App</p>
         </div>
@@ -252,7 +258,7 @@
         <div class="payment-box">
           <h4>Pay via UPI Apps</h4>
           @php
-            $upiUrl = "upi://pay?pa=9369873638-t50f@ybl&pn=Kerala%20State%20Lotteries&am=" . $booking->total_price . "&cu=INR";
+            $upiUrl = "upi://pay?pa=" . $upiId . "&pn=Kerala%20State%20Lotteries&am=" . $booking->total_price . "&cu=INR";
           @endphp
           <div class="upi-btn-stack">
             <a href="{{ $upiUrl }}" class="upi-btn upi-gpay">Google Pay</a>
