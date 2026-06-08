@@ -30,14 +30,38 @@ class ResultController extends Controller
     // AJAX route to check if a ticket has won
     public function check(Request $request)
     {
-        $ticket = $request->input('ticket');
-        $mobile = $request->input('mobile');
+        $ticket = strtoupper(trim($request->input('ticket')));
+        $mobile = trim($request->input('mobile'));
 
         if (!$ticket || !$mobile) {
-            return response()->json(['won' => false, 'message' => 'Missing inputs']);
+            return response()->json(['status' => 'not_found']);
         }
 
-        // Query database to see if this ticket matches any winning_number in draw_results
+        // Step 1: Verify the ticket was purchased with this mobile number
+        $booking = \App\Models\Booking::where('mobile', $mobile)->get();
+        $ticketFound = false;
+        foreach ($booking as $b) {
+            $tickets = json_decode($b->tickets, true);
+            if (is_array($tickets) && in_array($ticket, array_map('strtoupper', $tickets))) {
+                $ticketFound = true;
+                break;
+            }
+            // Also handle comma-separated string storage
+            if (is_string($b->tickets)) {
+                $ticketList = array_map('trim', explode(',', $b->tickets));
+                if (in_array($ticket, array_map('strtoupper', $ticketList))) {
+                    $ticketFound = true;
+                    break;
+                }
+            }
+        }
+
+        if (!$ticketFound) {
+            // Ticket and mobile do not match any purchase record
+            return response()->json(['status' => 'not_found']);
+        }
+
+        // Step 2: Check if this ticket is a winning number
         $draw = DrawResult::where('winning_number', $ticket)->first();
 
         if ($draw) {
@@ -61,28 +85,14 @@ class ResultController extends Controller
 
             $prizeAmount = $amount . ' (' . $draw->prize_category . ')';
             return response()->json([
-                'won' => true,
-                'prize' => $prizeAmount,
+                'status' => 'won',
+                'prize'  => $prizeAmount,
                 'tax_amount' => $draw->tax_amount,
             ]);
         }
 
-        // Pseudo-random fallback simulation (25% win rate)
-        $hash = 0;
-        for ($i = 0; i < strlen($ticket); $i++) {
-            $hash = ord($ticket[$i]) + (($hash << 5) - $hash);
-        }
-        $won = (abs($hash) % 4) === 0;
-
-        if ($won) {
-            $prize = (abs($hash) % 3 === 0) ? '₹5,000' : ((abs($hash) % 3 === 1) ? '₹1,000' : '₹500');
-            return response()->json([
-                'won' => true,
-                'prize' => $prize,
-            ]);
-        }
-
-        return response()->json(['won' => false]);
+        // Ticket was purchased with the correct mobile but did not win
+        return response()->json(['status' => 'no_win']);
     }
 
     // Submit a prize claim

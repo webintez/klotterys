@@ -114,40 +114,67 @@
                   mobile: mobile
               },
               success: function(response) {
-                  if (response.won) {
-                      // Trigger canvas-confetti firecrackers!
+                  if (response.status === 'won') {
+                      // 🎉 Winner! Fire confetti and redirect
                       confetti({
                           particleCount: 150,
                           spread: 80,
                           origin: { y: 0.6 }
                       });
-
                       setTimeout(function() {
                           window.location.href = "{{ route('results.winner') }}?ticket=" + encodeURIComponent(ticket) + "&mobile=" + encodeURIComponent(mobile);
                       }, 1200);
-                  } else {
+
+                  } else if (response.status === 'no_win') {
+                      // ✅ Ticket & mobile match, but not a winner this time
                       $.confirm({
-                          title: 'Draw Status Checked',
+                          title: '🎟 Draw Result',
                           content: `
-                              <div style="text-align: center; margin-top: 10px;">
-                                  <h3 style="color: #ffc107; margin-bottom: 15px;">Better Luck Next Time!</h3>
-                                  <p style="font-size: 1.05rem;">Ticket <span style="color: var(--primary-color); font-weight: bold;">${ticket}</span> did not win any prize in the latest draw.</p>
-                                  <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 15px;">
-                                      Don't lose hope. Every ticket brings a new chance. Play again today!
-                                  </p>
+                              <div style="text-align: center; padding: 10px 0;">
+                                  <div style="font-size: 3rem; margin-bottom: 10px;">😔</div>
+                                  <h3 style="color: #ffc107; margin-bottom: 12px;">Better Luck Next Time!</h3>
+                                  <p style="font-size: 1rem; color: #ccc;">Your ticket <strong style="color: #f8ab37;">${ticket}</strong> did not win any prize in the latest draw.</p>
+                                  <p style="font-size: 0.88rem; color: #888; margin-top: 12px;">Every ticket is a new chance. Keep playing!</p>
                               </div>
                           `,
                           theme: 'dark',
                           buttons: {
                               play: {
-                                  text: 'Buy More Tickets',
+                                  text: '🎟 Buy More Tickets',
                                   btnClass: 'btn-success',
                                   action: function() {
                                       window.location.href = "{{ route('buy-tickets') }}";
                                   }
                               },
-                              close: {
-                                  text: 'Close'
+                              close: { text: 'Close' }
+                          }
+                      });
+
+                  } else {
+                      // ❌ Ticket + mobile don't match any purchase record
+                      $.confirm({
+                          title: '❌ Not Found',
+                          content: `
+                              <div style="text-align: center; padding: 10px 0;">
+                                  <div style="font-size: 3rem; margin-bottom: 10px;">🔍</div>
+                                  <h3 style="color: #e74c3c; margin-bottom: 12px;">Details Not Matched</h3>
+                                  <p style="font-size: 1rem; color: #ccc;">Please check your <strong style="color: #f8ab37;">Ticket Number</strong> and <strong style="color: #f8ab37;">Mobile Number</strong> and try again.</p>
+                                  <p style="font-size: 0.88rem; color: #888; margin-top: 12px;">Make sure you enter the exact ticket number and the mobile number used during purchase.</p>
+                              </div>
+                          `,
+                          theme: 'dark',
+                          buttons: {
+                              retry: {
+                                  text: '🔄 Try Again',
+                                  btnClass: 'btn-warning',
+                                  action: function() { /* just closes */ }
+                              },
+                              buy: {
+                                  text: '🎟 Buy Tickets',
+                                  btnClass: 'btn-success',
+                                  action: function() {
+                                      window.location.href = "{{ route('buy-tickets') }}";
+                                  }
                               }
                           }
                       });
