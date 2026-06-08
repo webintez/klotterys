@@ -47,32 +47,30 @@
     <div class="container" style="max-width: 600px; width: 100%;">
 
       <!-- Check Your Ticket Card -->
-      <div class="card" style="text-align: left; background: #ffffff; color: #333333; border: 1px solid #dee2e6; border-radius: 12px; padding: 5px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);">
-        <h2 style="color: #007bff; text-align: center; font-weight: 800; font-size: 1.5rem; line-height: 1.3; margin-top: 0.5rem; margin-bottom: 1rem; text-transform: uppercase; font-family: 'Outfit', sans-serif;">
-            Ticket-Booking<br>Status Check
-        </h2>
-        <div style="height: 5px; background: #007bff; width: 100%; margin-bottom: 2rem; border-radius: 2px;"></div>
+      <div class="card" style="text-align: left; background: #ffffff; color: #333333; border: 1px solid #dee2e6; border-radius: 12px; padding: 5px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); width: 100%;">
+        <img src="{{ asset('images/kerala-lottery-result.jpg') }}" alt="Kerala Lottery Result" style="width: 100%; border-radius: 8px 8px 0 0; display: block;">
         
-        <form id="checkTicketForm">
-          @csrf
-          <div style="display: flex; border: 1.5px solid #333; margin-bottom: 1.25rem; border-radius: 4px; overflow: hidden; background: #fff;">
-            <div style="background-color: #343a40; color: #fff; width: 110px; padding: 0.75rem; font-weight: 700; text-align: center; font-size: 0.9rem; border-right: 1.5px solid #333; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: sans-serif;">
-              Ticket no.
+        <div style="padding: 1.5rem 1rem 1rem 1rem;">
+          <h2 style="color: #007bff; text-align: center; font-weight: 800; font-size: 1.5rem; line-height: 1.3; margin-top: 0.5rem; margin-bottom: 1rem; text-transform: uppercase; font-family: 'Outfit', sans-serif;">
+              CHECK YOUR LOTTERY<br>RESULT
+          </h2>
+          <div style="height: 5px; background: #007bff; width: 100%; margin-bottom: 2rem; border-radius: 2px;"></div>
+          
+          <form id="checkTicketForm">
+            @csrf
+            <div style="margin-bottom: 1.25rem;">
+              <input type="text" id="ticket_number" placeholder="Enter Ticket Number" required style="width: 100%; border: 1px solid #dee2e6; outline: none; padding: 0.85rem 1rem; font-size: 1rem; background: #fff; color: #333; border-radius: 8px; font-family: sans-serif; box-sizing: border-box;">
             </div>
-            <input type="text" id="ticket_number" placeholder="Ex. KL854215" required style="flex: 1; border: none; outline: none; padding: 0.75rem 1rem; font-size: 1rem; background: #fff; color: #333; font-family: sans-serif;">
-          </div>
 
-          <div style="display: flex; border: 1.5px solid #333; margin-bottom: 1.5rem; border-radius: 4px; overflow: hidden; background: #fff;">
-            <div style="background-color: #343a40; color: #fff; width: 110px; padding: 0.75rem; font-weight: 700; text-align: center; font-size: 0.9rem; border-right: 1.5px solid #333; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: sans-serif;">
-              Mobile
+            <div style="margin-bottom: 1.5rem;">
+              <input type="tel" id="mobile_number" placeholder="Enter Mobile Number" required style="width: 100%; border: 1px solid #dee2e6; outline: none; padding: 0.85rem 1rem; font-size: 1rem; background: #fff; color: #333; border-radius: 8px; font-family: sans-serif; box-sizing: border-box;">
             </div>
-            <input type="tel" id="mobile_number" placeholder="Ex.9874563210" required style="flex: 1; border: none; outline: none; padding: 0.75rem 1rem; font-size: 1rem; background: #fff; color: #333; font-family: sans-serif;">
-          </div>
 
-          <div style="text-align: center; margin-top: 1.5rem;">
-            <button type="submit" class="btn" style="width: 100%; padding: 1rem; font-size: 1.25rem; font-weight: 700; background: linear-gradient(to right, #050549, #00bfff); color: #ffffff; border: none; border-radius: 8px; cursor: pointer; text-transform: none; box-shadow: 0 4px 15px rgba(0, 191, 255, 0.25);">Check Now</button>
-          </div>
-        </form>
+            <div style="text-align: center; margin-top: 1.5rem;">
+              <button type="submit" class="btn" style="width: 100%; padding: 1rem; font-size: 1.25rem; font-weight: 700; background: linear-gradient(to right, #050549, #00bfff); color: #ffffff; border: none; border-radius: 8px; cursor: pointer; text-transform: none; box-shadow: 0 4px 15px rgba(0, 191, 255, 0.25);">Check Result</button>
+            </div>
+          </form>
+        </div>
       </div>
 
       <!-- Result Status Card -->
