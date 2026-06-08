@@ -678,3 +678,12 @@ body {
     gap: 1rem;
   }
 }
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 1.5rem;
+  }
+  .auth-logo {
+    font-size: 1.6rem;
+  }
+}

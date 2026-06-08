@@ -109,7 +109,6 @@
     <div class="footer-bottom container">
       <div class="footer-meta">
         <span class="last-modified">Last Modified: Tuesday 22, November 2022.</span>
-        <span class="admin-login-link"><a href="{{ route('admin.login') }}">Admin Login</a></span>
       </div>
       <p class="copyright">&copy; 2026 Kerala State Lotteries Recreation. All rights reserved.</p>
     </div>
