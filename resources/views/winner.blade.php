@@ -255,7 +255,7 @@
         <button type="button" class="close-btn-x" id="closeAccountDetailsModal" style="background: none; border: none; color: #ffffff; font-size: 1.8rem; cursor: pointer; line-height: 1; padding: 0;">&times;</button>
       </div>
       <!-- Body -->
-      <div style="padding: 2rem; color: #333333; text-align: left;">
+      <div style="padding: 2rem; color: #333333; text-align: left; max-height: 75vh; overflow-y: auto;">
         <form id="accountDetailsForm">
           <div class="form-group" style="margin-bottom: 1.25rem;">
             <label style="color: #495057; display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.95rem;">Account Holder Name</label>
@@ -294,7 +294,7 @@
         <input type="hidden" name="ticket" value="{{ $ticket }}">
         <input type="hidden" name="mobile" value="{{ $mobile }}">
 
-        <div class="payment-modal-body" style="padding: 1.5rem 2rem; color: #333; text-align: left;">
+        <div class="payment-modal-body" style="padding: 1.5rem 2rem; color: #333; text-align: left; max-height: 75vh; overflow-y: auto;">
           <div class="payment-grid-layout">
             <!-- Left Column: Instructions -->
             <div class="payment-col-left">

@@ -1307,6 +1307,7 @@ footer {
   padding: 20px;
   opacity: 0;
   transition: opacity 0.3s ease;
+  overflow-y: auto;
 }
 
 .payment-modal.active {
@@ -1324,6 +1325,7 @@ footer {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
   transform: scale(0.9);
   transition: transform 0.3s ease;
+  margin: auto;
 }
 
 .payment-modal.active .payment-modal-box {
