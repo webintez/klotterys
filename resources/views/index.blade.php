@@ -265,8 +265,9 @@
       <h1>Win the Ultimate <br><span style="color: var(--primary-color);">Jackpot</span></h1>
       <p>Experience the excitement of Kerala State Lotteries. Play today, change your life tomorrow. Fast, secure, and 100% genuine.</p>
       <div class="hero-buttons">
-        <a href="{{ route('buy-tickets') }}" class="btn">Play Now</a>
-        <a href="{{ route('results') }}" class="btn btn-secondary">Check Results</a>
+        <a href="{{ route('buy-tickets') }}" class="btn" style="border-radius: 0 !important; text-transform: uppercase;">Book Now</a>
+        <a href="{{ route('track-order') }}" class="btn btn-secondary" style="border-radius: 0 !important; text-transform: uppercase;">Check Booking</a>
+        <a href="{{ route('results') }}" class="btn btn-secondary" style="border-radius: 0 !important; text-transform: uppercase;">Check Result</a>
       </div>
     </div>
   </section>

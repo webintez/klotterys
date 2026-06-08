@@ -12,6 +12,34 @@
       to { transform: rotate(360deg); }
     }
     
+    @keyframes shine {
+      0% {
+        background-position: -200% center;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.4), 0 0 20px rgba(255, 215, 0, 0.2);
+      }
+      50% {
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 35px rgba(255, 215, 0, 0.5), 0 0 50px rgba(255, 215, 0, 0.3);
+      }
+      100% {
+        background-position: 200% center;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.4), 0 0 20px rgba(255, 215, 0, 0.2);
+      }
+    }
+
+    .shining-amount-text {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #ffd700, #ffa500, #ff8c00, #ffd700);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 3s linear infinite;
+      display: inline-block;
+      letter-spacing: 2px;
+      font-family: 'Cinzel', serif;
+    }
+    
     .payment-grid-layout {
       display: grid;
       grid-template-columns: 1.2fr 1fr;
@@ -85,9 +113,11 @@
         <span>LIVE DRAW RESULT</span>
       </div>
       <h1 class="section-title" style="margin-bottom: 0.5rem; text-transform: none;">Hi <span style="color: var(--secondary-color);">{{ $fullname }}</span>, Congratulations!</h1>
-      <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto 2rem;">
-        You have won the prize in the Kerala State Lottery. Your ticket matched the winning numbers.
-      </p>
+      <div style="margin: 2rem auto; text-align: center;">
+        <div class="shining-amount-text">
+          Congratulations! You Won {{ $winningAmount }}
+        </div>
+      </div>
     </div>
   </div>
 
