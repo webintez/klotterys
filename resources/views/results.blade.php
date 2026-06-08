@@ -54,49 +54,7 @@
 
   <!-- Results Section -->
   <section class="section bg-alt" style="padding-top: 3rem;">
-    <div class="container results-layout">
-      
-      <div class="results-table-container">
-        <!-- Filters -->
-        <form action="{{ route('results') }}" method="GET" class="search-bar">
-          <input type="date" name="date" value="{{ request('date') }}" class="form-control">
-          <select name="name" class="form-control">
-            <option value="">All Lotteries</option>
-            <option value="Win Win" {{ request('name') == 'Win Win' ? 'selected' : '' }}>Win Win</option>
-            <option value="Sthree Sakthi" {{ request('name') == 'Sthree Sakthi' ? 'selected' : '' }}>Sthree Sakthi</option>
-            <option value="Onam Bumper" {{ request('name') == 'Onam Bumper' ? 'selected' : '' }}>Onam Bumper</option>
-          </select>
-          <button type="submit" class="btn">Filter</button>
-        </form>
-
-        <!-- Table -->
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Lottery Name</th>
-              <th>Draw No.</th>
-              <th>1st Prize Winning Number</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            @forelse ($results as $r)
-              <tr>
-                <td>{{ \Carbon\Carbon::parse($r->draw_date)->format('Y-m-d') }}</td>
-                <td style="color: var(--secondary-color); font-weight: bold;">{{ $r->lottery_name }}</td>
-                <td>{{ $r->draw_number }}</td>
-                <td style="font-size: 1.2rem; font-family: monospace;">{{ $r->winning_number }}</td>
-                <td><a href="#" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Full Result</a></td>
-              </tr>
-            @empty
-              <tr>
-                <td colspan="5" style="text-align: center; color: var(--text-muted);">No results found.</td>
-              </tr>
-            @endforelse
-          </tbody>
-        </table>
-      </div>
+    <div class="container" style="max-width: 600px; margin: 0 auto;">
 
       <!-- Check Your Ticket Card -->
       <div class="card" style="text-align: left; padding: 2rem; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 15px; width: 100%;">
