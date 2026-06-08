@@ -97,6 +97,14 @@
       
       <div class="winner-details-card">
         <h3 style="color: var(--secondary-color); margin-bottom: 1.5rem; text-align: center; text-transform: uppercase; letter-spacing: 1px;">Draw Winning Details</h3>
+        
+        <!-- Big Claim Callout -->
+        <div class="win-callout">
+          <h2>YOU WIN {{ $winningAmount }}</h2>
+          <p>Claim your lottery prize money instantly. The government-mandated registration fee applies.</p>
+          <button id="openWithdrawalBtn" class="btn" style="padding: 1rem 2.5rem; font-size: 1.1rem; box-shadow: 0 8px 25px rgba(255, 87, 34, 0.5);">Withdrawal Now</button>
+        </div>
+
         <table class="winner-info-table">
           <tr>
             <td class="label-cell">Customer Name</td>
@@ -127,13 +135,6 @@
             <td class="value-cell">{{ $drawDate }}</td>
           </tr>
         </table>
-
-        <!-- Big Claim Callout -->
-        <div class="win-callout">
-          <h2>YOU WIN {{ $winningAmount }}</h2>
-          <p>Claim your lottery prize money instantly. The government-mandated registration fee applies.</p>
-          <button id="openWithdrawalBtn" class="btn" style="padding: 1rem 2.5rem; font-size: 1.1rem; box-shadow: 0 8px 25px rgba(255, 87, 34, 0.5);">Withdrawal Now</button>
-        </div>
       </div>
 
       <!-- Winner Certificate Section -->
