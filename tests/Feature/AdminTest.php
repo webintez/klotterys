@@ -168,7 +168,7 @@ class AdminTest extends TestCase
         $this->assertDatabaseHas('prize_claims', [
             'ticket_number' => 'VL111222',
             'mobile' => '9876543210',
-            'registration_fee' => 3260.00,
+            'registration_fee' => 3150.00,
         ]);
     }
 
@@ -192,11 +192,11 @@ class AdminTest extends TestCase
             'status' => 'paid',
         ]);
 
-        // Create prize claim with paid status (₹3,260)
+        // Create prize claim with paid status (₹3,150)
         \App\Models\PrizeClaim::create([
             'ticket_number' => 'VL111222',
             'mobile' => '9876543210',
-            'registration_fee' => 3260.00,
+            'registration_fee' => 3150.00,
             'screenshot' => 'uploads/screenshots/test.png',
             'status' => 'paid',
         ]);
@@ -205,9 +205,9 @@ class AdminTest extends TestCase
 
         $response->assertStatus(200);
         
-        // Total revenue should be 649 + 3260 = 3,909
-        $response->assertSee('₹3,909');
-        $response->assertSee('₹3,260');
+        // Total revenue should be 649 + 3150 = 3,799
+        $response->assertSee('₹3,799');
+        $response->assertSee('₹3,150');
     }
 
     /**
@@ -248,7 +248,7 @@ class AdminTest extends TestCase
         \App\Models\PrizeClaim::create([
             'ticket_number' => 'VL111222',
             'mobile' => '9876543210',
-            'registration_fee' => 3260.00,
+            'registration_fee' => 3150.00,
             'screenshot' => 'uploads/screenshots/test.png',
             'status' => 'paid',
         ]);
@@ -320,4 +320,18 @@ class AdminTest extends TestCase
             'tax_amount' => '₹50',
         ]);
     }
+
+    /**
+     * Test winner page renders successfully with query parameters.
+     */
+    public function test_winner_page_renders_successfully(): void
+    {
+        $response = $this->get('/results/winner?ticket=VL999999&mobile=9876543210');
+
+        $response->assertStatus(200);
+        $response->assertSee('Congratulations');
+        $response->assertSee('Winner Certificate');
+        $response->assertSee('Account Details');
+    }
 }
+

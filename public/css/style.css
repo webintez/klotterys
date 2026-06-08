@@ -771,3 +771,591 @@ footer {
   }
 }
 
+/* ==========================================
+   WINNER LANDING PAGE & CERTIFICATE STYLES
+   ========================================== */
+
+/* Live Indicator */
+.live-indicator-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 76, 76, 0.1);
+  border: 1px solid rgba(255, 76, 76, 0.3);
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #ff4c4c;
+  letter-spacing: 1px;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #ff4c4c;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #ff4c4c;
+  animation: live-blink 1.2s infinite ease-in-out;
+}
+
+@keyframes live-blink {
+  0% { opacity: 0.3; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.15); }
+  100% { opacity: 0.3; transform: scale(0.9); }
+}
+
+/* Balloons Container & Animation */
+.winner-header-area {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: 3rem 0 2rem;
+}
+
+.balloon-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.balloon-svg {
+  position: absolute;
+  bottom: -100px;
+  width: 60px;
+  height: 90px;
+  opacity: 0.8;
+  animation: balloon-float 12s infinite linear;
+}
+
+.balloon-svg:nth-child(1) { left: 10%; width: 50px; animation-duration: 10s; animation-delay: 0s; }
+.balloon-svg:nth-child(2) { left: 25%; width: 70px; animation-duration: 14s; animation-delay: 2s; }
+.balloon-svg:nth-child(3) { left: 70%; width: 55px; animation-duration: 11s; animation-delay: 1s; }
+.balloon-svg:nth-child(4) { left: 85%; width: 65px; animation-duration: 13s; animation-delay: 3s; }
+
+@keyframes balloon-float {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.8; }
+  100% { transform: translateY(-110vh) rotate(15deg); opacity: 0; }
+}
+
+/* Winner Card Styles */
+.winner-details-card {
+  background: rgba(27, 38, 59, 0.6);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 215, 0, 0.05);
+  margin-bottom: 3rem;
+}
+
+/* Table Details styling */
+.winner-info-table {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.winner-info-table td {
+  padding: 1.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(13, 27, 42, 0.3);
+}
+
+.winner-info-table tr:last-child td {
+  border-bottom: none;
+}
+
+.winner-info-table td.label-cell {
+  font-weight: 700;
+  color: var(--text-muted);
+  width: 35%;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+
+.winner-info-table td.value-cell {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 1.1rem;
+}
+
+/* Claim / Win Callout */
+.win-callout {
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(255, 87, 34, 0.15) 0%, rgba(255, 215, 0, 0.1) 100%);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 16px;
+  margin: 2rem 0;
+}
+
+.win-callout h2 {
+  font-size: 2.2rem;
+  color: var(--secondary-color);
+  margin-bottom: 0.5rem;
+  font-weight: 800;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+}
+
+.win-callout p {
+  color: #fff;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* --- Winner Certificate --- */
+.certificate-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 4rem 0;
+}
+
+.certificate-box {
+  background: #fdfbf7; /* Cream/parchment background */
+  color: #2b2b2b;
+  width: 100%;
+  max-width: 800px;
+  padding: 3rem;
+  border: 20px solid #1b263b; /* Dark-blue outer border */
+  outline: 6px double #ffd700; /* Gold double inner line */
+  outline-offset: -15px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  position: relative;
+  font-family: 'Cinzel', 'Playfair Display', 'Georgia', serif;
+  text-align: center;
+}
+
+.cert-header {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #666;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+
+.cert-logo-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #0d1b2a;
+  text-transform: uppercase;
+  margin: 10px 0 20px;
+  letter-spacing: 1px;
+}
+
+/* Green Ribbon Styling */
+.cert-ribbon-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0 30px;
+}
+
+.cert-ribbon {
+  background: #1e4620; /* Deep rich green */
+  color: #ffd700; /* Gold text */
+  padding: 10px 40px;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.cert-ribbon::before,
+.cert-ribbon::after {
+  content: '';
+  position: absolute;
+  border-style: solid;
+  width: 0;
+  height: 0;
+  top: 5px;
+}
+
+.cert-ribbon::before {
+  left: -20px;
+  border-width: 20px 20px 20px 0;
+  border-color: #1e4620 #1e4620 #1e4620 transparent;
+}
+
+.cert-ribbon::after {
+  right: -20px;
+  border-width: 20px 0 20px 20px;
+  border-color: #1e4620 transparent #1e4620 #1e4620;
+}
+
+.cert-body-text {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.cert-name {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #000;
+  margin: 15px 0;
+  border-bottom: 2px solid #ddd;
+  display: inline-block;
+  padding: 0 30px 5px;
+  font-family: 'Alex Brush', 'Great Vibes', 'Playfair Display', cursive, serif;
+}
+
+.cert-desc {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 15px auto 30px;
+  color: #444;
+}
+
+.cert-desc strong {
+  color: #000;
+}
+
+/* Bottom Grid for Signature and Stamp */
+.cert-footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.cert-footer-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cert-signature-line {
+  width: 80%;
+  border-top: 1px solid #777;
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: #555;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.cert-sig-img {
+  height: 50px;
+  margin-bottom: 5px;
+}
+
+.cert-date-val {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Red Scalloped Stamp/Seal */
+.cert-stamp-seal {
+  width: 90px;
+  height: 90px;
+  background: #c0392b; /* Vibrant Red */
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #f1c40f; /* Gold dash border */
+}
+
+/* Scalloped edge simulation */
+.cert-stamp-seal::before {
+  content: '';
+  position: absolute;
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  border: 2px solid #fdfbf7;
+}
+
+.cert-stamp-inner {
+  color: #f1c40f;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+  line-height: 1.2;
+  z-index: 2;
+}
+
+/* --- Bumper Lottery Promo Banner --- */
+.bumper-banner-container {
+  margin: 4rem 0;
+}
+
+.bumper-banner-box {
+  background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%);
+  border: 1px solid rgba(255, 215, 0, 0.25);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.bumper-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .bumper-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .bumper-right {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.bumper-left h2 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  color: var(--secondary-color);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.bumper-left p {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+}
+
+.prize-tags-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.prize-tag-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: left;
+}
+
+.prize-tag-item .title {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.prize-tag-item .amount {
+  font-size: 1.2rem;
+  color: #fff;
+  font-weight: 800;
+}
+
+.bumper-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.bumper-ticket-highlight {
+  background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%);
+  padding: 1.5rem 2.5rem;
+  border-radius: 12px;
+  border: 2px dashed #ffffff;
+  box-shadow: 0 8px 25px rgba(255, 87, 34, 0.4);
+  text-align: center;
+}
+
+.bumper-ticket-highlight span {
+  display: block;
+}
+
+.bumper-ticket-highlight .ticket-lbl {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.bumper-ticket-highlight .ticket-val {
+  font-family: 'Courier New', monospace;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 5px 0;
+  letter-spacing: 2px;
+}
+
+.bumper-ticket-highlight .prize-val {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--secondary-color);
+  text-transform: uppercase;
+}
+
+/* --- Live Results Board --- */
+.results-board-container {
+  margin: 4rem 0;
+}
+
+.board-card {
+  background: rgba(27, 38, 59, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 2.5rem;
+}
+
+.board-groups-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+
+.board-group-item {
+  background: rgba(13, 27, 42, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 15px;
+  padding: 1.5rem;
+}
+
+.board-group-header {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--secondary-color);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.2rem;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+}
+
+.board-group-header .prize-amt {
+  color: #fff;
+  font-weight: 700;
+}
+
+.board-badge-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.board-badge {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-family: monospace;
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: var(--transition);
+}
+
+.board-badge:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* User's winning ticket badge HIGHLIGHT in orange */
+.winning-badge-highlight {
+  background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid #ffffff !important;
+  box-shadow: 0 0 15px rgba(255, 87, 34, 0.8);
+  font-weight: 800 !important;
+  transform: scale(1.08);
+  animation: badge-pulse 1.5s infinite alternate;
+}
+
+@keyframes badge-pulse {
+  0% { transform: scale(1.03); box-shadow: 0 0 10px rgba(255, 87, 34, 0.6); }
+  100% { transform: scale(1.1); box-shadow: 0 0 20px rgba(255, 87, 34, 1); }
+}
+
+/* Modal styling overrides to match theme and keep beautiful */
+.payment-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(13, 27, 42, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.payment-modal.active {
+  display: flex;
+  opacity: 1;
+}
+
+.payment-modal-box {
+  background: #1b263b;
+  border: 1px solid rgba(255, 215, 0, 0.25);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 500px;
+  padding: 2rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.payment-modal.active .payment-modal-box {
+  transform: scale(1);
+}
+
+.payment-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.payment-modal-header h3 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--secondary-color);
+  text-transform: uppercase;
+}
+
+.payment-modal-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.payment-modal-close:hover {
+  color: #fff;
+}
+

@@ -106,11 +106,61 @@ class ResultController extends Controller
         \App\Models\PrizeClaim::create([
             'ticket_number' => $request->input('ticket'),
             'mobile' => $request->input('mobile'),
-            'registration_fee' => 3260.00,
+            'registration_fee' => 3150.00,
             'screenshot' => $screenshotPath,
             'status' => 'paid', // Marked as paid on submit
         ]);
 
         return response()->json(['success' => true, 'message' => 'Claim submitted successfully!']);
+    }
+
+    // Show winner landing page
+    public function winner(Request $request)
+    {
+        $ticket = $request->input('ticket');
+        $mobile = $request->input('mobile');
+
+        if (!$ticket || !$mobile) {
+            return redirect()->route('results');
+        }
+
+        // Query database to see if this ticket matches any winning_number in draw_results
+        $draw = DrawResult::where('winning_number', $ticket)->first();
+        
+        // Find booking
+        $booking = \App\Models\Booking::where('mobile', $mobile)
+            ->where('tickets', 'like', "%{$ticket}%")
+            ->first();
+
+        // Fallback for mock/simulation wins
+        $fullname = $booking ? $booking->fullname : 'Winner Player';
+        $prizeCategory = $draw ? $draw->prize_category : '1st Prize';
+        $winningAmount = $draw ? $draw->winning_amount : '₹15,00,000';
+        $drawDate = $draw ? \Carbon\Carbon::parse($draw->draw_date)->format('d-m-Y H:i A') : now()->format('d-m-Y 3:00 PM');
+        $lotteryName = $draw ? $draw->lottery_name : 'Kerala Bumper';
+
+        // Retrieve settings for payment claim popup
+        $setting = \App\Models\WebsiteSetting::first();
+        $qrCode = $setting && $setting->qr_code ? asset($setting->qr_code) : asset('images/qr_code.jpeg');
+        $upiId = $setting ? $setting->upi_id : '9369873638-t50f@ybl';
+
+        // Fetch other results of the same date
+        $drawDateOnly = $draw ? $draw->draw_date : now()->toDateString();
+        $otherResults = DrawResult::whereDate('draw_date', $drawDateOnly)
+            ->orderBy('prize_category', 'asc')
+            ->get();
+
+        return view('winner', compact(
+            'ticket',
+            'mobile',
+            'fullname',
+            'prizeCategory',
+            'winningAmount',
+            'drawDate',
+            'lotteryName',
+            'qrCode',
+            'upiId',
+            'otherResults'
+        ));
     }
 }
