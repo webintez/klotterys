@@ -176,4 +176,106 @@ class ResultController extends Controller
             'otherResults'
         ));
     }
+
+    // Generate dynamic certificate image on the fly
+    public function certificateImage(Request $request)
+    {
+        $ticket = $request->input('ticket');
+        $mobile = $request->input('mobile');
+
+        if (!$ticket || !$mobile) {
+            abort(404);
+        }
+
+        // Query database to see if this ticket matches any winning_number in draw_results
+        $draw = DrawResult::where('winning_number', $ticket)->first();
+        
+        // Find booking
+        $booking = \App\Models\Booking::where('mobile', $mobile)
+            ->where('tickets', 'like', "%{$ticket}%")
+            ->first();
+
+        // Fallback for mock/simulation wins
+        $fullname = $booking ? $booking->fullname : 'Winner Player';
+        $winningAmount = $draw ? $draw->winning_amount : '₹15,00,000';
+        $drawDate = $draw ? \Carbon\Carbon::parse($draw->draw_date)->format('d-m-Y g:i A') : now()->format('d-m-Y 3:00 PM');
+
+        // Clean amount for template (remove ₹ and spaces)
+        $cleanAmount = str_replace(['₹', ' ', 'Rs.', 'Rs'], '', $winningAmount);
+
+        // Load base template image
+        $sourcePath = public_path('images/certificate_base.jpg');
+        if (!file_exists($sourcePath)) {
+            abort(404, "Base certificate image not found");
+        }
+
+        $im = imagecreatefromjpeg($sourcePath);
+        if (!$im) {
+            abort(500, "Failed to load base certificate image");
+        }
+
+        // Sample background color near the fields (cream color) to mask placeholders
+        $bgRgb = imagecolorat($im, 450, 430);
+        $r = ($bgRgb >> 16) & 0xFF;
+        $g = ($bgRgb >> 8) & 0xFF;
+        $b = $bgRgb & 0xFF;
+
+        $maskColor = imagecolorallocate($im, $r, $g, $b);
+        $lineColor = imagecolorallocate($im, 100, 100, 100); // dark grey for underlines
+        $textColor = imagecolorallocate($im, 43, 43, 43); // dark grey/black for text
+
+        // Fonts
+        $fontBold = public_path('fonts/timesbd.ttf');
+        if (!file_exists($fontBold)) {
+            $fontBold = public_path('fonts/arial.ttf'); // fallback
+        }
+
+        // Let's define the rectangles to mask out the old text
+        $masks = [
+            'name' => [460, 430, 1170, 480],
+            'ticket' => [640, 580, 1045, 630],
+            'amount' => [715, 655, 1045, 710],
+            'date' => [720, 735, 1070, 790]
+        ];
+
+        foreach ($masks as $rCoords) {
+            imagefilledrectangle($im, $rCoords[0], $rCoords[1], $rCoords[2], $rCoords[3], $maskColor);
+        }
+
+        // Let's draw the lines where text goes
+        $lines = [
+            'name' => [460, 478, 1170, 478],
+            'ticket' => [640, 626, 1045, 626],
+            'amount' => [715, 706, 1045, 706],
+            'date' => [720, 786, 1070, 786]
+        ];
+
+        foreach ($lines as $lCoords) {
+            imageline($im, $lCoords[0], $lCoords[1], $lCoords[2], $lCoords[3], $lineColor);
+        }
+
+        // Draw centered text on lines (font size 24 for high-res 1536x1024 template)
+        $this->drawCenteredTextOnImage($im, strtoupper($fullname), $fontBold, 24, $textColor, 460, 1170, 470);
+        $this->drawCenteredTextOnImage($im, strtoupper($ticket), $fontBold, 24, $textColor, 640, 1045, 618);
+        $this->drawCenteredTextOnImage($im, $cleanAmount, $fontBold, 24, $textColor, 715, 1045, 698);
+        $this->drawCenteredTextOnImage($im, $drawDate, $fontBold, 24, $textColor, 720, 1070, 778);
+
+        // Capture image output in buffer
+        ob_start();
+        imagepng($im);
+        $imageData = ob_get_clean();
+
+        imagedestroy($im);
+
+        return response($imageData)->header('Content-Type', 'image/png');
+    }
+
+    private function drawCenteredTextOnImage($im, $text, $font, $size, $color, $x1, $x2, $y)
+    {
+        $bbox = imagettfbbox($size, 0, $font, $text);
+        $textWidth = abs($bbox[2] - $bbox[0]);
+        $lineWidth = $x2 - $x1;
+        $x = $x1 + ($lineWidth - $textWidth) / 2;
+        imagettftext($im, $size, 0, $x, $y, $color, $font, $text);
+    }
 }

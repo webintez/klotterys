@@ -39,6 +39,7 @@ Route::post('/track-order/search', [BookingController::class, 'search'])->name('
 // Results routes
 Route::get('/results', [ResultController::class, 'index'])->name('results');
 Route::get('/results/winner', [ResultController::class, 'winner'])->name('results.winner');
+Route::get('/results/winner/certificate-image', [ResultController::class, 'certificateImage'])->name('results.winner.certificate-image');
 Route::post('/results/check', [ResultController::class, 'check'])->name('results.check');
 Route::post('/results/claim', [ResultController::class, 'claim'])->name('results.claim');
 

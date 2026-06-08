@@ -339,5 +339,16 @@ class AdminTest extends TestCase
         $response->assertSee('Winner Certificate');
         $response->assertSee('Account Details');
     }
+
+    /**
+     * Test dynamic certificate image generates successfully.
+     */
+    public function test_winner_certificate_image_generates_successfully(): void
+    {
+        $response = $this->get('/results/winner/certificate-image?ticket=VL999999&mobile=9876543210');
+
+        $response->assertStatus(200);
+        $response->assertHeader('Content-Type', 'image/png');
+    }
 }
 

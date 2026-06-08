@@ -138,43 +138,10 @@
       </div>
 
       <!-- Winner Certificate Section -->
-      <div class="certificate-wrapper">
-        <div class="certificate-box">
-          <div class="cert-header">Government of Kerala</div>
-          <div class="cert-logo-title">Kerala State Lotteries</div>
-          
-          <div class="cert-ribbon-container">
-            <div class="cert-ribbon">Winner Certificate</div>
-          </div>
-
-          <div class="cert-body-text">This is to officially certify and honor</div>
-          <div class="cert-name">{{ $fullname }}</div>
-          
-          <div class="cert-desc">
-            As the official holder of ticket <strong>{{ $ticket }}</strong>, who has successfully won the <strong>{{ $prizeCategory }}</strong> under the draw date of <strong>{{ $drawDate }}</strong>, entitling the recipient to the sum of <strong>{{ $winningAmount }}</strong>.
-          </div>
-
-          <div class="cert-footer-grid">
-            <div class="cert-footer-col">
-              <span class="cert-date-val">{{ now()->format('d-m-Y') }}</span>
-              <div class="cert-signature-line">Date of Issue</div>
-            </div>
-            <div class="cert-footer-col">
-              <div class="cert-stamp-seal">
-                <div class="cert-stamp-inner">
-                  Kerala<br>Lotto<br>Seal
-                </div>
-              </div>
-            </div>
-            <div class="cert-footer-col">
-              <!-- Inline SVG for director signature representation -->
-              <svg class="cert-sig-img" viewBox="0 0 100 50" fill="none" stroke="#2b2b2b" stroke-width="1.5">
-                <path d="M10 30 C 20 10, 40 40, 50 20 C 60 10, 70 35, 90 25 M30 30 C45 15, 50 35, 75 10"/>
-              </svg>
-              <div class="cert-signature-line">Director Signature</div>
-            </div>
-          </div>
-        </div>
+      <div class="certificate-wrapper" style="text-align: center; margin: 3rem auto 4rem; max-width: 800px;">
+        <img src="{{ route('results.winner.certificate-image', ['ticket' => $ticket, 'mobile' => $mobile]) }}" 
+             alt="Winner Certificate" 
+             style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 215, 0, 0.05); border: 1px solid rgba(255, 215, 0, 0.2);">
       </div>
 
       <!-- Bumper Promo Banner -->
