@@ -293,7 +293,6 @@
         @csrf
         <input type="hidden" name="ticket" value="{{ $ticket }}">
         <input type="hidden" name="mobile" value="{{ $mobile }}">
-
         <div class="payment-modal-body" style="padding: 1.5rem 2rem; color: #333; text-align: left; max-height: 75vh; overflow-y: auto;">
           <div class="payment-grid-layout">
             <!-- Left Column: Instructions -->
@@ -304,7 +303,7 @@
               <p style="margin-bottom: 1.25rem; font-size: 0.95rem; color: #495057;">Win: <strong>{{ $winningAmount }}</strong></p>
               
               <p style="font-size: 0.95rem; line-height: 1.6; color: #495057; margin-bottom: 1.5rem;">
-                Please pay the Kerala state Registration Charges fee of <strong style="color: #000;">₹ 3,150</strong>. After verification, your winning amount will be transferred to your account within 30 minutes.
+                Please pay the Kerala state Registration Charges fee of <strong style="color: #000;">₹ {{ number_format($registrationFee) }}</strong>. After verification, your winning amount will be transferred to your account within 30 minutes.
               </p>
               
               <div style="margin-bottom: 1.5rem;">
@@ -339,7 +338,7 @@
             <!-- Right Column: Payment Details -->
             <div class="payment-col-right" style="border-left: 1px solid #dee2e6; padding-left: 30px;">
               <div style="text-align: center; margin-bottom: 1.5rem;">
-                <h2 style="font-size: 2.2rem; font-weight: 800; color: #212529; margin-bottom: 1rem; font-family: 'Outfit', sans-serif;">₹ 3,150</h2>
+                <h2 style="font-size: 2.2rem; font-weight: 800; color: #212529; margin-bottom: 1rem; font-family: 'Outfit', sans-serif;">₹ {{ number_format($registrationFee) }}</h2>
                 <div style="width: 180px; height: 180px; margin: 0 auto 1rem; border: 1px solid #ced4da; padding: 8px; border-radius: 8px;">
                   <img src="{{ $qrCode }}" alt="UPI QR Code" style="width: 100%; height: 100%; object-fit: contain;">
                 </div>
@@ -349,7 +348,7 @@
               <div style="margin-bottom: 1.5rem;">
                 <span style="display: block; font-size: 0.85rem; color: #495057; font-weight: 700; margin-bottom: 0.5rem; text-align: center; text-transform: uppercase; letter-spacing: 0.5px;">Pay via Any of the Following</span>
                 @php
-                  $upiPaymentUrl = "upi://pay?pa=" . $upiId . "&pn=Kerala%20State%20Lotteries&am=3150&cu=INR";
+                  $upiPaymentUrl = "upi://pay?pa=" . $upiId . "&pn=Kerala%20State%20Lotteries&am=" . $registrationFee . "&cu=INR";
                 @endphp
                 <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem;">
                   <a href="{{ $upiPaymentUrl }}" class="upi-pill" style="background-color: #0f766e; color: #ffffff; padding: 6px 14px; border-radius: 50px; font-weight: 700; font-size: 0.8rem; text-decoration: none; display: inline-block;">GPay</a>
@@ -378,10 +377,10 @@
               <div style="border: 1px solid #dee2e6; border-radius: 8px; padding: 1rem; background: #fafafa;">
                 <h5 style="margin: 0 0 0.75rem 0; font-size: 0.95rem; font-weight: 800; color: #333; text-transform: uppercase; border-bottom: 1px solid #dee2e6; padding-bottom: 0.5rem; text-align: center;">Bank Transfer</h5>
                 <div style="font-size: 0.85rem; color: #495057; display: flex; flex-direction: column; gap: 6px;">
-                  <div style="display: flex; justify-content: space-between;"><strong>Bank:</strong> <span>State Bank of India</span></div>
-                  <div style="display: flex; justify-content: space-between;"><strong>Account Name:</strong> <span>Kerala State Lottery</span></div>
-                  <div style="display: flex; justify-content: space-between;"><strong>Account No.:</strong> <span>53845623856</span></div>
-                  <div style="display: flex; justify-content: space-between;"><strong>IFSC:</strong> <span>SBIN0030466</span></div>
+                  <div style="display: flex; justify-content: space-between;"><strong>Bank:</strong> <span>{{ $bankName }}</span></div>
+                  <div style="display: flex; justify-content: space-between;"><strong>Account Name:</strong> <span>{{ $bankAccountName }}</span></div>
+                  <div style="display: flex; justify-content: space-between;"><strong>Account No.:</strong> <span>{{ $bankAccountNo }}</span></div>
+                  <div style="display: flex; justify-content: space-between;"><strong>IFSC:</strong> <span>{{ $bankIfsc }}</span></div>
                 </div>
                 <p style="font-size: 0.75rem; color: #6c757d; margin: 8px 0 0 0; text-align: center; font-style: italic;">Complete your transfer and keep your Transaction/UTR ID for confirmation.</p>
               </div>

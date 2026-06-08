@@ -286,11 +286,17 @@ class AdminTest extends TestCase
         // Update settings
         $response = $this->actingAs($admin)->post('/admin/settings', [
             'upi_id' => 'test-upi-id@okaxis',
+            'registration_fee' => 3150.00,
+            'bank_name' => 'State Bank of India',
+            'bank_account_name' => 'Kerala State Lottery',
+            'bank_account_no' => '53845623856',
+            'bank_ifsc' => 'SBIN0030466',
         ]);
 
         $response->assertRedirect('/admin/settings');
         $this->assertDatabaseHas('website_settings', [
             'upi_id' => 'test-upi-id@okaxis',
+            'registration_fee' => 3150.00,
         ]);
     }
 

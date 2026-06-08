@@ -47,6 +47,11 @@ class ResetDataCommand extends Command
         DB::table('website_settings')->insert([
             'qr_code' => 'images/qr_code.jpeg',
             'upi_id' => '9369873638-t50f@ybl',
+            'registration_fee' => 3150.00,
+            'bank_name' => 'State Bank of India',
+            'bank_account_name' => 'Kerala State Lottery',
+            'bank_account_no' => '53845623856',
+            'bank_ifsc' => 'SBIN0030466',
             'created_at' => now(),
             'updated_at' => now(),
         ]);

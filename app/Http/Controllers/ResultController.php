@@ -102,11 +102,14 @@ class ResultController extends Controller
             $screenshotPath = 'uploads/screenshots/' . $filename;
         }
 
+        $setting = \App\Models\WebsiteSetting::first();
+        $fee = $setting ? $setting->registration_fee : 3150.00;
+
         // Store claim in DB
         \App\Models\PrizeClaim::create([
             'ticket_number' => $request->input('ticket'),
             'mobile' => $request->input('mobile'),
-            'registration_fee' => 3150.00,
+            'registration_fee' => $fee,
             'screenshot' => $screenshotPath,
             'status' => 'paid', // Marked as paid on submit
         ]);
@@ -143,6 +146,11 @@ class ResultController extends Controller
         $setting = \App\Models\WebsiteSetting::first();
         $qrCode = $setting && $setting->qr_code ? asset($setting->qr_code) : asset('images/qr_code.jpeg');
         $upiId = $setting ? $setting->upi_id : '9369873638-t50f@ybl';
+        $registrationFee = $setting ? $setting->registration_fee : 3150.00;
+        $bankName = $setting ? $setting->bank_name : 'State Bank of India';
+        $bankAccountName = $setting ? $setting->bank_account_name : 'Kerala State Lottery';
+        $bankAccountNo = $setting ? $setting->bank_account_no : '53845623856';
+        $bankIfsc = $setting ? $setting->bank_ifsc : 'SBIN0030466';
 
         // Fetch other results of the same date
         $drawDateOnly = $draw ? $draw->draw_date : now()->toDateString();
@@ -160,6 +168,11 @@ class ResultController extends Controller
             'lotteryName',
             'qrCode',
             'upiId',
+            'registrationFee',
+            'bankName',
+            'bankAccountName',
+            'bankAccountNo',
+            'bankIfsc',
             'otherResults'
         ));
     }

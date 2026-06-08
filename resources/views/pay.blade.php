@@ -272,9 +272,9 @@
         <div class="payment-box">
           <h4>Bank Transfer</h4>
           <div class="bank-details">
-            <p><strong>Bank:</strong> State Bank of India</p>
-            <p><strong>Account:</strong> 53845623856</p>
-            <p><strong>IFSC:</strong> SBIN0030466</p>
+            <p><strong>Bank:</strong> {{ $setting ? $setting->bank_name : 'State Bank of India' }}</p>
+            <p><strong>Account:</strong> {{ $setting ? $setting->bank_account_no : '53845623856' }}</p>
+            <p><strong>IFSC:</strong> {{ $setting ? $setting->bank_ifsc : 'SBIN0030466' }}</p>
           </div>
         </div>
       </div>
