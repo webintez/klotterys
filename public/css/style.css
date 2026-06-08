@@ -45,12 +45,12 @@ ul {
 
 /* Header */
 header {
-  background-color: rgba(13, 27, 42, 0.95);
+  background-color: #e2e8ce;
   backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .nav-wrapper {
@@ -58,6 +58,20 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 0;
+  background-color: #e2e8ce;
+}
+
+.nav-wrapper .menu-btn {
+  color: #0d1b2a;
+}
+
+.nav-wrapper .nav-links a {
+  color: #0d1b2a;
+}
+
+.nav-wrapper .nav-links a:hover,
+.nav-wrapper .nav-links a.active {
+  color: var(--primary-color);
 }
 
 .logo {
@@ -303,6 +317,10 @@ footer {
     padding: 2rem 0;
     transition: var(--transition);
     z-index: 999;
+  }
+
+  .nav-links a {
+    color: #ffffff;
   }
 
   .nav-links.active {
