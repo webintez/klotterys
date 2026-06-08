@@ -73,6 +73,32 @@
         font-weight: 700;
         vertical-align: baseline;
     }
+
+    /* Ticket grid: 3 equal columns, perfect alignment on all screens */
+    .ticket-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+    .ticket-grid > div {
+        display: flex;
+        align-items: stretch;
+    }
+    .ticket-grid .checkbox-budget + label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+        margin: 0;
+        padding: 8px 4px;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        box-sizing: border-box;
+    }
   </style>
   <!-- jQuery Confirm -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
@@ -101,7 +127,7 @@
           <div class="ticket-header">
               🎟 Premium Lottery Ticket Price <span class="badge-price">₹500</span>
           </div>
-          <div id="a-series"></div>    
+          <div id="a-series" class="ticket-grid"></div>    
       </div>
       
       <!-- STANDARD -->
@@ -112,7 +138,7 @@
           <div class="ticket-header">
               🎟 Standard Lottery Ticket Price <span class="badge-price">₹149</span>
           </div>
-          <div id="b-series"></div>
+          <div id="b-series" class="ticket-grid"></div>
       </div>
       
       <!-- BASIC -->
@@ -123,7 +149,7 @@
           <div class="ticket-header">
               🎟 Basic Lottery Ticket Price <span class="badge-price">₹40</span>
           </div>
-          <div id="c-series"></div>
+          <div id="c-series" class="ticket-grid"></div>
       </div>
 
     </div>
@@ -162,8 +188,10 @@
       series.forEach((num, i)=>{
           let id = container + "_" + i;
           html += `
-              <input type="checkbox" class="checkbox-budget" id="${id}" value="${num}">
-              <label for="${id}">${num}</label>
+              <div>
+                <input type="checkbox" class="checkbox-budget" id="${id}" value="${num}">
+                <label for="${id}">${num}</label>
+              </div>
           `;
       });
       document.getElementById(container).innerHTML = html;
