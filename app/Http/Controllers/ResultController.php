@@ -30,38 +30,31 @@ class ResultController extends Controller
     // AJAX route to check if a ticket has won
     public function check(Request $request)
     {
-        $ticket = strtoupper(trim($request->input('ticket')));
-        $mobile = trim($request->input('mobile'));
+        $ticket = $request->input('ticket');
+        $mobile = $request->input('mobile');
 
         if (!$ticket || !$mobile) {
-            return response()->json(['status' => 'not_found']);
+            return response()->json([
+                'won' => false,
+                'status' => 'mismatch',
+                'message' => 'please check the ticket number and the mobile number'
+            ]);
         }
 
-        // Step 1: Verify the ticket was purchased with this mobile number
-        $booking = \App\Models\Booking::where('mobile', $mobile)->get();
-        $ticketFound = false;
-        foreach ($booking as $b) {
-            $tickets = json_decode($b->tickets, true);
-            if (is_array($tickets) && in_array($ticket, array_map('strtoupper', $tickets))) {
-                $ticketFound = true;
-                break;
-            }
-            // Also handle comma-separated string storage
-            if (is_string($b->tickets)) {
-                $ticketList = array_map('trim', explode(',', $b->tickets));
-                if (in_array($ticket, array_map('strtoupper', $ticketList))) {
-                    $ticketFound = true;
-                    break;
-                }
-            }
+        // 1. Verify if the ticket and mobile number match a booking
+        $booking = \App\Models\Booking::where('mobile', $mobile)
+            ->where('tickets', 'like', "%{$ticket}%")
+            ->first();
+
+        if (!$booking) {
+            return response()->json([
+                'won' => false,
+                'status' => 'mismatch',
+                'message' => 'please check the ticket number and the mobile number'
+            ]);
         }
 
-        if (!$ticketFound) {
-            // Ticket and mobile do not match any purchase record
-            return response()->json(['status' => 'not_found']);
-        }
-
-        // Step 2: Check if this ticket is a winning number
+        // 2. Query database to see if this ticket matches any winning_number in draw_results
         $draw = DrawResult::where('winning_number', $ticket)->first();
 
         if ($draw) {
@@ -85,14 +78,34 @@ class ResultController extends Controller
 
             $prizeAmount = $amount . ' (' . $draw->prize_category . ')';
             return response()->json([
+                'won' => true,
                 'status' => 'won',
-                'prize'  => $prizeAmount,
+                'prize' => $prizeAmount,
                 'tax_amount' => $draw->tax_amount,
             ]);
         }
 
-        // Ticket was purchased with the correct mobile but did not win
-        return response()->json(['status' => 'no_win']);
+        // Pseudo-random fallback simulation (25% win rate)
+        $hash = 0;
+        for ($i = 0; $i < strlen($ticket); $i++) {
+            $hash = ord($ticket[$i]) + (($hash << 5) - $hash);
+        }
+        $won = (abs($hash) % 4) === 0;
+
+        if ($won) {
+            $prize = (abs($hash) % 3 === 0) ? '₹5,000' : ((abs($hash) % 3 === 1) ? '₹1,000' : '₹500');
+            return response()->json([
+                'won' => true,
+                'status' => 'won',
+                'prize' => $prize,
+            ]);
+        }
+
+        return response()->json([
+            'won' => false,
+            'status' => 'not_won',
+            'message' => 'better luck next time'
+        ]);
     }
 
     // Submit a prize claim
@@ -137,16 +150,40 @@ class ResultController extends Controller
             return redirect()->route('results');
         }
 
-        // Query database to see if this ticket matches any winning_number in draw_results
-        $draw = DrawResult::where('winning_number', $ticket)->first();
-        
         // Find booking
         $booking = \App\Models\Booking::where('mobile', $mobile)
             ->where('tickets', 'like', "%{$ticket}%")
             ->first();
 
-        // Fallback for mock/simulation wins
-        $fullname = $booking ? $booking->fullname : 'Winner Player';
+        // 1. Verify if the ticket and mobile match a booking
+        if (!$booking) {
+            return redirect()->route('results')->with([
+                'error_status' => 'mismatch',
+                'error_ticket' => $ticket,
+                'error_message' => 'please check the ticket number and the mobile number'
+            ]);
+        }
+
+        // Query database to see if this ticket matches any winning_number in draw_results
+        $draw = DrawResult::where('winning_number', $ticket)->first();
+
+        // Check if ticket won via fallback pseudo-random check if not in DrawResult
+        $hash = 0;
+        for ($i = 0; $i < strlen($ticket); $i++) {
+            $hash = ord($ticket[$i]) + (($hash << 5) - $hash);
+        }
+        $won = (abs($hash) % 4) === 0;
+
+        // 2. Verify if the ticket is a winner
+        if (!$draw && !$won) {
+            return redirect()->route('results')->with([
+                'error_status' => 'not_won',
+                'error_ticket' => $ticket,
+                'error_message' => 'better luck next time'
+            ]);
+        }
+
+        $fullname = $booking->fullname;
         $prizeCategory = $draw ? $draw->prize_category : '1st Prize';
         $winningAmount = $draw ? $draw->winning_amount : '₹15,00,000';
         $drawDate = $draw ? \Carbon\Carbon::parse($draw->draw_date)->format('d-m-Y H:i A') : now()->format('d-m-Y 3:00 PM');
@@ -197,16 +234,32 @@ class ResultController extends Controller
             abort(404);
         }
 
-        // Query database to see if this ticket matches any winning_number in draw_results
-        $draw = DrawResult::where('winning_number', $ticket)->first();
-        
         // Find booking
         $booking = \App\Models\Booking::where('mobile', $mobile)
             ->where('tickets', 'like', "%{$ticket}%")
             ->first();
 
-        // Fallback for mock/simulation wins
-        $fullname = $booking ? $booking->fullname : 'Winner Player';
+        // 1. Verify booking exists
+        if (!$booking) {
+            abort(403, 'Unauthorized');
+        }
+
+        // Query database to see if this ticket matches any winning_number in draw_results
+        $draw = DrawResult::where('winning_number', $ticket)->first();
+        
+        // Check if ticket won via fallback pseudo-random check if not in DrawResult
+        $hash = 0;
+        for ($i = 0; $i < strlen($ticket); $i++) {
+            $hash = ord($ticket[$i]) + (($hash << 5) - $hash);
+        }
+        $won = (abs($hash) % 4) === 0;
+
+        // 2. Verify if the ticket is a winner
+        if (!$draw && !$won) {
+            abort(403, 'Unauthorized');
+        }
+
+        $fullname = $booking->fullname;
         $winningAmount = $draw ? $draw->winning_amount : '₹15,00,000';
         $drawDate = $draw ? \Carbon\Carbon::parse($draw->draw_date)->format('d-m-Y g:i A') : now()->format('d-m-Y 3:00 PM');
 

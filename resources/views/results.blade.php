@@ -79,6 +79,49 @@
         </form>
       </div>
 
+      <!-- Result Status Card -->
+      @if (session('error_status'))
+      <div id="resultStatusCard" class="card" style="margin-top: 1.5rem; text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 15px; width: 100%;">
+          <div id="resultStatusIcon" style="font-size: 3rem; margin-bottom: 1rem;">
+              @if (session('error_status') === 'mismatch')
+                  ❌
+              @else
+                  🍀
+              @endif
+          </div>
+          <h3 id="resultStatusTitle" style="color: var(--secondary-color); margin-bottom: 1rem; font-size: 1.6rem; font-weight: 800; text-transform: uppercase;">
+              @if (session('error_status') === 'mismatch')
+                  Check Details
+              @else
+                  Better Luck Next Time!
+              @endif
+          </h3>
+          <p id="resultStatusText" style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.6;">
+              @if (session('error_status') === 'mismatch')
+                  please check the ticket number and the mobile number
+              @else
+                  Ticket <span style="color: var(--primary-color); font-weight: bold;">{{ session('error_ticket') }}</span> did not win any prize in the latest draw.<br>
+                  <span style="font-size: 0.9rem; color: var(--text-muted); display: block; margin-top: 10px;">Don't lose hope. Every ticket brings a new chance. Play again today!</span>
+              @endif
+          </p>
+          <div id="resultStatusButtons" style="margin-top: 1.5rem;">
+              @if (session('error_status') === 'mismatch')
+                  <button class="btn" onclick="$('#resultStatusCard').hide();" style="width: 100%;">Try Again</button>
+              @else
+                  <a href="{{ route('buy-tickets') }}" class="btn" style="display: block; width: 100%; margin-bottom: 8px; text-decoration: none; text-align: center; line-height: 2.2; background: linear-gradient(45deg, #28a745, #218838); border: none;">Buy More Tickets</a>
+                  <button class="btn" onclick="$('#resultStatusCard').hide();" style="width: 100%; margin-top: 8px; background: rgba(255, 255, 255, 0.1); border: 1px solid var(--border-color); color: #fff;">Close</button>
+              @endif
+          </div>
+      </div>
+      @else
+      <div id="resultStatusCard" class="card" style="display: none; margin-top: 1.5rem; text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 15px; width: 100%;">
+          <div id="resultStatusIcon" style="font-size: 3rem; margin-bottom: 1rem;"></div>
+          <h3 id="resultStatusTitle" style="color: var(--secondary-color); margin-bottom: 1rem; font-size: 1.6rem; font-weight: 800; text-transform: uppercase;"></h3>
+          <p id="resultStatusText" style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.6;"></p>
+          <div id="resultStatusButtons" style="margin-top: 1.5rem;"></div>
+      </div>
+      @endif
+
     </div>
   </section>
 @endsection
@@ -96,11 +139,11 @@
           let mobile = $("#mobile_number").val().trim();
 
           if (!ticket || !mobile) {
-              $.alert({
-                  title: 'Error',
-                  content: '❌ Please enter both Ticket Number and Mobile Number.',
-                  theme: 'dark'
-              });
+              $("#resultStatusIcon").html("❌");
+              $("#resultStatusTitle").html("Check Details");
+              $("#resultStatusText").html("please check the ticket number and the mobile number");
+              $("#resultStatusButtons").html(`<button class="btn" onclick="$('#resultStatusCard').hide();" style="width: 100%;">Try Again</button>`);
+              $("#resultStatusCard").slideDown();
               return;
           }
 
@@ -113,79 +156,57 @@
                   ticket: ticket,
                   mobile: mobile
               },
+              beforeSend: function() {
+                  $("#resultStatusCard").hide();
+              },
               success: function(response) {
-                  if (response.status === 'won') {
-                      // 🎉 Winner! Fire confetti and redirect
+                  if (response.won) {
+                      // Trigger canvas-confetti firecrackers!
                       confetti({
                           particleCount: 150,
                           spread: 80,
                           origin: { y: 0.6 }
                       });
+
                       setTimeout(function() {
                           window.location.href = "{{ route('results.winner') }}?ticket=" + encodeURIComponent(ticket) + "&mobile=" + encodeURIComponent(mobile);
                       }, 1200);
-
-                  } else if (response.status === 'no_win') {
-                      // ✅ Ticket & mobile match, but not a winner this time
-                      $.confirm({
-                          title: '🎟 Draw Result',
-                          content: `
-                              <div style="text-align: center; padding: 10px 0;">
-                                  <div style="font-size: 3rem; margin-bottom: 10px;">😔</div>
-                                  <h3 style="color: #ffc107; margin-bottom: 12px;">Better Luck Next Time!</h3>
-                                  <p style="font-size: 1rem; color: #ccc;">Your ticket <strong style="color: #f8ab37;">${ticket}</strong> did not win any prize in the latest draw.</p>
-                                  <p style="font-size: 0.88rem; color: #888; margin-top: 12px;">Every ticket is a new chance. Keep playing!</p>
-                              </div>
-                          `,
-                          theme: 'dark',
-                          buttons: {
-                              play: {
-                                  text: '🎟 Buy More Tickets',
-                                  btnClass: 'btn-success',
-                                  action: function() {
-                                      window.location.href = "{{ route('buy-tickets') }}";
-                                  }
-                              },
-                              close: { text: 'Close' }
-                          }
-                      });
-
                   } else {
-                      // ❌ Ticket + mobile don't match any purchase record
-                      $.confirm({
-                          title: '❌ Not Found',
-                          content: `
-                              <div style="text-align: center; padding: 10px 0;">
-                                  <div style="font-size: 3rem; margin-bottom: 10px;">🔍</div>
-                                  <h3 style="color: #e74c3c; margin-bottom: 12px;">Details Not Matched</h3>
-                                  <p style="font-size: 1rem; color: #ccc;">Please check your <strong style="color: #f8ab37;">Ticket Number</strong> and <strong style="color: #f8ab37;">Mobile Number</strong> and try again.</p>
-                                  <p style="font-size: 0.88rem; color: #888; margin-top: 12px;">Make sure you enter the exact ticket number and the mobile number used during purchase.</p>
-                              </div>
-                          `,
-                          theme: 'dark',
-                          buttons: {
-                              retry: {
-                                  text: '🔄 Try Again',
-                                  btnClass: 'btn-warning',
-                                  action: function() { /* just closes */ }
-                              },
-                              buy: {
-                                  text: '🎟 Buy Tickets',
-                                  btnClass: 'btn-success',
-                                  action: function() {
-                                      window.location.href = "{{ route('buy-tickets') }}";
-                                  }
-                              }
-                          }
-                      });
+                      let icon = "";
+                      let title = "";
+                      let message = "";
+                      let buttons = "";
+
+                      if (response.status === 'mismatch') {
+                          icon = "❌";
+                          title = "Check Details";
+                          message = "please check the ticket number and the mobile number";
+                          buttons = `<button class="btn" onclick="$('#resultStatusCard').hide();" style="width: 100%;">Try Again</button>`;
+                      } else {
+                          icon = "🍀";
+                          title = "Better Luck Next Time!";
+                          message = `Ticket <span style="color: var(--primary-color); font-weight: bold;">${ticket}</span> did not win any prize in the latest draw.<br><span style="font-size: 0.9rem; color: var(--text-muted); display: block; margin-top: 10px;">Don't lose hope. Every ticket brings a new chance. Play again today!</span>`;
+                          buttons = `<a href="{{ route('buy-tickets') }}" class="btn" style="display: block; width: 100%; margin-bottom: 8px; text-decoration: none; text-align: center; line-height: 2.2; background: linear-gradient(45deg, #28a745, #218838); border: none;">Buy More Tickets</a>
+                                     <button class="btn" onclick="$('#resultStatusCard').hide();" style="width: 100%; margin-top: 8px; background: rgba(255, 255, 255, 0.1); border: 1px solid var(--border-color); color: #fff;">Close</button>`;
+                      }
+
+                      $("#resultStatusIcon").html(icon);
+                      $("#resultStatusTitle").html(title);
+                      $("#resultStatusText").html(message);
+                      $("#resultStatusButtons").html(buttons);
+                      $("#resultStatusCard").slideDown();
+
+                      $('html, body').animate({
+                          scrollTop: $("#resultStatusCard").offset().top - 100
+                      }, 500);
                   }
               },
               error: function() {
-                  $.alert({
-                      title: 'Error',
-                      content: '❌ Something went wrong. Please try again.',
-                      theme: 'dark'
-                  });
+                  $("#resultStatusIcon").html("❌");
+                  $("#resultStatusTitle").html("Check Details");
+                  $("#resultStatusText").html("please check the ticket number and the mobile number");
+                  $("#resultStatusButtons").html(`<button class="btn" onclick="$('#resultStatusCard').hide();" style="width: 100%;">Try Again</button>`);
+                  $("#resultStatusCard").slideDown();
               }
           });
       });

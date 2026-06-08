@@ -124,6 +124,16 @@ class AdminTest extends TestCase
      */
     public function test_user_can_check_winning_ticket_amount(): void
     {
+        Booking::create([
+            'fullname' => 'John Doe',
+            'mobile' => '9876543210',
+            'state' => 'Kerala',
+            'pincode' => '682001',
+            'tickets' => 'VL111222',
+            'total_price' => 500,
+            'status' => 'paid',
+        ]);
+
         DrawResult::create([
             'draw_date' => '2026-06-06',
             'lottery_name' => 'Win Win',
@@ -332,6 +342,25 @@ class AdminTest extends TestCase
      */
     public function test_winner_page_renders_successfully(): void
     {
+        Booking::create([
+            'fullname' => 'John Doe',
+            'mobile' => '9876543210',
+            'state' => 'Kerala',
+            'pincode' => '682001',
+            'tickets' => 'VL999999',
+            'total_price' => 500,
+            'status' => 'paid',
+        ]);
+
+        DrawResult::create([
+            'draw_date' => '2026-06-06',
+            'lottery_name' => 'Win Win',
+            'draw_number' => 'W-100',
+            'winning_number' => 'VL999999',
+            'prize_category' => '1st Prize',
+            'winning_amount' => '₹15,00,000',
+        ]);
+
         $response = $this->get('/results/winner?ticket=VL999999&mobile=9876543210');
 
         $response->assertStatus(200);
@@ -345,6 +374,25 @@ class AdminTest extends TestCase
      */
     public function test_winner_certificate_image_generates_successfully(): void
     {
+        Booking::create([
+            'fullname' => 'John Doe',
+            'mobile' => '9876543210',
+            'state' => 'Kerala',
+            'pincode' => '682001',
+            'tickets' => 'VL999999',
+            'total_price' => 500,
+            'status' => 'paid',
+        ]);
+
+        DrawResult::create([
+            'draw_date' => '2026-06-06',
+            'lottery_name' => 'Win Win',
+            'draw_number' => 'W-100',
+            'winning_number' => 'VL999999',
+            'prize_category' => '1st Prize',
+            'winning_amount' => '₹15,00,000',
+        ]);
+
         $response = $this->get('/results/winner/certificate-image?ticket=VL999999&mobile=9876543210');
 
         $response->assertStatus(200);
